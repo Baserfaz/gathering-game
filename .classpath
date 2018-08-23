@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="res"/>
+	<classpathentry kind="lib" path="lib/tinysound-1.1.1/lib/jorbis-0.0.17.jar"/>
+	<classpathentry kind="lib" path="lib/tinysound-1.1.1/lib/tritonus_share.jar"/>
+	<classpathentry kind="lib" path="lib/tinysound-1.1.1/lib/vorbisspi1.0.3.jar"/>
+	<classpathentry kind="lib" path="lib/tinysound-1.1.1/tinysound-1.1.1-src.jar"/>
+	<classpathentry kind="lib" path="lib/tinysound-1.1.1/tinysound-1.1.1.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
