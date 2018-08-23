@@ -98,8 +98,10 @@ public abstract class GameObject {
     }
     
     public void updateHitbox() {
-        this.hitbox.x += this.worldPosition.x;
-        this.hitbox.y += this.worldPosition.y;
+
+        // hit box tracking the sprite
+        this.hitbox.x = this.worldPosition.x + this.hitbox.width;
+        this.hitbox.y = this.worldPosition.y + this.hitbox.height / 2;
     }
     
     public String getInfo() {
