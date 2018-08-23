@@ -1,5 +1,5 @@
 package com.enumerations;
 
-public enum ElementAlign {
+public enum HorizontalAlign {
     CENTER, LEFT, RIGHT
 }

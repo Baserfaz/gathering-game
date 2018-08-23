@@ -17,7 +17,7 @@ public abstract class InteractableGuiElement extends GuiElement {
         this.onHovertAction = onHoverAction;
     }
 
-    public  void onClick() {
+    public void onClick() {
         if(this.isEnabled) {
             switch(this.onClickAction) {
                 case EXIT_TO_OS:
@@ -36,7 +36,7 @@ public abstract class InteractableGuiElement extends GuiElement {
         }
     }
     
-    public  void onHover() {
+    public void onHover() {
         if(this.isEnabled) {
             switch(this.onHovertAction) {
                 case EXIT_TO_OS:

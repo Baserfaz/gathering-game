@@ -5,8 +5,8 @@ import java.awt.Rectangle;
 
 public abstract class GuiElement {
 
-    protected float x = 0;
-    protected float y = 0;
+    protected int x = 0;
+    protected int y = 0;
     protected int width = 0;
     protected int height = 0;
     
@@ -24,15 +24,15 @@ public abstract class GuiElement {
 
     public abstract void render(Graphics g);
     public abstract void tick();
-    public abstract void onClick();
     public abstract void onHover();
+    public abstract void onClick();
     
     // ---- GETTERS & SETTERS ----
     public Rectangle getBounds() { return new Rectangle((int)this.x, (int)this.y, this.width, this.height); }
     public float getX() { return x; }
-    public void setX(float x) { this.x = x; }
+    public void setX(int x) { this.x = x; }
     public float getY() { return y; }
-    public void setY(float y) { this.y = y; }
+    public void setY(int y) { this.y = y; }
     public boolean isEnabled() { return isEnabled; }
     public void setEnabled(boolean isEnabled) { this.isEnabled = isEnabled; }
     public boolean isVisible() { return isVisible; }

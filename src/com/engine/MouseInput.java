@@ -10,6 +10,7 @@ import java.util.List;
 import com.enumerations.GameState;
 import com.enumerations.SoundEffect;
 import com.ui.GuiElement;
+import com.ui.Panel;
 
 public class MouseInput implements MouseMotionListener, MouseListener {
     
@@ -21,34 +22,37 @@ public class MouseInput implements MouseMotionListener, MouseListener {
         
         Point mousePos = Game.instance.getMousePos();
         GameState state = Game.instance.getGamestate();
-        List<GuiElement> elements = this.getElements(state);
+        List<Panel> panels = this.getElements(state);
         
-        if(elements.isEmpty() || mousePos == null) return;
+        if(panels.isEmpty() || mousePos == null) return;
         
-        for(GuiElement element : elements) {
-            if(element.isEnabled()) {
-                if(element.getBounds().contains(mousePos)) {
-                    if(Game.isMuted == false && element.isMuted() == false) {
-                        Game.instance.getSoundManager().playSound(SoundEffect.SELECT);
-                    }
-                    element.onClick();
-                    break;
+        for(Panel panel : panels) {
+            if(panel.isEnabled() == false) { continue; }
+
+            // panels elements
+            for(GuiElement el : panel.getElements()) {
+                if(el.isEnabled() == false) { continue; }
+
+                if(Game.isMuted == false && panel.isMuted() == false && el.isMuted() == false) {
+                    Game.instance.getSoundManager().playSound(SoundEffect.SELECT);
                 }
+
+                el.onClick();
+                break;
             }
         }
     }
     
-    private List<GuiElement> getElements(GameState state) {
-        List<GuiElement> elements = new ArrayList<GuiElement>();
+    private List<Panel> getElements(GameState state) {
+        List<Panel> elements = new ArrayList<>();
         
         if(state == GameState.MAINMENU) {
-            elements = Game.instance.getGuiElementManager().getMainmenuElements();
+            elements = Game.instance.getGuiElementManager().getMainmenuPanels();
         } else if(state == GameState.INGAME) {
-            elements = Game.instance.getGuiElementManager().getIngameElements();
+            elements = Game.instance.getGuiElementManager().getIngamePanels();
         } else if(state == GameState.PAUSEMENU) {
-            elements = Game.instance.getGuiElementManager().getPausemenuElements();
+            elements = Game.instance.getGuiElementManager().getPausemenuPanels();
         }
-        
         return elements;
     }
 
@@ -57,27 +61,32 @@ public class MouseInput implements MouseMotionListener, MouseListener {
         Game.instance.setMousePos(e.getPoint());
         
         if(Game.instance.getGuiElementManager() == null) return;
-        List<GuiElement> elements = this.getElements(Game.instance.getGamestate());
-        if(elements.isEmpty()) return;
+        List<Panel> panels = this.getElements(Game.instance.getGamestate());
+        if(panels.isEmpty()) return;
         
         boolean hoveredOnSomething = false;
         
-        for(GuiElement element : elements) {
-            if(element.isEnabled()) {
-                element.setHovering(false);
-                
-                if(element.getBounds().contains(e.getPoint())) {
-                    hoveredOnSomething = true;
-                    
-                    if(this.lastElementHovered != element && Game.isMuted == false && element.isMuted() == false) {
-                        Game.instance.getSoundManager().playSound(SoundEffect.HOVER);
-                    }
-                    
-                    element.setHovering(true);
-                    element.onHover();
-                    this.lastElementHovered = element;
-                    break;
+        for(Panel panel : panels) {
+
+            if(panel.isEnabled() == false ) { continue; }
+            if(panel.getBounds().contains(e.getPoint()) == false) { continue; }
+
+            // panels elements
+            for(GuiElement el : panel.getElements()) {
+
+                if(el.isEnabled() == false) { continue; }
+                if(el.getBounds().contains(e.getPoint()) == false) { continue; }
+
+                hoveredOnSomething = true;
+
+                if(this.lastElementHovered != panel && Game.isMuted == false && panel.isMuted() == false && el.isMuted() == false) {
+                    Game.instance.getSoundManager().playSound(SoundEffect.HOVER);
                 }
+
+                el.setHovering(true);
+                el.onHover();
+                this.lastElementHovered = el;
+                break;
             }
         }
         
