@@ -8,7 +8,7 @@ public abstract class InteractableGuiElement extends GuiElement {
 
     private InteractAction onClickAction;
     private InteractAction onHovertAction;
-    
+
     public InteractableGuiElement(int x, int y, int width, int height,
             InteractAction onClickAction, InteractAction onHoverAction) {
         super(x, y, width, height);
@@ -37,22 +37,7 @@ public abstract class InteractableGuiElement extends GuiElement {
     }
     
     public void onHover() {
-        if(this.isEnabled) {
-            switch(this.onHovertAction) {
-                case EXIT_TO_OS:
-                    System.exit(0);
-                    break;
-                case PLAY:
-                    Game.instance.startNewGame();
-                    break;
-                case RESUME:
-                    Game.instance.setGamestate(GameState.INGAME);
-                    Game.isPaused = false;
-                    break;
-                default:
-                    break;
-            }
-        }
+        if(this.isEnabled) { }
     }
     
     // ---- GETTERS & SETTERS ----

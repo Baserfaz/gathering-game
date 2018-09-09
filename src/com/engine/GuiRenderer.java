@@ -11,9 +11,7 @@ import com.enumerations.HorizontalAlign;
 import com.enumerations.InteractAction;
 import com.enumerations.GameState;
 import com.gameobjects.Actor;
-import com.ui.Button;
-import com.ui.GuiElementManager;
-import com.ui.Panel;
+import com.ui.*;
 import com.utilities.SpriteCreator;
 
 public class GuiRenderer {
@@ -46,15 +44,13 @@ public class GuiRenderer {
         
         int width = 350;
         int height = 75;
-        int margin = 10;
-        int starty = 400;
-        int xpos = (Game.CAMERA_WIDTH / 2) - width / 2;
 
-        Panel panel = new Panel(Game.WIDTH / 2, Game.HEIGHT / 2, 500, 600, Color.red, true);
+        VPanel panel = new VPanel(Game.WIDTH / 2, Game.HEIGHT / 2, 500, 600, Color.red, true, HorizontalAlign.CENTER);
 
-        Button resumeButton = new Button(xpos, starty, width, height,
+        Button resumeButton = new Button(panel, width, height,
                 "Resume", Color.black, Color.white, 40, InteractAction.RESUME, InteractAction.NONE);
-        Button exitButton = new Button(xpos, starty + height + margin, width, height,
+
+        Button exitButton = new Button(panel, width, height,
                 "Exit", Color.black, Color.white, 40, InteractAction.EXIT_TO_OS, InteractAction.NONE);
 
         panel.addElement(resumeButton);
@@ -68,12 +64,10 @@ public class GuiRenderer {
         
         int width = 350;
         int height = 75;
-        int starty = 400;
-        int xpos = (Game.CAMERA_WIDTH / 2) - width / 2;
 
-        Panel panel = new Panel(Game.WIDTH / 2, Game.HEIGHT / 2, 500, 600, Color.red, true);
+        VPanel panel = new VPanel(Game.WIDTH / 2, Game.HEIGHT / 2, 500, 600, Color.red, true, HorizontalAlign.CENTER);
 
-        Button exitButton = new Button(xpos, starty, width, height,
+        Button exitButton = new Button(panel, width, height,
                 "Exit", Color.black, Color.white, 40, InteractAction.EXIT_TO_MENU, InteractAction.NONE);
 
         panel.addElement(exitButton);
@@ -84,24 +78,26 @@ public class GuiRenderer {
     private void createLoadingElements() {}
     
     private void createMainmenuElements() {
-        
-        int margin = 10;
-        int starty = 450;
-        int xpos = Game.CAMERA_WIDTH / 2 - 175;
-        
+
+        int panelW = 500;
+        int panelH = 600;
+
         int width = 350;
         int height = 75;
 
-        Panel panel = new Panel(Game.WIDTH / 2, Game.HEIGHT / 2, 500, 600, Color.red, true);
+        VPanel panel = new VPanel((Game.WIDTH / 2) - (panelW / 2), Game.HEIGHT / 2, panelH, panelW, Color.red, true, HorizontalAlign.CENTER);
 
-        Button playButton = new Button(xpos, starty, width, height, "Play", Color.black, Color.white, 40,
+        Button playButton = new Button(panel, width, height, "Play", Color.black, Color.white, 40,
                 InteractAction.PLAY, InteractAction.NONE);
-        Button exitButton = new Button(xpos, starty + height + margin,
-                width, height, "Exit", Color.black, Color.white, 40,
+
+        Button exitButton = new Button(panel, width, height, "Exit", Color.black, Color.white, 40,
                 InteractAction.EXIT_TO_OS, InteractAction.NONE);
-        
+
+        PlainText text = new PlainText(panel, width, height,"Alpha version",40, new Color(0, 0, 0,255));
+
         panel.addElement(playButton);
         panel.addElement(exitButton);
+        panel.addElement(text);
 
         this.guiElementManager.addElementToMainmenu(panel);
     }
@@ -109,32 +105,21 @@ public class GuiRenderer {
     // ----- RENDERING -----
     public void renderLoading(Graphics g) {
         this.guiElementManager.render(g, GameState.LOADING);
-        this.renderString("Loading", Game.CAMERA_WIDTH - 20, Game.CAMERA_HEIGHT, Color.white, 50f, HorizontalAlign.LEFT, g);
     }
     
     public void renderMenu(Graphics g) {
-        int centerx = Game.CAMERA_WIDTH / 2;
-        
         this.guiElementManager.render(g, GameState.MAINMENU);
-        this.renderString(Game.VERSION, centerx, 700, Color.white, 30, HorizontalAlign.CENTER, g);
     }
     
     public void renderGameOver(Graphics g) {
-        int centerx = Game.CAMERA_WIDTH / 2;
-        this.renderString("Game over", centerx, 200, Color.white, 60f, HorizontalAlign.CENTER, g);
         this.guiElementManager.render(g, GameState.GAME_OVER);
     }
     
     public void renderPauseMenu(Graphics g) {
-        this.renderString("Paused", Game.CAMERA_WIDTH / 2, 100, Color.white, 60f, HorizontalAlign.CENTER, g);
         this.guiElementManager.render(g, GameState.PAUSEMENU);
     }
     
     public void renderIngame(Graphics g) {
-        
-        Camera cam = Game.instance.getCamera();
-        Rectangle r = cam.getCameraBounds();
-        
         this.guiElementManager.render(g, GameState.INGAME);
         
         // render debugging information
@@ -175,16 +160,16 @@ public class GuiRenderer {
     }
 
     public void renderString(String msg, int x, int y, Color color, float size, HorizontalAlign align, Graphics g) {
-        
+
         Graphics2D g2d = (Graphics2D) g;
-        
+
         Font font = Game.instance.getCustomFont().deriveFont(Font.PLAIN, size);
         g2d.setColor(color);
         g2d.setFont(font);
-        
+
         int offsetx = 0;
         int offsety = -g.getFontMetrics().getHeight();
-        
+
         switch(align) {
         case CENTER:
             offsetx = -g.getFontMetrics().stringWidth(msg) / 2;
@@ -199,10 +184,10 @@ public class GuiRenderer {
             System.out.println("GuiRenderer::renderString: HorizontalAlign not supported!");
             break;
         }
-        
+
         int xx =  x + offsetx;
         int yy = y + offsety;
-        
+
         for (String line : msg.split("\n")) {
             g2d.drawString(line, xx, yy);
             yy += g.getFontMetrics().getHeight() + Game.TEXT_LINEHEIGHT;

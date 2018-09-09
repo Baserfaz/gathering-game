@@ -44,4 +44,5 @@ public abstract class GuiElement {
     public void setHovering(boolean b) { this.isHovering = b; }
     public boolean isHovering() { return this.isHovering; }
     public boolean isMuted() { return this.isMuted; }
+
 }

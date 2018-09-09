@@ -17,22 +17,23 @@ public class Button extends InteractableGuiElement {
     private int fontSize;
     private BufferedImage img;
     private String txt;
-    
-    public Button(int x, int y, int width, int height, 
+    private Panel parent;
+
+    public Button(Panel parent, int width, int height,
             String txt, Color fontColor, Color bgColor, int fontSize,
             InteractAction onClickAction, InteractAction onHoverAction) {
-        
-        super(x, y, width, height, onClickAction, onHoverAction);
+        super(parent.x, parent.y, width, height, onClickAction, onHoverAction);
+
+        this.parent = parent;
         this.fontColor = fontColor;
         this.bgColor = bgColor;
         this.fontSize = fontSize;
         this.txt = txt;
-        
     }
     
-    public Button(int x, int y, BufferedImage img, 
+    public Button(Panel parent, BufferedImage img,
             InteractAction onClickAction, InteractAction onHoverAction) {
-        super(x, y, img.getWidth(), img.getHeight(), onClickAction, onHoverAction);
+        super(parent.x, parent.y, img.getWidth(), img.getHeight(), onClickAction, onHoverAction);
         this.img = img;
     }
     

@@ -23,6 +23,7 @@ public class GuiElementManager {
     }
 
     public void render(Graphics g, GameState state) {
+        // runs the panel render method
         for(GuiElement e : this.getGuiElementList(state)) e.render(g);
     }
     

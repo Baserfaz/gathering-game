@@ -6,10 +6,10 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Panel extends InteractableGuiElement {
+public abstract class Panel extends InteractableGuiElement {
 
     private Color backgroundColor;
-    private Color borderColor = Color.white;
+    private Color borderColor = new Color(90, 90, 90, 255);
     private boolean drawBorders;
 
     private List<GuiElement> elements = new ArrayList<>();
@@ -52,6 +52,8 @@ public class Panel extends InteractableGuiElement {
 
         }
     }
+
+    public abstract void updatePanelItems();
 
     public void addElement(GuiElement e) {
         this.elements.add(e);

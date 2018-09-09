@@ -34,7 +34,6 @@ public class Game extends Canvas implements Runnable {
 
     public static final int CAMERA_WIDTH = Game.WIDTH;
     public static final int CAMERA_HEIGHT = Game.HEIGHT;
-    public static final float CAMERA_SMOOTH_MULT = 0.05f;
 
     public static final double FRAME_CAP = 60.0;
 
