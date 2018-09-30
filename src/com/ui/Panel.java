@@ -39,8 +39,10 @@ public abstract class Panel extends InteractableGuiElement {
         if(this.isVisible()) {
 
             // draw rect
-            g.setColor(backgroundColor);
-            g.fillRect(x, y, width, height);
+            if(!this.isTransparent) {
+                g.setColor(backgroundColor);
+                g.fillRect(x, y, width, height);
+            }
 
             // draw borders
             if (drawBorders) {

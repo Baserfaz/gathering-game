@@ -6,7 +6,7 @@ import java.awt.*;
 
 public class VPanel extends Panel {
 
-    private int margin = 10;
+    private int margin = 15;
     private HorizontalAlign horAlign;
 
     public VPanel(int x, int y, int w, int h, Color bgColor, boolean isTransparent, boolean borders, HorizontalAlign align) {

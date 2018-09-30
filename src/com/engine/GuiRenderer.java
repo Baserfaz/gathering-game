@@ -41,17 +41,10 @@ public class GuiRenderer {
     }
     
     private void createPauseMenuElements() {
-        
-        int width = 350;
-        int height = 75;
 
-        VPanel panel = new VPanel(Game.WIDTH / 2, Game.HEIGHT / 2, 500, 600, Color.red, true, false, HorizontalAlign.CENTER);
-
-        Button resumeButton = new Button(panel, width, height,
-                "Resume", Color.black, Color.white, 40, InteractAction.RESUME, InteractAction.NONE);
-
-        Button exitButton = new Button(panel, width, height,
-                "Exit", Color.black, Color.white, 40, InteractAction.EXIT_TO_OS, InteractAction.NONE);
+        VPanel panel = GuiFactory.createDefaultCenteredPanel();
+        Button resumeButton = GuiFactory.createDefaultResumeButton(panel);
+        Button exitButton = GuiFactory.createDefaultExitButton(panel);
 
         panel.addElement(resumeButton);
         panel.addElement(exitButton);
@@ -61,17 +54,9 @@ public class GuiRenderer {
     }
     
     private void createGameOverElements() {
-        
-        int width = 350;
-        int height = 75;
-
-        VPanel panel = new VPanel(Game.WIDTH / 2, Game.HEIGHT / 2, 500, 600, Color.red, true, false, HorizontalAlign.CENTER);
-
-        Button exitButton = new Button(panel, width, height,
-                "Exit", Color.black, Color.white, 40, InteractAction.EXIT_TO_MENU, InteractAction.NONE);
-
+        VPanel panel = GuiFactory.createDefaultCenteredPanel();
+        Button exitButton = GuiFactory.createDefaultExitButton(panel);
         panel.addElement(exitButton);
-
         this.guiElementManager.addElementToGameOver(panel);
     }
     
@@ -79,23 +64,10 @@ public class GuiRenderer {
     
     private void createMainmenuElements() {
 
-        int panelW = 500;
-        int panelH = 600;
-
-        int width = 350;
-        int height = 75;
-
-        int fontSize = 60;
-
-        VPanel panel = new VPanel((Game.WIDTH / 2) - (panelW / 2), Game.HEIGHT / 2, panelH, panelW, Color.red, true, false, HorizontalAlign.CENTER);
-
-        Button playButton = new Button(panel, width, height, "Play", Color.black, Color.white, fontSize,
-                InteractAction.PLAY, InteractAction.NONE);
-
-        Button exitButton = new Button(panel, width, height, "Exit", Color.black, Color.white, fontSize,
-                InteractAction.EXIT_TO_OS, InteractAction.NONE);
-
-        PlainText text = new PlainText(panel,"Alpha version", fontSize, new Color(0, 0, 0,255));
+        VPanel panel = GuiFactory.createDefaultCenteredPanel();
+        Button playButton = GuiFactory.createDefaultPlayButton(panel);
+        Button exitButton = GuiFactory.createDefaultExitButton(panel);
+        PlainText text = new PlainText(panel,"Alpha version", 40, new Color(0, 0, 0,255));
 
         panel.addElement(playButton);
         panel.addElement(exitButton);
