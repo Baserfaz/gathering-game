@@ -45,7 +45,7 @@ public class GuiRenderer {
         int width = 350;
         int height = 75;
 
-        VPanel panel = new VPanel(Game.WIDTH / 2, Game.HEIGHT / 2, 500, 600, Color.red, true, HorizontalAlign.CENTER);
+        VPanel panel = new VPanel(Game.WIDTH / 2, Game.HEIGHT / 2, 500, 600, Color.red, true, false, HorizontalAlign.CENTER);
 
         Button resumeButton = new Button(panel, width, height,
                 "Resume", Color.black, Color.white, 40, InteractAction.RESUME, InteractAction.NONE);
@@ -65,7 +65,7 @@ public class GuiRenderer {
         int width = 350;
         int height = 75;
 
-        VPanel panel = new VPanel(Game.WIDTH / 2, Game.HEIGHT / 2, 500, 600, Color.red, true, HorizontalAlign.CENTER);
+        VPanel panel = new VPanel(Game.WIDTH / 2, Game.HEIGHT / 2, 500, 600, Color.red, true, false, HorizontalAlign.CENTER);
 
         Button exitButton = new Button(panel, width, height,
                 "Exit", Color.black, Color.white, 40, InteractAction.EXIT_TO_MENU, InteractAction.NONE);
@@ -85,15 +85,17 @@ public class GuiRenderer {
         int width = 350;
         int height = 75;
 
-        VPanel panel = new VPanel((Game.WIDTH / 2) - (panelW / 2), Game.HEIGHT / 2, panelH, panelW, Color.red, true, HorizontalAlign.CENTER);
+        int fontSize = 60;
 
-        Button playButton = new Button(panel, width, height, "Play", Color.black, Color.white, 40,
+        VPanel panel = new VPanel((Game.WIDTH / 2) - (panelW / 2), Game.HEIGHT / 2, panelH, panelW, Color.red, true, false, HorizontalAlign.CENTER);
+
+        Button playButton = new Button(panel, width, height, "Play", Color.black, Color.white, fontSize,
                 InteractAction.PLAY, InteractAction.NONE);
 
-        Button exitButton = new Button(panel, width, height, "Exit", Color.black, Color.white, 40,
+        Button exitButton = new Button(panel, width, height, "Exit", Color.black, Color.white, fontSize,
                 InteractAction.EXIT_TO_OS, InteractAction.NONE);
 
-        PlainText text = new PlainText(panel, width, height,"Alpha version",40, new Color(0, 0, 0,255));
+        PlainText text = new PlainText(panel,"Alpha version", fontSize, new Color(0, 0, 0,255));
 
         panel.addElement(playButton);
         panel.addElement(exitButton);

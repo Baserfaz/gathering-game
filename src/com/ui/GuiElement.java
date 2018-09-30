@@ -5,10 +5,10 @@ import java.awt.Rectangle;
 
 public abstract class GuiElement {
 
-    protected int x = 0;
-    protected int y = 0;
-    protected int width = 0;
-    protected int height = 0;
+    protected int x;
+    protected int y;
+    protected int width;
+    protected int height;
     
     protected boolean isMuted = false;
     protected boolean isHovering = false;

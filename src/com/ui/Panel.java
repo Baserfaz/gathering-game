@@ -11,20 +11,23 @@ public abstract class Panel extends InteractableGuiElement {
     private Color backgroundColor;
     private Color borderColor = new Color(90, 90, 90, 255);
     private boolean drawBorders;
+    private boolean isTransparent;
 
     private List<GuiElement> elements = new ArrayList<>();
 
-    public Panel(int x, int y, int width, int height, Color bgColor, boolean borders,
+    public Panel(int x, int y, int width, int height, Color bgColor, boolean isTransparent, boolean borders,
                  InteractAction onClickAction, InteractAction onHoverAction) {
         super(x, y, width, height, onClickAction, onHoverAction);
         this.backgroundColor = bgColor;
         this.drawBorders = borders;
+        this.isTransparent = isTransparent;
     }
 
-    public Panel(int x, int y, int w, int h, Color bgColor, boolean borders) {
+    public Panel(int x, int y, int w, int h, Color bgColor, boolean isTransparent, boolean borders) {
         super(x, y, w, h, null, null);
         this.backgroundColor = bgColor;
         this.drawBorders = borders;
+        this.isTransparent = isTransparent;
     }
 
     public List<GuiElement> getElements() {

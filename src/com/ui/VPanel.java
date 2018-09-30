@@ -9,8 +9,8 @@ public class VPanel extends Panel {
     private int margin = 10;
     private HorizontalAlign horAlign;
 
-    public VPanel(int x, int y, int w, int h, Color bgColor, boolean borders, HorizontalAlign align) {
-        super(x, y, w, h, bgColor, borders);
+    public VPanel(int x, int y, int w, int h, Color bgColor, boolean isTransparent, boolean borders, HorizontalAlign align) {
+        super(x, y, w, h, bgColor, isTransparent, borders);
         this.horAlign = align;
     }
 
@@ -19,12 +19,18 @@ public class VPanel extends Panel {
 
         int count = 0;
 
+        GuiElement lastElement = null;
+
         // we want to put the items inside the panel under each other
         // the items are in the order they were added
         for(GuiElement e : this.getElements()) {
 
             int xx;
-            int yy = this.y + margin + count * e.height + count * margin;
+            int yy = this.y + margin;
+
+            if(lastElement != null) {
+                yy += (count * lastElement.height) + (count * margin);
+            }
 
             switch (horAlign) {
                 case CENTER:
@@ -45,6 +51,7 @@ public class VPanel extends Panel {
             e.setY(yy);
 
             count += 1;
+            lastElement = e;
         }
 
     }

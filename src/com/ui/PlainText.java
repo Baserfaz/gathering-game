@@ -13,7 +13,7 @@ public class PlainText extends InteractableGuiElement {
     private String text;
     private Font font;
 
-    public PlainText(Panel parent, int width, int height, String text, int size, Color color) {
+    public PlainText(Panel parent, String text, int size, Color color) {
         super(parent.x, parent.y, 0, 0, InteractAction.NONE, InteractAction.NONE);
 
         this.text = text;
@@ -22,11 +22,10 @@ public class PlainText extends InteractableGuiElement {
         this.fontSize = size;
         this.font = Game.instance.getCustomFont().deriveFont(Font.PLAIN, fontSize);
 
-        Canvas canvas = new Canvas();
-        FontMetrics fontMetric = canvas.getFontMetrics(font);
+        FontMetrics fontMetric = new Canvas().getFontMetrics(font);
 
         this.setWidth(fontMetric.stringWidth(text));
-        this.setHeight(fontMetric.getHeight()); // TODO: problem here
+        this.setHeight(fontMetric.getHeight());
     }
 
     @Override
@@ -42,6 +41,9 @@ public class PlainText extends InteractableGuiElement {
             g2d.drawString(line, x, yy);
             yy += g.getFontMetrics().getHeight() + Game.TEXT_LINEHEIGHT;
         }
+
+        g.setColor(Color.green);
+        g.drawRect(x, y, width, height);
 
     }
 
