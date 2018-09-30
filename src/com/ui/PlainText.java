@@ -41,10 +41,6 @@ public class PlainText extends InteractableGuiElement {
             g2d.drawString(line, x, yy);
             yy += g.getFontMetrics().getHeight() + Game.TEXT_LINEHEIGHT;
         }
-
-        g.setColor(Color.green);
-        g.drawRect(x, y, width, height);
-
     }
 
     @Override

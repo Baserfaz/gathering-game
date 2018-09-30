@@ -67,10 +67,12 @@ public class GuiRenderer {
         VPanel panel = GuiFactory.createDefaultCenteredPanel();
         Button playButton = GuiFactory.createDefaultPlayButton(panel);
         Button exitButton = GuiFactory.createDefaultExitButton(panel);
+        TextField nameField = GuiFactory.createDefaultTextField(panel);
         PlainText text = new PlainText(panel,"Alpha version", 40, new Color(0, 0, 0,255));
 
         panel.addElement(playButton);
         panel.addElement(exitButton);
+        panel.addElement(nameField);
         panel.addElement(text);
 
         this.guiElementManager.addElementToMainmenu(panel);

@@ -17,43 +17,38 @@ public class VPanel extends Panel {
     @Override
     public void updatePanelItems() {
 
-        int count = 0;
-
-        GuiElement lastElement = null;
+        int currentHeight = 0;
 
         // we want to put the items inside the panel under each other
         // the items are in the order they were added
-        for(GuiElement e : this.getElements()) {
+        for(int i = 0; i < this.getElements().size(); i++) {
+
+            // get current element
+            GuiElement element = this.getElements().get(i);
 
             int xx;
-            int yy = this.y + margin;
-
-            if(lastElement != null) {
-                yy += (count * lastElement.height) + (count * margin);
-            }
+            int yy = this.y + currentHeight + margin;
 
             switch (horAlign) {
                 case CENTER:
-                    xx = (this.x + this.width / 2) - e.width / 2;
+                    xx = (this.x + this.w / 2) - element.w / 2;
                     break;
                 case LEFT:
                     xx = this.x + margin;
                     break;
                 case RIGHT:
-                    xx = this.x + this.width - margin - e.width;
+                    xx = this.x + this.w - margin - element.w;
                     break;
                 default:
                     System.out.println("VPanel:updatePanelItems: not supported alignment: " + horAlign);
                     continue;
             }
 
-            e.setX(xx);
-            e.setY(yy);
+            element.setX(xx);
+            element.setY(yy);
 
-            count += 1;
-            lastElement = e;
+            currentHeight += element.getHeight() + margin;
         }
-
     }
 
     @Override

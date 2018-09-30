@@ -43,14 +43,14 @@ public class Button extends InteractableGuiElement {
             if(this.img != null) {
                 
                 if(this.isHovering) g.drawImage(RenderUtils.tintWithColor(this.img, Color.white), (int)this.x, (int)this.y, null);
-                else g.drawImage(this.img, (int)this.x, (int)this.y, null);
+                else g.drawImage(this.img, this.x, this.y, null);
                 
             } else {
                 
                 Font font = Game.instance.getCustomFont().deriveFont(Font.PLAIN, this.fontSize);
                 g.setFont(font);
                 
-                Rectangle r = new Rectangle((int)this.x, (int)this.y, this.width, this.height);
+                Rectangle r = new Rectangle(this.x, this.y, this.w, this.h);
                 
                 if(this.isHovering) g.setColor(this.bgColor.darker());
                 else g.setColor(this.bgColor);

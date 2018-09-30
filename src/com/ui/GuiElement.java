@@ -5,21 +5,14 @@ import java.awt.Rectangle;
 
 public abstract class GuiElement {
 
-    protected int x;
-    protected int y;
-    protected int width;
-    protected int height;
-    
-    protected boolean isMuted = false;
-    protected boolean isHovering = false;
-    protected boolean isEnabled = true;
-    protected boolean isVisible = true;
+    protected int x, y, w, h;
+    protected boolean isMuted = false, isHovering = false, isEnabled = true, isVisible = true;
     
     public GuiElement(int x, int y, int width, int height) {
         this.x = x;
         this.y = y;
-        this.width = width;
-        this.height = height;
+        this.w = width;
+        this.h = height;
     }
 
     public abstract void render(Graphics g);
@@ -28,7 +21,7 @@ public abstract class GuiElement {
     public abstract void onClick();
     
     // ---- GETTERS & SETTERS ----
-    public Rectangle getBounds() { return new Rectangle((int)this.x, (int)this.y, this.width, this.height); }
+    public Rectangle getBounds() { return new Rectangle(this.x, this.y, this.w, this.h); }
     public float getX() { return x; }
     public void setX(int x) { this.x = x; }
     public float getY() { return y; }
@@ -37,10 +30,10 @@ public abstract class GuiElement {
     public void setEnabled(boolean isEnabled) { this.isEnabled = isEnabled; }
     public boolean isVisible() { return isVisible; }
     public void setVisible(boolean isVisible) { this.isVisible = isVisible; }
-    public int getWidth() { return width; }
-    public void setWidth(int width) { this.width = width; }
-    public int getHeight() { return height; }
-    public void setHeight(int height) { this.height = height; }
+    public int getWidth() { return w; }
+    public void setWidth(int width) { this.w = width; }
+    public int getHeight() { return h; }
+    public void setHeight(int height) { this.h = height; }
     public void setHovering(boolean b) { this.isHovering = b; }
     public boolean isHovering() { return this.isHovering; }
     public boolean isMuted() { return this.isMuted; }

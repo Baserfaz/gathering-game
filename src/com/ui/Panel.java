@@ -41,13 +41,13 @@ public abstract class Panel extends InteractableGuiElement {
             // draw rect
             if(!this.isTransparent) {
                 g.setColor(backgroundColor);
-                g.fillRect(x, y, width, height);
+                g.fillRect(x, y, w, h);
             }
 
             // draw borders
             if (drawBorders) {
                 g.setColor(borderColor);
-                g.drawRect(x, y, width, height);
+                g.drawRect(x, y, w, h);
             }
 
             // render all elements inside this panel

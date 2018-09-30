@@ -15,6 +15,15 @@ public class GuiFactory {
     private static final int DEFAULT_BUTTON_HEIGHT = 75;
     private static final int DEFAULT_FONTSIZE = 40;
 
+    private static final int DEFAULT_TEXTFIELD_WIDTH = 350;
+    private static final int DEFAULT_TEXTFIELD_HEIGHT = 35;
+
+    public static TextField createDefaultTextField(Panel panel) {
+        return new TextField(panel,
+                DEFAULT_TEXTFIELD_WIDTH, DEFAULT_TEXTFIELD_HEIGHT,
+                15, DEFAULT_FONTSIZE, true);
+    }
+
     public static VPanel createDefaultCenteredPanel() {
         return new VPanel((Game.WIDTH / 2) - (DEFAULT_PANEL_WIDTH / 2),
                 Game.HEIGHT / 2, DEFAULT_PANEL_WIDTH, DEFAULT_PANEL_HEIGHT,
@@ -28,7 +37,7 @@ public class GuiFactory {
     }
 
     public static Button createDefaultExitButton(Panel panel) {
-        return new Button(panel, DEFAULT_BUTTON_WIDTH, DEFAULT_BUTTON_HEIGHT,
+        return new Button(panel, DEFAULT_BUTTON_WIDTH, DEFAULT_BUTTON_HEIGHT - 15,
                 "Exit", Color.black, Color.white, DEFAULT_FONTSIZE,
                 InteractAction.EXIT_TO_OS, InteractAction.NONE);
     }
