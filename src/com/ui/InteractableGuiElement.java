@@ -7,6 +7,8 @@ public abstract class InteractableGuiElement extends GuiElement {
 
     public abstract void onHover();
     public abstract void onClick();
+    public abstract void onUnfocus();
+
     public InteractAction onClickAction = InteractAction.NONE;
     public InteractAction onHoverAction = InteractAction.NONE;
 

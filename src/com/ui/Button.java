@@ -130,6 +130,11 @@ public class Button extends InteractableGuiElement {
         }
     }
 
+    @Override
+    public void onUnfocus() {
+
+    }
+
     // ------- GETTERS & SETTERS --------
     public Color getFontColor() { return fontColor; }
     public void setFontColor(Color fontColor) { this.fontColor = fontColor; }

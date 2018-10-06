@@ -9,22 +9,27 @@ public class TextField extends InteractableGuiElement {
 
     private final int borderMargin = 2;
     private final Color fontColor = Colors.BLACK;
+    private final int labelFontSize = 10;
 
-    private String value = "Lollero";
-    private boolean isSelected = false;
-    private boolean isEditable;
+    private String value = "";
+
     private Panel parent;
-    private int textMargin;
-    private int fontSize;
     private Font font;
     private FontMetrics fontMetrics;
+
+    private boolean isSelected = false;
+    private boolean isEditable;
+    private int textMargin;
+    private int fontSize;
+    private int maxLength;
     private int borderThickness;
 
-    public TextField(Panel panel, int w, int h,
-                     int textMargin, int fontSize,
-                     boolean isEditable) {
+    private PlainText label;
+
+    public TextField(Panel panel, int w, int h, int textMargin, int fontSize, int maxlen, boolean isEditable, String labelText) {
         super(panel.x, panel.y, w, h, InteractAction.NONE, InteractAction.NONE);
 
+        this.maxLength = maxlen;
         this.isEditable = isEditable;
         this.parent = panel;
         this.textMargin = textMargin;
@@ -34,6 +39,10 @@ public class TextField extends InteractableGuiElement {
 
         this.font = Game.instance.getCustomFont().deriveFont(Font.PLAIN, fontSize);
         this.fontMetrics = new Canvas().getFontMetrics(font);
+
+        // create label
+        this.label = new PlainText(parent, labelText, labelFontSize, fontColor);
+
     }
 
     @Override
@@ -84,6 +93,13 @@ public class TextField extends InteractableGuiElement {
     @Override
     public void onClick() {
         if(!isSelected) isSelected = true;
+    }
+
+    @Override
+    public void onUnfocus() {
+        if(isSelected) {
+            isSelected = false;
+        }
     }
 
     // ---------
@@ -160,5 +176,29 @@ public class TextField extends InteractableGuiElement {
 
     public void setFontMetrics(FontMetrics fontMetrics) {
         this.fontMetrics = fontMetrics;
+    }
+
+    public void setBorderThickness(int borderThickness) {
+        this.borderThickness = borderThickness;
+    }
+
+    public int getMaxLength() {
+        return maxLength;
+    }
+
+    public void setMaxLength(int maxLength) {
+        this.maxLength = maxLength;
+    }
+
+    public int getLabelFontSize() {
+        return labelFontSize;
+    }
+
+    public PlainText getLabel() {
+        return label;
+    }
+
+    public void setLabel(PlainText label) {
+        this.label = label;
     }
 }

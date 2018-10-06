@@ -42,7 +42,7 @@ public class GuiRenderer {
     
     private void createPauseMenuElements() {
 
-        VPanel panel = GuiFactory.createDefaultCenteredPanel();
+        VPanel panel = GuiFactory.createDefaultCenteredPanel(false);
         Button resumeButton = GuiFactory.createDefaultResumeButton(panel);
         Button exitButton = GuiFactory.createDefaultExitButton(panel);
 
@@ -54,7 +54,7 @@ public class GuiRenderer {
     }
     
     private void createGameOverElements() {
-        VPanel panel = GuiFactory.createDefaultCenteredPanel();
+        VPanel panel = GuiFactory.createDefaultCenteredPanel(false);
         Button exitButton = GuiFactory.createDefaultExitButton(panel);
         panel.addElement(exitButton);
         this.guiElementManager.addElementToGameOver(panel);
@@ -64,16 +64,15 @@ public class GuiRenderer {
     
     private void createMainmenuElements() {
 
-        VPanel panel = GuiFactory.createDefaultCenteredPanel();
-        Button playButton = GuiFactory.createDefaultPlayButton(panel);
-        Button exitButton = GuiFactory.createDefaultExitButton(panel);
-        TextField nameField = GuiFactory.createDefaultTextField(panel);
-        PlainText text = new PlainText(panel,"Alpha version", 40, new Color(0, 0, 0,255));
+        VPanel panel = GuiFactory.createDefaultCenteredPanel(false);
+        panel.addElement(GuiFactory.createDefaultPlayButton(panel));
+        panel.addElement(GuiFactory.createDefaultExitButton(panel));
 
-        panel.addElement(playButton);
-        panel.addElement(exitButton);
-        panel.addElement(nameField);
-        panel.addElement(text);
+        //VPanel textfieldPanel = GuiFactory.createDefaultCenteredPanel(true);
+        //textfieldPanel.addElement(GuiFactory.createDefaultTextField(textfieldPanel));
+
+        //panel.addElement(textfieldPanel);
+        //panel.addElement(GuiFactory.createDefaultPlainText(panel, "Alpha version"));
 
         this.guiElementManager.addElementToMainmenu(panel);
     }

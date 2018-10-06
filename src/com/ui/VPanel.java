@@ -49,6 +49,26 @@ public class VPanel extends Panel {
 
             currentHeight += element.getHeight() + margin;
         }
+
+        this.shrink(currentHeight);
+    }
+
+    public void shrink(int height) {
+
+        // calculate height if its not yet calculated
+        if(height <= 0) {
+            height = margin;
+            for(int i = 0; i < this.getElements().size(); i++) {
+                GuiElement element = this.getElements().get(i);
+                height += element.getHeight() + margin;
+            }
+        }
+
+        // add bottom margin
+        height += margin;
+
+        // shrink the bottom of the panel to fit the content
+        this.setHeight(height);
     }
 
     @Override

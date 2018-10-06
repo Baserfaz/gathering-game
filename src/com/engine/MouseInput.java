@@ -13,6 +13,7 @@ import com.enumerations.SoundEffect;
 import com.ui.GuiElement;
 import com.ui.InteractableGuiElement;
 import com.ui.Panel;
+import com.utilities.Util;
 
 public class MouseInput implements MouseMotionListener, MouseListener {
     
@@ -24,7 +25,7 @@ public class MouseInput implements MouseMotionListener, MouseListener {
         
         Point mousePos = Game.instance.getMousePos();
         GameState state = Game.instance.getGamestate();
-        List<Panel> panels = this.getPanelsInGamestate(state);
+        List<Panel> panels = Util.getPanelsInGamestate(state);
         
         if(panels.isEmpty() || mousePos == null) return;
         
@@ -33,7 +34,16 @@ public class MouseInput implements MouseMotionListener, MouseListener {
             // panels elements
             for(GuiElement el : panel.getElements()) {
 
-                if(el.getBounds().contains(mousePos) == false) continue;
+                if(el.getBounds().contains(mousePos) == false) {
+                    // we didn't click this element!
+                    // -> call unfocus
+                    if(el instanceof InteractableGuiElement) {
+                        InteractableGuiElement iel = (InteractableGuiElement) el;
+                        iel.onUnfocus();
+                    }
+                    continue;
+                }
+
                 if(el.isEnabled() == false) continue;
                 if(el instanceof InteractableGuiElement == false) continue;
 
@@ -49,25 +59,14 @@ public class MouseInput implements MouseMotionListener, MouseListener {
         }
     }
     
-    private List<Panel> getPanelsInGamestate(GameState state) {
-        List<Panel> elements = new ArrayList<>();
-        
-        if(state == GameState.MAINMENU) {
-            elements = Game.instance.getGuiElementManager().getMainmenuPanels();
-        } else if(state == GameState.INGAME) {
-            elements = Game.instance.getGuiElementManager().getIngamePanels();
-        } else if(state == GameState.PAUSEMENU) {
-            elements = Game.instance.getGuiElementManager().getPausemenuPanels();
-        }
-        return elements;
-    }
+
 
     // hover effects on gui elements.
     public void mouseMoved(MouseEvent e) {
         Game.instance.setMousePos(e.getPoint());
         
         if(Game.instance.getGuiElementManager() == null) return;
-        List<Panel> panels = this.getPanelsInGamestate(Game.instance.getGamestate());
+        List<Panel> panels = Util.getPanelsInGamestate(Game.instance.getGamestate());
         if(panels.isEmpty()) return;
         
         boolean hoveredOnSomething = false;

@@ -3,7 +3,8 @@ package com.utilities;
 import com.engine.Camera;
 import com.engine.Game;
 import com.enumerations.Direction;
-import com.gameobjects.GameObject;
+import com.enumerations.GameState;
+import com.ui.Panel;
 
 import java.lang.Math;
 import java.awt.Color;
@@ -12,9 +13,25 @@ import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Util {
+
+
+    public static List<Panel> getPanelsInGamestate(GameState state) {
+        List<Panel> elements = new ArrayList<>();
+
+        if(state == GameState.MAINMENU) {
+            elements = Game.instance.getGuiElementManager().getMainmenuPanels();
+        } else if(state == GameState.INGAME) {
+            elements = Game.instance.getGuiElementManager().getIngamePanels();
+        } else if(state == GameState.PAUSEMENU) {
+            elements = Game.instance.getGuiElementManager().getPausemenuPanels();
+        }
+        return elements;
+    }
 
     // ------------------------ RANDOMIZATION -------------------------
 

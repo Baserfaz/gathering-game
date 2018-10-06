@@ -45,7 +45,6 @@ public abstract class Panel extends GuiElement {
             for(GuiElement e : elements) {
                 e.render(g);
             }
-
         }
     }
 

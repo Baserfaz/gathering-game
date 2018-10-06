@@ -1,11 +1,10 @@
 package com.ui;
 
 import com.engine.Game;
-import com.enumerations.InteractAction;
 
 import java.awt.*;
 
-public class PlainText extends InteractableGuiElement {
+public class PlainText extends GuiElement {
 
     private Panel parent;
     private int fontSize;
@@ -14,7 +13,7 @@ public class PlainText extends InteractableGuiElement {
     private Font font;
 
     public PlainText(Panel parent, String text, int size, Color color) {
-        super(parent.x, parent.y, 0, 0, InteractAction.NONE, InteractAction.NONE);
+        super(parent.x, parent.y, 0, 0);
 
         this.text = text;
         this.parent = parent;
@@ -46,9 +45,4 @@ public class PlainText extends InteractableGuiElement {
     @Override
     public void tick() { }
 
-    @Override
-    public void onHover() {}
-
-    @Override
-    public void onClick() {}
 }
