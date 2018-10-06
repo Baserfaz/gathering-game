@@ -17,8 +17,6 @@ public abstract class GuiElement {
 
     public abstract void render(Graphics g);
     public abstract void tick();
-    public abstract void onHover();
-    public abstract void onClick();
     
     // ---- GETTERS & SETTERS ----
     public Rectangle getBounds() { return new Rectangle(this.x, this.y, this.w, this.h); }
@@ -34,8 +32,6 @@ public abstract class GuiElement {
     public void setWidth(int width) { this.w = width; }
     public int getHeight() { return h; }
     public void setHeight(int height) { this.h = height; }
-    public void setHovering(boolean b) { this.isHovering = b; }
-    public boolean isHovering() { return this.isHovering; }
     public boolean isMuted() { return this.isMuted; }
 
 }

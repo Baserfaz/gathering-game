@@ -1,12 +1,11 @@
 package com.ui;
 
-import com.enumerations.InteractAction;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Panel extends InteractableGuiElement {
+public abstract class Panel extends GuiElement {
 
     private Color backgroundColor;
     private Color borderColor = new Color(90, 90, 90, 255);
@@ -15,16 +14,8 @@ public abstract class Panel extends InteractableGuiElement {
 
     private List<GuiElement> elements = new ArrayList<>();
 
-    public Panel(int x, int y, int width, int height, Color bgColor, boolean isTransparent, boolean borders,
-                 InteractAction onClickAction, InteractAction onHoverAction) {
-        super(x, y, width, height, onClickAction, onHoverAction);
-        this.backgroundColor = bgColor;
-        this.drawBorders = borders;
-        this.isTransparent = isTransparent;
-    }
-
-    public Panel(int x, int y, int w, int h, Color bgColor, boolean isTransparent, boolean borders) {
-        super(x, y, w, h, null, null);
+    public Panel(int x, int y, int width, int height, Color bgColor, boolean isTransparent, boolean borders) {
+        super(x, y, width, height);
         this.backgroundColor = bgColor;
         this.drawBorders = borders;
         this.isTransparent = isTransparent;
@@ -73,35 +64,5 @@ public abstract class Panel extends InteractableGuiElement {
         for(GuiElement e : elements) {
             e.tick();
         }
-    }
-
-    @Override
-    public void onClick() {
-        super.onClick();
-    }
-
-    @Override
-    public void onHover() {
-        super.onHover();
-    }
-
-    @Override
-    public InteractAction getOnClickAction() {
-        return super.getOnClickAction();
-    }
-
-    @Override
-    public void setOnClickAction(InteractAction onClickAction) {
-        super.setOnClickAction(onClickAction);
-    }
-
-    @Override
-    public InteractAction getOnHovertAction() {
-        return super.getOnHovertAction();
-    }
-
-    @Override
-    public void setOnHovertAction(InteractAction onHovertAction) {
-        super.setOnHovertAction(onHovertAction);
     }
 }

@@ -56,5 +56,4 @@ public class VPanel extends Panel {
         super.addElement(e);
         this.updatePanelItems();
     }
-
 }

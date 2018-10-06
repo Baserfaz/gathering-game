@@ -45,4 +45,10 @@ public class PlainText extends InteractableGuiElement {
 
     @Override
     public void tick() { }
+
+    @Override
+    public void onHover() {}
+
+    @Override
+    public void onClick() {}
 }

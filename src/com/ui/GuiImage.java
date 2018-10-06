@@ -3,24 +3,20 @@ package com.ui;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
-import com.enumerations.InteractAction;
-
-public class GuiImage extends InteractableGuiElement {
+public class GuiImage extends GuiElement {
 
     private BufferedImage img;
     
-    public GuiImage(int x, int y, BufferedImage img, boolean isEnabled, 
-            InteractAction onClickAction, InteractAction onHoverAction) {
-        super(x, y, img.getWidth(), img.getHeight(), onClickAction, onHoverAction);
+    public GuiImage(int x, int y, BufferedImage img) {
+        super(x, y, img.getWidth(), img.getHeight());
         this.img = img;
-        this.isEnabled = isEnabled;
         this.isMuted = true;
     }
 
     public void render(Graphics g) {
-        if(this.isVisible) g.drawImage(this.img, (int)this.x, (int)this.y, null);
+        if(this.isVisible) g.drawImage(this.img, this.x, this.y, null);
     }
-    
+
     public void tick() {}
 
     // ----- GETTERS & SETTERS -----

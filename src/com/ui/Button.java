@@ -7,6 +7,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import com.engine.Game;
+import com.enumerations.GameState;
 import com.enumerations.InteractAction;
 import com.utilities.RenderUtils;
 
@@ -42,7 +43,7 @@ public class Button extends InteractableGuiElement {
             
             if(this.img != null) {
                 
-                if(this.isHovering) g.drawImage(RenderUtils.tintWithColor(this.img, Color.white), (int)this.x, (int)this.y, null);
+                if(this.isHovering) g.drawImage(RenderUtils.tintWithColor(this.img, Color.white), this.x, this.y, null);
                 else g.drawImage(this.img, this.x, this.y, null);
                 
             } else {
@@ -72,7 +73,63 @@ public class Button extends InteractableGuiElement {
     }
 
     public void tick() { if(this.isEnabled()) {} }
-    
+
+    @Override
+    public void onHover() {
+
+        if(this.onHoverAction != null) {
+
+            switch (this.onHoverAction) {
+                case EXIT_TO_OS:
+                    System.exit(0);
+                    break;
+                case PLAY:
+                    Game.instance.startNewGame();
+                    break;
+                case RESUME:
+                    Game.instance.setGamestate(GameState.INGAME);
+                    Game.isPaused = false;
+                    break;
+                default:
+                    break;
+            }
+        } else {
+
+            this.getOnHoverRunnable().run();
+
+        }
+
+    }
+
+    @Override
+    public void onClick() {
+        if(this.isEnabled) {
+            if(this.onClickAction != null) {
+
+                System.out.println("action: " + this.onClickAction.toString());
+
+                switch (this.onClickAction) {
+                    case EXIT_TO_OS:
+                        System.exit(0);
+                        break;
+                    case PLAY:
+                        Game.instance.startNewGame();
+                        break;
+                    case RESUME:
+                        Game.instance.setGamestate(GameState.INGAME);
+                        Game.isPaused = false;
+                        break;
+                    default:
+                        break;
+                }
+            } else {
+
+                this.getOnClickRunnable().run();
+
+            }
+        }
+    }
+
     // ------- GETTERS & SETTERS --------
     public Color getFontColor() { return fontColor; }
     public void setFontColor(Color fontColor) { this.fontColor = fontColor; }

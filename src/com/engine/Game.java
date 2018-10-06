@@ -340,9 +340,7 @@ public class Game extends Canvas implements Runnable {
         this.guiRenderer = guiRenderer;
     }
 
-    public Point getMousePos() {
-        return this.mousePos;
-    }
+    public Point getMousePos() { return this.mousePos; }
 
     public void setMousePos(Point mousePos) {
         this.mousePos = mousePos;

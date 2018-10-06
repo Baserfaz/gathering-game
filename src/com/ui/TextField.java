@@ -1,10 +1,11 @@
 package com.ui;
 
 import com.engine.Game;
+import com.enumerations.InteractAction;
 
 import java.awt.*;
 
-public class TextField extends GuiElement {
+public class TextField extends InteractableGuiElement {
 
     private final int borderMargin = 2;
     private final Color fontColor = Colors.BLACK;
@@ -22,7 +23,7 @@ public class TextField extends GuiElement {
     public TextField(Panel panel, int w, int h,
                      int textMargin, int fontSize,
                      boolean isEditable) {
-        super(panel.x, panel.y, w, h);
+        super(panel.x, panel.y, w, h, InteractAction.NONE, InteractAction.NONE);
 
         this.isEditable = isEditable;
         this.parent = panel;
@@ -33,17 +34,6 @@ public class TextField extends GuiElement {
 
         this.font = Game.instance.getCustomFont().deriveFont(Font.PLAIN, fontSize);
         this.fontMetrics = new Canvas().getFontMetrics(font);
-    }
-
-    public void onSelect() {
-
-
-    }
-
-    public void onDeselect() {
-
-
-
     }
 
     @Override
@@ -86,9 +76,7 @@ public class TextField extends GuiElement {
     }
 
     @Override
-    public void tick() {
-
-    }
+    public void tick() {}
 
     @Override
     public void onHover() {}
@@ -140,9 +128,7 @@ public class TextField extends GuiElement {
         this.textMargin = margin;
     }
 
-    public int getBorderMargin() {
-        return borderMargin;
-    }
+    public int getBorderMargin() { return borderMargin; }
 
     public int getBorderThickness() {
         return this.borderThickness;
