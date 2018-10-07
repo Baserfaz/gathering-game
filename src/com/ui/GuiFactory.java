@@ -20,27 +20,42 @@ public class GuiFactory {
 
     private static final int DEFAULT_TEXTFIELD_MAXLEN = 15;
 
-    public static PlainText createDefaultPlainText(Panel panel, String text) {
-        return new PlainText(panel,text, 40, new Color(0, 0, 0,255));
+    public static PlainText createDefaultPlainText(Panel panel, HorizontalAlign align, String text) {
+        return new PlainText(panel, align, text, 40, new Color(0, 0, 0,255));
     }
 
     public static TextField createDefaultTextField(Panel panel) {
         return new TextField(panel,
                 DEFAULT_TEXTFIELD_WIDTH, DEFAULT_TEXTFIELD_HEIGHT,
                 15, DEFAULT_FONTSIZE, DEFAULT_TEXTFIELD_MAXLEN,
-                true, "Name");
+                true);
     }
 
-    public static VPanel createDefaultCenteredPanel(boolean isTransparent) {
-        return new VPanel((Game.WIDTH / 2) - (DEFAULT_PANEL_WIDTH / 2),
-                Game.HEIGHT / 2, DEFAULT_PANEL_WIDTH, DEFAULT_PANEL_HEIGHT,
-                Colors.BLUE, isTransparent, false, HorizontalAlign.CENTER);
+    public static VPanel createDefaultCenteredPanel(Panel parent, boolean isTransparent, Color bgcolor) {
+
+        int x, y;
+        if(parent == null) {
+            x = (Game.WIDTH / 2) - (DEFAULT_PANEL_WIDTH / 2);
+            y = Game.HEIGHT / 2;
+        } else {
+            x = parent.getX();
+            y = parent.getY();
+        }
+
+        return new VPanel(x, y, DEFAULT_PANEL_WIDTH, DEFAULT_PANEL_HEIGHT, parent,
+                bgcolor, isTransparent, false, 15, HorizontalAlign.CENTER);
     }
 
     public static Button createDefaultPlayButton(Panel panel) {
         return new Button(panel, DEFAULT_BUTTON_WIDTH, DEFAULT_BUTTON_HEIGHT,
                 "Play", Color.black, Color.white, DEFAULT_FONTSIZE,
                 InteractAction.PLAY, InteractAction.NONE);
+    }
+
+    public static Button createDefaultExitToMainMenuButton(Panel panel) {
+        return new Button(panel, DEFAULT_BUTTON_WIDTH, DEFAULT_BUTTON_HEIGHT - 15,
+                "Exit to mainmenu", Color.black, Color.white, DEFAULT_FONTSIZE,
+                InteractAction.EXIT_TO_MENU, InteractAction.NONE);
     }
 
     public static Button createDefaultExitButton(Panel panel) {

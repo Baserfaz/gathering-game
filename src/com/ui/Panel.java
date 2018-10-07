@@ -7,18 +7,24 @@ import java.util.List;
 
 public abstract class Panel extends GuiElement {
 
-    private Color backgroundColor;
-    private Color borderColor = new Color(90, 90, 90, 255);
-    private boolean drawBorders;
-    private boolean isTransparent;
+    protected Panel parent;
+    protected int margin;
+    protected Color backgroundColor;
+    protected Color borderColor = new Color(90, 90, 90, 255);
+    protected boolean drawBorders;
+    protected boolean isTransparent;
 
-    private List<GuiElement> elements = new ArrayList<>();
+    protected List<GuiElement> elements = new ArrayList<>();
 
-    public Panel(int x, int y, int width, int height, Color bgColor, boolean isTransparent, boolean borders) {
+    public Panel(int x, int y, int width, int height,
+                 Panel parent, Color bgColor, boolean isTransparent, boolean borders, int margin) {
         super(x, y, width, height);
+
+        this.margin = margin;
         this.backgroundColor = bgColor;
         this.drawBorders = borders;
         this.isTransparent = isTransparent;
+        this.parent = parent;
     }
 
     public List<GuiElement> getElements() {
@@ -28,6 +34,8 @@ public abstract class Panel extends GuiElement {
     @Override
     public void render(Graphics g) {
         if(this.isVisible()) {
+
+            if(this.elements.isEmpty()) return;
 
             // draw rect
             if(!this.isTransparent) {
@@ -48,10 +56,34 @@ public abstract class Panel extends GuiElement {
         }
     }
 
+    public void shrink() {
+
+        // TODO: shrink horizontally
+
+        // top and bottom margins
+        int height = margin;
+
+        // calculate total element height
+        for(GuiElement element : this.getElements()) {
+
+            if(element instanceof Panel) {
+                ((Panel) element).shrink();
+            }
+
+            height += element.getHeight() + margin;
+        }
+
+        // shrink the bottom of the panel to fit the content
+        this.setHeight(height);
+    }
+
     public abstract void updatePanelItems();
 
-    public void addElement(GuiElement e) {
-        this.elements.add(e);
+    public GuiElement addElement(GuiElement e) {
+        if(!this.elements.contains(e)) {
+            this.elements.add(e);
+        }
+        return e;
     }
 
     public void removeElement(GuiElement e) {

@@ -42,9 +42,9 @@ public class GuiRenderer {
     
     private void createPauseMenuElements() {
 
-        VPanel panel = GuiFactory.createDefaultCenteredPanel(false);
+        VPanel panel = GuiFactory.createDefaultCenteredPanel(null, false, Colors.GRAY);
         Button resumeButton = GuiFactory.createDefaultResumeButton(panel);
-        Button exitButton = GuiFactory.createDefaultExitButton(panel);
+        Button exitButton = GuiFactory.createDefaultExitToMainMenuButton(panel);
 
         panel.addElement(resumeButton);
         panel.addElement(exitButton);
@@ -54,7 +54,7 @@ public class GuiRenderer {
     }
     
     private void createGameOverElements() {
-        VPanel panel = GuiFactory.createDefaultCenteredPanel(false);
+        VPanel panel = GuiFactory.createDefaultCenteredPanel(null, false, Colors.GRAY);
         Button exitButton = GuiFactory.createDefaultExitButton(panel);
         panel.addElement(exitButton);
         this.guiElementManager.addElementToGameOver(panel);
@@ -64,15 +64,17 @@ public class GuiRenderer {
     
     private void createMainmenuElements() {
 
-        VPanel panel = GuiFactory.createDefaultCenteredPanel(false);
+        VPanel panel = GuiFactory.createDefaultCenteredPanel(null, false, Colors.GRAY);
+        panel.addElement(GuiFactory.createDefaultPlainText(panel, HorizontalAlign.CENTER, "AWESOME GAME"));
         panel.addElement(GuiFactory.createDefaultPlayButton(panel));
         panel.addElement(GuiFactory.createDefaultExitButton(panel));
 
-        //VPanel textfieldPanel = GuiFactory.createDefaultCenteredPanel(true);
-        //textfieldPanel.addElement(GuiFactory.createDefaultTextField(textfieldPanel));
+        VPanel textfieldPanel = (VPanel) panel.addElement(GuiFactory.createDefaultCenteredPanel(panel, false, Colors.BLUE));
+        textfieldPanel.addElement(GuiFactory.createDefaultPlainText(textfieldPanel, HorizontalAlign.LEFT, "Username"));
+        textfieldPanel.addElement(GuiFactory.createDefaultTextField(textfieldPanel));
 
-        //panel.addElement(textfieldPanel);
-        //panel.addElement(GuiFactory.createDefaultPlainText(panel, "Alpha version"));
+        // shrink the root panel
+        panel.shrink();
 
         this.guiElementManager.addElementToMainmenu(panel);
     }

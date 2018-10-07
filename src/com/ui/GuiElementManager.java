@@ -24,7 +24,7 @@ public class GuiElementManager {
 
     public void render(Graphics g, GameState state) {
         // runs the panel render method
-        for(GuiElement e : this.getGuiElementList(state)) e.render(g);
+        for(Panel p : this.getGuiElementList(state)) p.render(g);
     }
     
     public void tick(GameState state) {

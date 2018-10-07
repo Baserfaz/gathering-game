@@ -1,6 +1,7 @@
 package com.ui;
 
 import com.engine.Game;
+import com.enumerations.HorizontalAlign;
 
 import java.awt.*;
 
@@ -11,10 +12,14 @@ public class PlainText extends GuiElement {
     private Color color;
     private String text;
     private Font font;
+    private HorizontalAlign align;
 
-    public PlainText(Panel parent, String text, int size, Color color) {
+    public PlainText(Panel parent, HorizontalAlign align, String text, int size, Color color) {
         super(parent.x, parent.y, 0, 0);
 
+        // TODO: update x position with using align
+
+        this.align = align;
         this.text = text;
         this.parent = parent;
         this.color = color;

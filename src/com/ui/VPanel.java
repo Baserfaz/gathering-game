@@ -6,11 +6,11 @@ import java.awt.*;
 
 public class VPanel extends Panel {
 
-    private int margin = 15;
     private HorizontalAlign horAlign;
 
-    public VPanel(int x, int y, int w, int h, Color bgColor, boolean isTransparent, boolean borders, HorizontalAlign align) {
-        super(x, y, w, h, bgColor, isTransparent, borders);
+    public VPanel(int x, int y, int w, int h,
+                  Panel parent, Color bgColor, boolean isTransparent, boolean borders, int margin, HorizontalAlign align) {
+        super(x, y, w, h, parent, bgColor, isTransparent, borders, margin);
         this.horAlign = align;
     }
 
@@ -21,10 +21,7 @@ public class VPanel extends Panel {
 
         // we want to put the items inside the panel under each other
         // the items are in the order they were added
-        for(int i = 0; i < this.getElements().size(); i++) {
-
-            // get current element
-            GuiElement element = this.getElements().get(i);
+        for(GuiElement element : this.getElements()) {
 
             int xx;
             int yy = this.y + currentHeight + margin;
@@ -49,31 +46,12 @@ public class VPanel extends Panel {
 
             currentHeight += element.getHeight() + margin;
         }
-
-        this.shrink(currentHeight);
-    }
-
-    public void shrink(int height) {
-
-        // calculate height if its not yet calculated
-        if(height <= 0) {
-            height = margin;
-            for(int i = 0; i < this.getElements().size(); i++) {
-                GuiElement element = this.getElements().get(i);
-                height += element.getHeight() + margin;
-            }
-        }
-
-        // add bottom margin
-        height += margin;
-
-        // shrink the bottom of the panel to fit the content
-        this.setHeight(height);
     }
 
     @Override
-    public void addElement(GuiElement e) {
+    public GuiElement addElement(GuiElement e) {
         super.addElement(e);
         this.updatePanelItems();
+        return e;
     }
 }

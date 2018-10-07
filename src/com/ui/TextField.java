@@ -9,7 +9,7 @@ public class TextField extends InteractableGuiElement {
 
     private final int borderMargin = 2;
     private final Color fontColor = Colors.BLACK;
-    private final int labelFontSize = 10;
+    private final int labelFontSize = 30;
 
     private String value = "";
 
@@ -24,9 +24,9 @@ public class TextField extends InteractableGuiElement {
     private int maxLength;
     private int borderThickness;
 
-    private PlainText label;
-
-    public TextField(Panel panel, int w, int h, int textMargin, int fontSize, int maxlen, boolean isEditable, String labelText) {
+    public TextField(Panel panel, int w, int h,
+                     int textMargin, int fontSize, int maxlen,
+                     boolean isEditable) {
         super(panel.x, panel.y, w, h, InteractAction.NONE, InteractAction.NONE);
 
         this.maxLength = maxlen;
@@ -39,10 +39,6 @@ public class TextField extends InteractableGuiElement {
 
         this.font = Game.instance.getCustomFont().deriveFont(Font.PLAIN, fontSize);
         this.fontMetrics = new Canvas().getFontMetrics(font);
-
-        // create label
-        this.label = new PlainText(parent, labelText, labelFontSize, fontColor);
-
     }
 
     @Override
@@ -194,11 +190,4 @@ public class TextField extends InteractableGuiElement {
         return labelFontSize;
     }
 
-    public PlainText getLabel() {
-        return label;
-    }
-
-    public void setLabel(PlainText label) {
-        this.label = label;
-    }
 }
