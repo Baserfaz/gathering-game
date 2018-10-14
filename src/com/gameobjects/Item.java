@@ -7,8 +7,8 @@ import com.enumerations.SpriteType;
 
 public class Item extends GameObject {
 
-    public Item(Point worldPos, SpriteType type) {
-        super(worldPos, type);
+    public Item(Point tilePos, SpriteType type) {
+        super(tilePos, type);
         
         
         

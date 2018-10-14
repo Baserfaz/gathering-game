@@ -1,12 +1,12 @@
 package com.gameobjects;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.Map;
 
 import com.data.Health;
+import com.data.Level;
 import com.engine.Game;
 import com.engine.KeyInput;
 import com.enumerations.Direction;
@@ -19,16 +19,15 @@ public class Actor extends GameObject {
     protected String name;
     protected Health HP;
     protected UnitType unitType;
-
     protected Direction facingDirection = Direction.WEST;
-
     protected int attackDamage = 1;
-
     protected KeyInput keyInput;
-    
-    public Actor(String name, Point worldPos, UnitType unitType,
+    protected Level level;
+    protected Block currentBlock;
+
+    public Actor(String name, Point tilePos, UnitType unitType,
                  SpriteType spriteType, int hp, int damage) {
-        super(worldPos, spriteType);
+        super(tilePos, spriteType);
         
         this.name = name;
         this.attackDamage = damage;
@@ -36,6 +35,10 @@ public class Actor extends GameObject {
         this.HP = new Health(hp, this);
         
         this.keyInput = Game.instance.getKeyInput();
+        this.level = Game.instance.getLevel();
+
+        // register this actor the the block we spawned on
+        this.level.getBlock(tilePos).addActor(this);
     }
     
     public void tick() {
@@ -57,26 +60,55 @@ public class Actor extends GameObject {
     
     public void moveUp() {
 
+        Point newPos = new Point(
+                this.tilePosition.x,
+                this.tilePosition.y - 1);
+
+        this.updateTileposition(newPos);
     }
     
     public void moveDown() {
+        Point newPos = new Point(
+                this.tilePosition.x,
+                this.tilePosition.y + 1);
 
+        this.updateTileposition(newPos);
     }
     
     public void moveLeft() {
+        Point newPos = new Point(
+                this.tilePosition.x - 1,
+                this.tilePosition.y);
 
-        this.facingDirection = Direction.WEST;
+        this.updateTileposition(newPos);
     }
     
     public void moveRight() {
+        Point newPos = new Point(
+                this.tilePosition.x + 1,
+                this.tilePosition.y);
 
-        this.facingDirection = Direction.EAST;
+        this.updateTileposition(newPos);
     }
-    
+
+    private void updateTileposition(Point newPos) {
+        Block block = level.getBlock(newPos);
+        if(level.validateBlock(block)) {
+
+            if(currentBlock != null) {
+                currentBlock.removeActor(this);
+            }
+
+            this.setTilePosition(newPos);
+            block.addActor(this);
+            currentBlock = block;
+        }
+    }
+
     public void doAction() {
         
     }
-    
+
     private void handleButtons() {
         Map<Integer, KeyInput.Command> buttons = this.keyInput.getButtons();
         if(buttons.containsValue(KeyInput.Command.MOVE_DOWN)) { this.moveDown(); }
@@ -91,4 +123,51 @@ public class Actor extends GameObject {
     public Direction getFacingDirection() { return facingDirection; }
     public void setFacingDirection(Direction facingDirection) { this.facingDirection = facingDirection; }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setHP(Health HP) {
+        this.HP = HP;
+    }
+
+    public UnitType getUnitType() {
+        return unitType;
+    }
+
+    public void setUnitType(UnitType unitType) {
+        this.unitType = unitType;
+    }
+
+    public int getAttackDamage() {
+        return attackDamage;
+    }
+
+    public void setAttackDamage(int attackDamage) {
+        this.attackDamage = attackDamage;
+    }
+
+    public KeyInput getKeyInput() {
+        return keyInput;
+    }
+
+    public void setKeyInput(KeyInput keyInput) {
+        this.keyInput = keyInput;
+    }
+
+    public Level getLevel() {
+        return level;
+    }
+
+    public void setLevel(Level level) {
+        this.level = level;
+    }
+
+    public Block getCurrentBlock() {
+        return currentBlock;
+    }
+
+    public void setCurrentBlock(Block currentBlock) {
+        this.currentBlock = currentBlock;
+    }
 }

@@ -118,8 +118,10 @@ public class GuiRenderer {
             info += "cam pos: " + camRect.x + ", " + camRect.y + "\n";
 
             if(Game.instance.getUnitManager().getPlayer() != null) {
-                Point pos = Game.instance.getUnitManager().getPlayer().getWorldPosition();
-                info += "player pos: [" + pos.x + ", " + pos.y + "]\n";
+                Point wpos = Game.instance.getUnitManager().getPlayer().getWorldPosition();
+                Point tilepos = Game.instance.getUnitManager().getPlayer().getTilePosition();
+                info += "player world pos: [" + wpos.x + ", " + wpos.y + "]\n";
+                info += "player tile pos: [" + tilepos.x + ", " + tilepos.y + "]\n";
             }
             this.renderString(info, x, y, Game.debugInfoColor, 24f, HorizontalAlign.RIGHT, g);
         }

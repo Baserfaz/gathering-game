@@ -5,6 +5,8 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.Interfaces.IUiComponent;
+import com.enumerations.UnitType;
 import com.gameobjects.Actor;
 import com.gameobjects.Block;
 import com.gameobjects.GameObject;
@@ -23,8 +25,9 @@ public class Handler {
     public void renderGameObjects(Graphics g) {
         
         // references
-        List<Block> solidBlocks = new ArrayList<Block>();
-        List<Actor> actors = new ArrayList<Actor>();
+        List<Block> solidBlocks = new ArrayList<>();
+        List<Actor> actors = new ArrayList<>();
+        Actor player = null;
         
         Camera cam = Game.instance.getCamera();
         if(cam == null) return;
@@ -58,7 +61,11 @@ public class Handler {
             GameObject current = objInView.get(i);
             
             if(current instanceof Actor) {
-                actors.add((Actor) current);
+                if(((Actor) current).getUnitType().equals(UnitType.PLAYER_UNIT)) {
+                    player = (Actor) current;
+                } else{
+                    actors.add((Actor) current);
+                }
             } else if(current instanceof Block) {
                 Block block = (Block) current;
                 solidBlocks.add(block);
@@ -68,6 +75,7 @@ public class Handler {
         // render queue: back to front
         for(Block block : solidBlocks) { block.render(g); }
         for(Actor actor : actors) { actor.render(g); }
+        if(player != null) player.render(g);
     }
 
     // ---- GETTERS & SETTERS ----

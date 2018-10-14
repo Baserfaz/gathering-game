@@ -9,16 +9,25 @@ import com.enumerations.SpriteType;
 
 public abstract class GameObject {
 
+    protected Point tilePosition;
     protected Point worldPosition;
     protected BufferedImage defaultStaticSprite;
 
     protected boolean isEnabled = false;
     protected boolean isVisible = false;
     
-    public GameObject(Point worldPos, SpriteType type) {
+    public GameObject(Point tilePosition, SpriteType type) {
 
-        // set world position
-        this.worldPosition = worldPos;
+        this.tilePosition = tilePosition;
+
+        // calculate world position
+
+        int size = Game.SPRITEGRIDSIZE * Game.SPRITESIZEMULT;
+        int margin = 0;
+
+        this.worldPosition = new Point(
+                tilePosition.x * size + tilePosition.x * margin,
+                tilePosition.y * size + tilePosition.y * margin);
         
         // create sprites
         this.defaultStaticSprite = Game.instance.getSpriteStorage().getSprite(type);
@@ -36,21 +45,15 @@ public abstract class GameObject {
                 this.getWorldPosition().x + ", " + this.getWorldPosition().y + ")";
     }
 
-    public void addWorldPosition(float x, float y) { 
-        this.worldPosition = new Point(this.worldPosition.x + Math.round(x),
-                this.worldPosition.y + Math.round(y));
+    public void addWorldPosition(int x, int y) {
+        this.worldPosition = new Point(this.worldPosition.x + x,
+                this.worldPosition.y + y);
     }
 
-    public void setSprite(BufferedImage i) { this.defaultStaticSprite = i; }
-    public BufferedImage getSprite() { return this.defaultStaticSprite; }
-    public void setWorldPosition(int x, int y) { this.worldPosition = new Point(x, y); }
-    public void setWorldPosition(Point pos) { this.worldPosition = pos; }
     public Point getWorldPosition() { return this.worldPosition; }
-    public boolean getIsVisible() { return this.isVisible; }
-    public boolean getIsEnabled() { return this.isEnabled; }
-    public void setIsVisible(boolean b) { this.isVisible = b; }
-    public void setIsEnabled(boolean b) { this.isEnabled = b; }
-    
+    public Point getTilePosition() { return this.tilePosition; }
+    public void setTilePosition(Point p) { this.tilePosition = p; }
+
     public void activate() { 
         this.isVisible = true;
         this.isEnabled = true;

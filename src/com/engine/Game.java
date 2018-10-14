@@ -167,8 +167,8 @@ public class Game extends Canvas implements Runnable {
         final double frameTime = 1 / FRAME_CAP;
         final long SECOND = 1000000000L;
 
-        boolean render = false;
-        long now = 0l, passedTime = 0l;
+        boolean render;
+        long now, passedTime;
 
         while (isRunning) {
 
@@ -251,7 +251,7 @@ public class Game extends Canvas implements Runnable {
         this.gamestate = GameState.LOADING;
 
         // create world
-        this.level = new Level(10, 10);
+        this.level = new Level(50, 50);
 
         this.unitManager.createPlayerUnit(this.level);
 

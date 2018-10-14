@@ -2,28 +2,25 @@ package com.gameobjects;
 
 import java.awt.Graphics;
 import java.awt.Point;
-import java.awt.image.BufferedImage;
-import java.util.HashMap;
-import java.util.Map.Entry;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.engine.Game;
 import com.enumerations.BlockType;
-import com.enumerations.Direction;
 import com.enumerations.SpriteType;
 
 public class Block extends GameObject {
     
     private BlockType blockType;
-    private Point gridPosition;
+
+    private List<Actor> actors;
+    private List<Item> items;
     
-    private Item item;
-    
-    public Block(Point worldPos, Point gridPosition, BlockType blockType, SpriteType type) {
-        super(worldPos, type);
-        
+    public Block(Point tilePos, BlockType blockType, SpriteType type) {
+        super(tilePos, type);
         this.blockType = blockType;
-        this.gridPosition = gridPosition;
-        
+        this.items = new ArrayList<>();
+        this.actors = new ArrayList<>();
     }
 
     public void tick() {}
@@ -41,21 +38,21 @@ public class Block extends GameObject {
         this.blockType = bt;
         this.defaultStaticSprite = Game.instance.getSpriteStorage().getSprite(st);
     }
-    
-    public Item getItem() {
-        return this.item;
+
+    public List<Actor> getActors() {
+        return actors;
     }
-    
-    public void setItem(Item item) {
-        this.item = item;
+
+    public void setActors(List<Actor> actors) {
+        this.actors = actors;
     }
-    
-    // ------------- GETTERS & SETTERS ----------------
-    
+
+    public void addActor(Actor a) { this.actors.add(a); }
+    public void removeActor(Actor a) { this.actors.remove(a); }
+
+    public List<Item> getItems() { return this.items; }
+    public void addItem(Item item) { this.items.add(item); }
     public BlockType getBlocktype() { return blockType; }
     public void setBlocktype(BlockType blocktype) { this.blockType = blocktype; }
-    
-    public Point getGridPosition() { return gridPosition; }
-    public void setGridPosition(Point gridPosition) { this.gridPosition = gridPosition; }
 }
 

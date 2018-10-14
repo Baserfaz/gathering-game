@@ -79,7 +79,7 @@ public class Renderer {
         // set zoom level
         g2d.scale(1, 1);
 
-        // move the camera
+        // move the "camera"
         g2d.translate(-r.x, -r.y);
         
         handler.renderGameObjects(g2d);
@@ -100,9 +100,9 @@ public class Renderer {
         }
         
         // DRAW CENTER POINT OF THE CAMERA
-        Point camCent = Game.instance.getCamera().getCameraCenterPosition();
-        g.setColor(Game.cameraRectColor);
-        g.drawRect(camCent.x, camCent.y, 1, 1);
+        //Point camCent = Game.instance.getCamera().getCameraCenterPosition();
+        //g.setColor(Game.cameraRectColor);
+        //g.drawRect(camCent.x, camCent.y, 1, 1);
         
     }
     

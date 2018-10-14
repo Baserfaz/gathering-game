@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
+import com.Interfaces.IUiComponent;
 import com.engine.Game;
 import com.enumerations.GameState;
 import com.enumerations.InteractAction;

@@ -1,9 +1,11 @@
 package com.ui;
 
+import com.Interfaces.IUiComponent;
+
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
-public abstract class GuiElement {
+public abstract class GuiElement implements IUiComponent {
 
     protected int x, y, w, h;
     protected boolean isMuted = false, isHovering = false, isEnabled = true, isVisible = true;

@@ -20,18 +20,10 @@ public class UnitManager {
     }
 
     public void createPlayerUnit(Level level) {
-        
         if(level != null && level.getBlocks().isEmpty() == false) { 
             Block spawn = level.getRandomValidBlock();
             this.player = this.createUnitInstance("Player", spawn, UnitType.PLAYER_UNIT, 3, 1);
-        } else {
-            
-           Point spawnPoint = new Point(0, 0);
-           this.player = this.createUnitInstance("Player", spawnPoint, UnitType.PLAYER_UNIT, 3, 1);
         }
-        
-        System.out.println("Units created!");
-        
     }
     
     private Actor createUnitInstance(String name, Point wpos, UnitType unitType, int hp, int dmg) {
@@ -62,7 +54,7 @@ public class UnitManager {
         
         switch(unitType) {
         case PLAYER_UNIT:
-            unit = new Actor(name, block.getWorldPosition(), unitType, SpriteType.PLAYER, health, damage);
+            unit = new Actor(name, block.getTilePosition(), unitType, SpriteType.PLAYER, health, damage);
             break;
 
         default:
