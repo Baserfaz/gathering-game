@@ -41,16 +41,14 @@ public class Handler {
         camView.y -= size;
         camView.height += 2 * size;
         
-        List<GameObject> objInView = new ArrayList<GameObject>();
+        List<GameObject> objInView = new ArrayList<>();
         for(int i = 0; i < this.objects.size(); i++) {
             GameObject go = this.objects.get(i);
             if(go == null) continue;
-            if(camView.contains(go.getHitbox())) {
+            if(camView.contains(go.getWorldPosition())) {
                 objInView.add(go);
                 go.activate();
-            } else {
-                // go.deactivate();
-            }
+            } else { go.deactivate(); }
         }
         
         // ---------------------- RENDER ---------------------------------

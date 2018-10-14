@@ -104,17 +104,6 @@ public class Renderer {
         g.setColor(Game.cameraRectColor);
         g.drawRect(camCent.x, camCent.y, 1, 1);
         
-        // DRAW LINE BETWEEN CAMERA CENTER AND TARGET
-        Actor player = Game.instance.getUnitManager().getPlayer();
-        if(player != null) {
-            
-            int size = Game.SPRITEGRIDSIZE * Game.SPRITESIZEMULT;
-            
-            g.setColor(Color.red);
-            g.drawLine(player.getCenterPoint().x, player.getCenterPoint().y, camCent.x, camCent.y);
-            g.drawRect(player.getWorldPosition().x, player.getWorldPosition().y, size, size);
-        }
-        
     }
     
     private void fillScreen(Graphics g, Color color) {

@@ -23,7 +23,7 @@ public class SoundManager {
       public SoundManager() {
           TinySound.init();
           TinySound.setGlobalVolume(this.soundVolume);
-          this.sounds = new HashMap<SoundEffect, Sound>();
+          this.sounds = new HashMap<>();
           this.loadSounds();
       }
     
@@ -78,10 +78,10 @@ public class SoundManager {
           // 3. calculate the volume of the sound effect using distance.
           
           Point camPos = Game.instance.getCamera().getCameraCenterPosition();
-          Point targetPos = target.getCenterPoint();
+          Point targetPos = target.getWorldPosition();
           
           double distance = camPos.distance(targetPos.x, targetPos.y);
-          double pan = 0.0;
+          double pan;
           
           if(distance < 100.0) {
           

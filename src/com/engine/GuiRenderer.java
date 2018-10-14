@@ -1,10 +1,6 @@
 package com.engine;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.text.DecimalFormat;
 
 import com.enumerations.HorizontalAlign;
@@ -12,6 +8,7 @@ import com.enumerations.InteractAction;
 import com.enumerations.GameState;
 import com.gameobjects.Actor;
 import com.ui.*;
+import com.ui.Button;
 import com.utilities.SpriteCreator;
 
 public class GuiRenderer {
@@ -119,19 +116,11 @@ public class GuiRenderer {
             info += "fps: " + Game.FPS + "\n";
             info += "version: " + Game.VERSION + "\n";
             info += "cam pos: " + camRect.x + ", " + camRect.y + "\n";
-            
-            Actor player = Game.instance.getUnitManager().getPlayer();
-            
-            if(player != null) {
-                info += "---- PLAYER ----\n";
-                
-                info += "accel.x: " + player.getAcceleration().x + "\n";
-                info += "accel.y: " + player.getAcceleration().y + "\n";
-                
-                info += "vel.x: " + player.getVelocity().x + "\n";
-                info += "vel.y: " + player.getVelocity().y + "\n";
+
+            if(Game.instance.getUnitManager().getPlayer() != null) {
+                Point pos = Game.instance.getUnitManager().getPlayer().getWorldPosition();
+                info += "player pos: [" + pos.x + ", " + pos.y + "]\n";
             }
-            
             this.renderString(info, x, y, Game.debugInfoColor, 24f, HorizontalAlign.RIGHT, g);
         }
     }
