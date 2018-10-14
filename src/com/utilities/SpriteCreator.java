@@ -298,40 +298,13 @@ public class SpriteCreator {
         switch(type) {
             
         case PLAYER:
-            pos.x = 1;
-            pos.y = 0;
-            break;
-            
-        case GRASS_TILE:
             pos.x = 0;
             pos.y = 0;
             break;
-            
-        case ROCK:
+        case GRASS_TILE:
             pos.x = 0;
             pos.y = 1;
             break;
-            
-        case IRON_VEIN:
-            pos.x = 0;
-            pos.y = 2;
-            break;
-            
-        case IRON_ORE:
-            pos.x = 1;
-            pos.y = 2;
-            break;
-            
-        case IRON_BAR:
-            pos.x = 2;
-            pos.y = 2;
-            break;
-            
-        case TREE:
-            pos.x = 0;
-            pos.y = 3;
-            break;
-        
             default:
                 System.out.println("Could not find a sprite of spritetype:" + type);
                 break;
