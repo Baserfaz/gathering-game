@@ -19,6 +19,12 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Util {
 
+    public static boolean isCharInArray(char c, char[] arr) {
+        for(int i = 0; i < arr.length; i++) {
+            if(c == arr[i]) return true;
+        }
+        return false;
+    }
 
     public static List<Panel> getPanelsInGamestate(GameState state) {
         List<Panel> elements = new ArrayList<>();

@@ -1,6 +1,5 @@
 package com.engine;
 
-import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
@@ -8,22 +7,33 @@ import java.util.List;
 import java.util.Map;
 
 import com.enumerations.GameState;
-import com.gameobjects.Actor;
 import com.ui.GuiElement;
-import com.ui.InteractableGuiElement;
 import com.ui.Panel;
 import com.ui.TextField;
 import com.utilities.Util;
 
-import javax.xml.soap.Text;
-
 public class KeyInput extends KeyAdapter {
 
-    private Map<Integer, Command> buttons = new HashMap<Integer, Command>();
-    private Map<Integer, Command> keyBinds = new HashMap<Integer, Command>();
+    private Map<Integer, Command> buttons = new HashMap<>();
+    private Map<Integer, Command> keyBinds = new HashMap<>();
     
     public enum Command { MOVE_LEFT, MOVE_RIGHT, MOVE_DOWN, MOVE_UP, ACTION }
-    
+
+    public final char[] validTextFieldCharacters =
+    {
+        'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k',
+        'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
+        'w', 'x', 'y', 'z',
+
+        'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
+        'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V',
+        'W', 'X', 'Y', 'Z',
+
+        '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+
+        '-', '_'
+    };
+
     public KeyInput() {
         
         // bind keys
@@ -65,49 +75,58 @@ public class KeyInput extends KeyAdapter {
     }
 
     public void keyReleased(KeyEvent e) {
-        
-        // get the pressed key 
         int key = e.getKeyCode();
-        
         buttons.remove(key);
     }
 
     private void handleKeysInUI(KeyEvent e) {
 
-        int key = e.getKeyCode();
-        char character = e.getKeyChar();
-
         // get the panels in current UI state
         List<Panel> panels = Util.getPanelsInGamestate(Game.instance.getGamestate());
         if(panels.isEmpty()) return;
 
-        for(Panel panel : panels) {
-            for(GuiElement el : panel.getElements()) {
+        for(Panel panel : panels) { if(this.handlePanelElements(panel, e)) break; }
+    }
 
-                // handle textfields
-                if(el instanceof TextField) {
-                    TextField txt = (TextField) el;
-                    if(txt.isSelected()) {
-                        switch (key) {
-                            case KeyEvent.VK_ESCAPE:
-                                txt.setSelected(false);
-                                e.consume();
-                                break;
-                            case KeyEvent.VK_BACK_SPACE:
-                                if(txt.getValue().length() > 0) {
-                                    txt.setValue(txt.getValue().substring(0, txt.getValue().length() - 1));
-                                }
-                                break;
-                            default:
-                                if(txt.getValue().length() < txt.getMaxLength()) {
-                                    txt.setValue(txt.getValue() + character);
-                                }
-                                break;
+    private boolean handlePanelElements(Panel panel, KeyEvent e) {
+        for(GuiElement el : panel.getElements()) {
+            if(el instanceof Panel) { this.handlePanelElements((Panel) el, e); }
+            if(handleTextFields(el, e)) return true;
+        }
+        return false;
+    }
+
+    private boolean handleTextFields(GuiElement el, KeyEvent e) {
+        if(el instanceof TextField) {
+            TextField txt = (TextField) el;
+            if(txt.isSelected()) {
+                switch (e.getKeyCode()) {
+                    case KeyEvent.VK_ENTER:
+                        txt.setSelected(false);
+                        e.consume();
+                        break;
+                    case KeyEvent.VK_ESCAPE:
+                        txt.setSelected(false);
+                        e.consume();
+                        break;
+                    case KeyEvent.VK_BACK_SPACE:
+                        if(txt.getValue().length() > 0) {
+                            txt.setValue(txt.getValue().substring(0, txt.getValue().length() - 1));
                         }
-                    }
+                        break;
+                    default:
+                        if(txt.getValue().length() < txt.getMaxLength()) {
+                            char c = e.getKeyChar();
+                            if(Util.isCharInArray(c, validTextFieldCharacters)) {
+                                txt.setValue(txt.getValue() + c);
+                            }
+                        }
+                        break;
                 }
+                return true;
             }
         }
+        return false;
     }
 
     private void handleKeysInGame(KeyEvent e) {
