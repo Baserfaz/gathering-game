@@ -42,7 +42,11 @@ public class GuiRenderer {
         VPanel panel = GuiFactory.createDefaultCenteredPanel(null, false, Colors.GRAY);
         Button resumeButton = GuiFactory.createDefaultResumeButton(panel);
         Button exitButton = GuiFactory.createDefaultExitToMainMenuButton(panel);
+        PlainText pauseHeader = GuiFactory.createDefaultPlainText(panel, HorizontalAlign.CENTER, "Pause");
+        Separator separator = new Separator(panel, 10);
 
+        panel.addElement(pauseHeader);
+        panel.addElement(separator);
         panel.addElement(resumeButton);
         panel.addElement(exitButton);
 

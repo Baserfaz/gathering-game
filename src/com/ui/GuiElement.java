@@ -9,7 +9,14 @@ public abstract class GuiElement implements IUiComponent {
 
     protected int x, y, w, h;
     protected boolean isMuted = false, isHovering = false, isEnabled = true, isVisible = true;
-    
+
+    public GuiElement(Panel parent) {
+        this.x = parent.x;
+        this.y = parent.y;
+        this.w = parent.w;
+        this.h = parent.h;
+    }
+
     public GuiElement(int x, int y, int width, int height) {
         this.x = x;
         this.y = y;
