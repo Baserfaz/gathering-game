@@ -17,6 +17,13 @@ public abstract class GuiElement implements IUiComponent {
         this.h = parent.h;
     }
 
+    public GuiElement(int w, int h) {
+        this.x = 0;
+        this.y = 0;
+        this.w = w;
+        this.h = h;
+    }
+
     public GuiElement(int x, int y, int width, int height) {
         this.x = x;
         this.y = y;

@@ -7,17 +7,36 @@ import java.util.List;
 
 public abstract class Panel extends GuiElement {
 
+    public enum PanelAlign { NORTH, MIDDLE, SOUTH, WEST, EAST }
+
     protected Panel parent;
     protected int margin;
     protected Color backgroundColor;
     protected Color borderColor = new Color(90, 90, 90, 255);
     protected boolean drawBorders;
     protected boolean isTransparent;
+    protected PanelAlign panelAlign;
 
     protected List<GuiElement> elements = new ArrayList<>();
 
+    public Panel(PanelAlign panelAlign, int width, int height,
+                 Panel parent, Color bgColor, boolean isTransparent,
+                 boolean borders, int margin) {
+        super(width, height);
+
+        this.panelAlign = panelAlign;
+        this.parent = parent;
+        this.backgroundColor = bgColor;
+        this.isTransparent = isTransparent;
+        this.drawBorders = borders;
+        this.margin = margin;
+
+        this.calculatePanelPosition();
+    }
+
     public Panel(int x, int y, int width, int height,
-                 Panel parent, Color bgColor, boolean isTransparent, boolean borders, int margin) {
+                 Panel parent, Color bgColor, boolean isTransparent,
+                 boolean borders, int margin) {
         super(x, y, width, height);
 
         this.margin = margin;
@@ -79,6 +98,25 @@ public abstract class Panel extends GuiElement {
 
     public abstract void updatePanelItems();
 
+    public void calculatePanelPosition() {
+        int newx = 0, newy = 0;
+
+        switch (this.panelAlign) {
+            case SOUTH:
+
+                // TODO actually calculate stuff
+
+
+
+                break;
+            default:
+                System.out.println("CalculatePanelPosition: Unsuported PanelAlignment: " + this.panelAlign);
+        }
+
+        this.x = newx;
+        this.y = newy;
+    }
+
     public GuiElement addElement(GuiElement e) {
         if(!this.elements.contains(e)) {
             this.elements.add(e);
@@ -95,5 +133,13 @@ public abstract class Panel extends GuiElement {
         for(GuiElement e : elements) {
             e.tick();
         }
+    }
+
+    public PanelAlign getPanelAlign() {
+        return panelAlign;
+    }
+
+    public void setPanelAlign(PanelAlign panelAlign) {
+        this.panelAlign = panelAlign;
     }
 }

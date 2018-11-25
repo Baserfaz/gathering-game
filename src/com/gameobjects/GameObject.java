@@ -53,6 +53,7 @@ public abstract class GameObject {
     public Point getWorldPosition() { return this.worldPosition; }
     public Point getTilePosition() { return this.tilePosition; }
     public void setTilePosition(Point p) { this.tilePosition = p; }
+    public void setWorldPosition(Block block) { this.worldPosition = block.getWorldPosition(); }
 
     public void activate() { 
         this.isVisible = true;

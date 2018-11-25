@@ -130,9 +130,8 @@ public class KeyInput extends KeyAdapter {
     }
 
     private void handleKeysInGame(KeyEvent e) {
-        
         int key = e.getKeyCode();
-        
+
         if(key == KeyEvent.VK_F1) {
             Game.drawDebugInfo = !Game.drawDebugInfo;
         } else if(key == KeyEvent.VK_F2) {

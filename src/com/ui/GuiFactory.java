@@ -31,6 +31,13 @@ public class GuiFactory {
                 true);
     }
 
+    public static HPanel createDefaultHorizontalPanel(Panel parent, Panel.PanelAlign panelAlign,
+                                                      boolean isTransparent, Color bgcolor) {
+
+        return new HPanel(panelAlign, DEFAULT_PANEL_WIDTH, 150, parent, bgcolor,
+                isTransparent, false, 15);
+    }
+
     public static VPanel createDefaultCenteredPanel(Panel parent, boolean isTransparent, Color bgcolor) {
 
         int x, y;

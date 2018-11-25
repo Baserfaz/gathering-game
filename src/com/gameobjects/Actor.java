@@ -42,15 +42,21 @@ public class Actor extends GameObject {
     }
     
     public void tick() {
+
+        // TODO: perhaps handle the buttons on key press.
+        // TODO: now it polls the keypresses, which is not good.
+
+        // Game.instance
+
         if(this.unitType == UnitType.PLAYER_UNIT) this.handleButtons();
     }
     
     public void render(Graphics g) {
         if(this.isVisible) {
             BufferedImage img = this.defaultStaticSprite;
-            if(this.facingDirection == Direction.WEST) { g.drawImage(img, this.worldPosition.x, this.worldPosition.y, null);
-            } else if(this.facingDirection == Direction.EAST) { RenderUtils.renderSpriteFlippedHorizontally(img, this.worldPosition, g);
-            } else { g.drawImage(img, this.worldPosition.x, this.worldPosition.y, null); }
+            if(this.facingDirection == Direction.WEST) { g.drawImage(img, this.worldPosition.x, this.worldPosition.y, null); }
+            else if(this.facingDirection == Direction.EAST) { RenderUtils.renderSpriteFlippedHorizontally(img, this.worldPosition, g); }
+            else { g.drawImage(img, this.worldPosition.x, this.worldPosition.y, null); }
         }
     }
     
@@ -59,7 +65,6 @@ public class Actor extends GameObject {
     }
     
     public void moveUp() {
-
         Point newPos = new Point(
                 this.tilePosition.x,
                 this.tilePosition.y - 1);
@@ -100,8 +105,10 @@ public class Actor extends GameObject {
             }
 
             this.setTilePosition(newPos);
+            this.setWorldPosition(block);
             block.addActor(this);
             currentBlock = block;
+
         }
     }
 

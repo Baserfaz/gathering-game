@@ -301,7 +301,7 @@ public class SpriteCreator {
             pos.x = 0;
             pos.y = 0;
             break;
-        case GRASS_TILE:
+        case FLOOR:
             pos.x = 0;
             pos.y = 1;
             break;

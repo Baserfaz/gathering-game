@@ -108,7 +108,7 @@ public class Renderer {
     
     private void fillScreen(Graphics g, Color color) {
         g.setColor(color);
-        g.fillRect(0, 0, Game.WIDTH, Game.HEIGHT);
+        g.fillRect(0, 0, Game.WIDTH + 10, Game.HEIGHT + 10);
     }
 
 }

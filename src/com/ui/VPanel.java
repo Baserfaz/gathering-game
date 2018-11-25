@@ -6,12 +6,22 @@ import java.awt.*;
 
 public class VPanel extends Panel {
 
-    private HorizontalAlign horAlign;
+    private HorizontalAlign itemHorAlign;
 
-    public VPanel(int x, int y, int w, int h,
-                  Panel parent, Color bgColor, boolean isTransparent, boolean borders, int margin, HorizontalAlign align) {
+    public VPanel(PanelAlign panelAlign, int w, int h, Panel parent, Color bgColor,
+                  boolean isTransparent, boolean borders, int margin,
+                  HorizontalAlign itemHorAlign) {
+
+        super(panelAlign, w, h, parent, bgColor, isTransparent, borders, margin);
+        this.itemHorAlign = itemHorAlign;
+    }
+
+    public VPanel(int x, int y, int w, int h, Panel parent, Color bgColor,
+                  boolean isTransparent, boolean borders, int margin,
+                  HorizontalAlign itemHorAlign) {
+
         super(x, y, w, h, parent, bgColor, isTransparent, borders, margin);
-        this.horAlign = align;
+        this.itemHorAlign = itemHorAlign;
     }
 
     @Override
@@ -26,7 +36,7 @@ public class VPanel extends Panel {
             int xx;
             int yy = this.y + currentHeight + margin;
 
-            switch (horAlign) {
+            switch (itemHorAlign) {
                 case CENTER:
                     xx = (this.x + this.w / 2) - element.w / 2;
                     break;
@@ -37,7 +47,7 @@ public class VPanel extends Panel {
                     xx = this.x + this.w - margin - element.w;
                     break;
                 default:
-                    System.out.println("VPanel:updatePanelItems: not supported alignment: " + horAlign);
+                    System.out.println("VPanel:updatePanelItems: not supported alignment: " + itemHorAlign);
                     continue;
             }
 

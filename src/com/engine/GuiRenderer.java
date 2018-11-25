@@ -9,6 +9,7 @@ import com.enumerations.GameState;
 import com.gameobjects.Actor;
 import com.ui.*;
 import com.ui.Button;
+import com.ui.Panel;
 import com.utilities.SpriteCreator;
 
 public class GuiRenderer {
@@ -35,8 +36,26 @@ public class GuiRenderer {
         this.createLoadingElements();
         this.createPauseMenuElements();
         this.createGameOverElements();
+        this.createIngameElements();
     }
-    
+
+    private void createIngameElements() {
+
+        // TODO: doesnt work right.
+
+        HPanel panel = GuiFactory.createDefaultHorizontalPanel(null, Panel.PanelAlign.SOUTH, false, Colors.GRAY);
+
+        for(int i = 0; i < 5; i++) {
+            Button btn = new Button(panel, 50, 50, "btn" + i, Colors.BLACK, Colors.WHITE, 16,
+                    null, null);
+            panel.addElement(btn);
+        }
+
+        panel.shrink();
+
+        this.guiElementManager.addElementToIngame(panel);
+    }
+
     private void createPauseMenuElements() {
 
         VPanel panel = GuiFactory.createDefaultCenteredPanel(null, false, Colors.GRAY);
@@ -67,6 +86,7 @@ public class GuiRenderer {
 
         VPanel panel = GuiFactory.createDefaultCenteredPanel(null, false, Colors.GRAY);
         panel.addElement(GuiFactory.createDefaultPlainText(panel, HorizontalAlign.CENTER, "AWESOME GAME"));
+        panel.addElement(new Separator(panel, 10));
         panel.addElement(GuiFactory.createDefaultPlayButton(panel));
         panel.addElement(GuiFactory.createDefaultExitButton(panel));
 

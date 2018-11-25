@@ -31,7 +31,7 @@ public class Level {
         for(int y = 0; y < this.height; y++) {
             for(int x = 0; x < this.width; x++) {
                 Point tilePos = new Point(x, y);
-                Block block = new Block(tilePos, BlockType.WALKABLE, SpriteType.GRASS_TILE);
+                Block block = new Block(tilePos, BlockType.WALKABLE, SpriteType.FLOOR);
                 blocks.add(block);
             }
         }   

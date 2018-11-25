@@ -6,7 +6,6 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.image.BufferStrategy;
-import java.io.File;
 
 import com.data.Level;
 import com.data.SpriteStorage;
@@ -23,7 +22,7 @@ public class Game extends Canvas implements Runnable {
     public static Game instance;
 
     public static final String ENGINENAME = "Java Game Engine";
-    public static final String ENGINEVERSION = "0.1";
+    public static final String ENGINEVERSION = "ALPHA AF";
     public static final String ENGINEAUTHOR = "Heikki Heiskanen";
 
     public static final int WIDTH = 1920;
@@ -44,8 +43,8 @@ public class Game extends Canvas implements Runnable {
     public static final String CUSTOMFONTEXTENSION = ".ttf";
     public static final String CUSTOMFONTFOLDER = "coders_crux";
 
-    public static final int SPRITEGRIDSIZE = 8;
-    public static final int SPRITESIZEMULT = 3;
+    public static final int SPRITEGRIDSIZE = 16;
+    public static final int SPRITESIZEMULT = 4;
 
     public static final int TEXT_LINEHEIGHT = 2;
 
@@ -223,8 +222,9 @@ public class Game extends Canvas implements Runnable {
     private void tick() {
 
         // handle game state change.
-        if (this.lastGameState != this.gamestate)
+        if (this.lastGameState != this.gamestate) {
             this.onGameStateChange();
+        }
 
         if (this.gamestate == GameState.INGAME) {
             if (Game.isPaused == false) {
@@ -251,7 +251,7 @@ public class Game extends Canvas implements Runnable {
         this.gamestate = GameState.LOADING;
 
         // create world
-        this.level = new Level(50, 50);
+        this.level = new Level(10, 10);
 
         this.unitManager.createPlayerUnit(this.level);
 
