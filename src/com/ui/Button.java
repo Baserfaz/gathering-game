@@ -17,7 +17,6 @@ public class Button extends InteractableGuiElement {
     private Color fontColor;
     private Color bgColor;
     private int fontSize;
-    private BufferedImage img;
     private String txt;
     private Panel parent;
 
@@ -33,43 +32,28 @@ public class Button extends InteractableGuiElement {
         this.txt = txt;
     }
     
-    public Button(Panel parent, BufferedImage img,
-            InteractAction onClickAction, InteractAction onHoverAction) {
-        super(parent.x, parent.y, img.getWidth(), img.getHeight(), onClickAction, onHoverAction);
-        this.img = img;
-    }
-    
     public void render(Graphics g) {
         if(this.isVisible()) {
-            
-            if(this.img != null) {
-                
-                if(this.isHovering) g.drawImage(RenderUtils.tintWithColor(this.img, Color.white), this.x, this.y, null);
-                else g.drawImage(this.img, this.x, this.y, null);
-                
-            } else {
-                
-                Font font = Game.instance.getCustomFont().deriveFont(Font.PLAIN, this.fontSize);
-                g.setFont(font);
-                
-                Rectangle r = new Rectangle(this.x, this.y, this.w, this.h);
-                
-                if(this.isHovering) g.setColor(this.bgColor.darker());
-                else g.setColor(this.bgColor);
-                
-                // render box
-                g.fillRect(r.x, r.y, r.width, r.height);
-                
-                int txtWidth = g.getFontMetrics().stringWidth(this.txt);
-                int txtHeight = g.getFontMetrics().getHeight();
-                
-                int centerX = (r.x + r.width / 2) - txtWidth / 2;
-                int centerY = (r.y + txtHeight + r.height / 2) - txtHeight / 2;
-                
-                // render text inside the button rectangle
-                g.setColor(this.fontColor);
-                g.drawString(this.txt, centerX, centerY);
-            }
+
+            Rectangle r = new Rectangle(this.x, this.y, this.w, this.h);
+
+            if (this.isHovering) g.setColor(this.bgColor.darker());
+            else g.setColor(this.bgColor);
+
+            // render box
+            g.fillRect(r.x, r.y, r.width, r.height);
+
+            int txtWidth = g.getFontMetrics().stringWidth(this.txt);
+            int txtHeight = g.getFontMetrics().getHeight();
+
+            int centerX = (r.x + r.width / 2) - txtWidth / 2;
+            int centerY = (r.y + txtHeight + r.height / 2) - txtHeight / 2;
+
+            // render text inside the button rectangle
+            Font font = Game.instance.getCustomFont().deriveFont(Font.PLAIN, this.fontSize);
+            g.setFont(font);
+            g.setColor(this.fontColor);
+            g.drawString(this.txt, centerX, centerY);
         }
     }
 
@@ -77,9 +61,7 @@ public class Button extends InteractableGuiElement {
 
     @Override
     public void onHover() {
-
         if(this.onHoverAction != null) {
-
             switch (this.onHoverAction) {
                 case EXIT_TO_OS:
                     System.exit(0);
@@ -95,11 +77,8 @@ public class Button extends InteractableGuiElement {
                     break;
             }
         } else {
-
             this.getOnHoverRunnable().run();
-
         }
-
     }
 
     @Override
@@ -132,9 +111,7 @@ public class Button extends InteractableGuiElement {
     }
 
     @Override
-    public void onUnfocus() {
-
-    }
+    public void onUnfocus() { }
 
     // ------- GETTERS & SETTERS --------
     public Color getFontColor() { return fontColor; }

@@ -1,5 +1,8 @@
 package com.ui;
 
+import com.engine.Camera;
+import com.engine.Game;
+
 import java.awt.*;
 
 public class HPanel extends Panel {
@@ -35,7 +38,15 @@ public class HPanel extends Panel {
     }
 
     @Override
+    public GuiElement addElement(GuiElement e) {
+        super.addElement(e);
+        this.updatePanelItems();
+        return e;
+    }
+
+    @Override
     public void updatePanelItems() {
+
         int currentWidth = 0;
         for(GuiElement element : this.getElements()) {
 

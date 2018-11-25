@@ -1,6 +1,8 @@
 package com.ui;
 
 
+import com.engine.Game;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +32,6 @@ public abstract class Panel extends GuiElement {
         this.isTransparent = isTransparent;
         this.drawBorders = borders;
         this.margin = margin;
-
-        this.calculatePanelPosition();
     }
 
     public Panel(int x, int y, int width, int height,
@@ -56,16 +56,35 @@ public abstract class Panel extends GuiElement {
 
             if(this.elements.isEmpty()) return;
 
+            // relative to camera position
+            Rectangle rectangle = Game.instance.getCamera().getCameraBounds();
+            int xx = x + (int) rectangle.getX();
+            int yy = y + (int) rectangle.getY();
+
+            // calculate position using PanelAlignments
+            if(this.panelAlign != null) {
+                switch (this.panelAlign) {
+                    case NORTH:
+                        yy = (int) rectangle.getY();
+                        break;
+                    case SOUTH:
+                        yy = (int) rectangle.getY() + (int) rectangle.getHeight() - this.h;
+                        break;
+                    default:
+                        break;
+                }
+            }
+
             // draw rect
             if(!this.isTransparent) {
                 g.setColor(backgroundColor);
-                g.fillRect(x, y, w, h);
+                g.fillRect(xx, yy, w, h);
             }
 
             // draw borders
             if (drawBorders) {
                 g.setColor(borderColor);
-                g.drawRect(x, y, w, h);
+                g.drawRect(xx, yy, w, h);
             }
 
             // render all elements inside this panel
@@ -77,13 +96,17 @@ public abstract class Panel extends GuiElement {
 
     public void shrink() {
 
-        // TODO: shrink horizontally
+        // GuiElement widestElement = null;
 
         // top and bottom margins
         int height = margin;
 
         // calculate total element height
         for(GuiElement element : this.getElements()) {
+
+            // get widest element
+            // if(widestElement == null) { widestElement = element; }
+            // else { if(widestElement.w < element.w) { widestElement = element; } }
 
             if(element instanceof Panel) {
                 ((Panel) element).shrink();
@@ -94,28 +117,12 @@ public abstract class Panel extends GuiElement {
 
         // shrink the bottom of the panel to fit the content
         this.setHeight(height);
+
+        // this.setWidth(widestElement.w + margin); // TODO: breaks panel inside panel width
+
     }
 
     public abstract void updatePanelItems();
-
-    public void calculatePanelPosition() {
-        int newx = 0, newy = 0;
-
-        switch (this.panelAlign) {
-            case SOUTH:
-
-                // TODO actually calculate stuff
-
-
-
-                break;
-            default:
-                System.out.println("CalculatePanelPosition: Unsuported PanelAlignment: " + this.panelAlign);
-        }
-
-        this.x = newx;
-        this.y = newy;
-    }
 
     public GuiElement addElement(GuiElement e) {
         if(!this.elements.contains(e)) {

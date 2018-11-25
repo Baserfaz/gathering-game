@@ -41,12 +41,10 @@ public class GuiRenderer {
 
     private void createIngameElements() {
 
-        // TODO: doesnt work right.
-
         HPanel panel = GuiFactory.createDefaultHorizontalPanel(null, Panel.PanelAlign.SOUTH, false, Colors.GRAY);
 
         for(int i = 0; i < 5; i++) {
-            Button btn = new Button(panel, 50, 50, "btn" + i, Colors.BLACK, Colors.WHITE, 16,
+            Button btn = new Button(panel, 50, 25, "btn" + i, Colors.BLACK, Colors.WHITE, 16,
                     null, null);
             panel.addElement(btn);
         }
