@@ -1,8 +1,5 @@
 package com.ui;
 
-import com.engine.Camera;
-import com.engine.Game;
-
 import java.awt.*;
 
 public class HPanel extends Panel {

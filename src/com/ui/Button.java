@@ -1,16 +1,10 @@
 package com.ui;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
+import java.awt.*;
 
-import com.Interfaces.IUiComponent;
 import com.engine.Game;
 import com.enumerations.GameState;
 import com.enumerations.InteractAction;
-import com.utilities.RenderUtils;
 
 public class Button extends InteractableGuiElement {
 
@@ -31,11 +25,19 @@ public class Button extends InteractableGuiElement {
         this.fontSize = fontSize;
         this.txt = txt;
     }
-    
+
     public void render(Graphics g) {
         if(this.isVisible()) {
 
-            Rectangle r = new Rectangle(this.x, this.y, this.w, this.h);
+            System.out.println(this.txt);
+            System.out.println("parent rel cam: " + this.parent.xrelcam + ", " + this.parent.yrelcam);
+            System.out.println("this x, y: " + this.x + ", " + this.y);
+
+            Rectangle r = new Rectangle(this.x + this.parent.xrelcam, this.y + this.parent.yrelcam, this.w, this.h);
+
+            System.out.println("actual position: " + r.x + ", " + r.y);
+
+            // TODO: problem with calculating actual position when using Vpanel
 
             if (this.isHovering) g.setColor(this.bgColor.darker());
             else g.setColor(this.bgColor);

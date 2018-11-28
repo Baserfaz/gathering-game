@@ -1,11 +1,9 @@
 package com.ui;
 
-import com.Interfaces.IUiComponent;
-
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
-public abstract class GuiElement implements IUiComponent {
+public abstract class GuiElement {
 
     protected int x, y, w, h;
     protected boolean isMuted = false, isHovering = false, isEnabled = true, isVisible = true;
@@ -33,7 +31,7 @@ public abstract class GuiElement implements IUiComponent {
 
     public abstract void render(Graphics g);
     public abstract void tick();
-    
+
     // ---- GETTERS & SETTERS ----
     public Rectangle getBounds() { return new Rectangle(this.x, this.y, this.w, this.h); }
     public int getX() { return x; }

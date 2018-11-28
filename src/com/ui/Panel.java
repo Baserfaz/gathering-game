@@ -19,6 +19,8 @@ public abstract class Panel extends GuiElement {
     protected boolean isTransparent;
     protected PanelAlign panelAlign;
 
+    protected int xrelcam = 0, yrelcam = 0;
+
     protected List<GuiElement> elements = new ArrayList<>();
 
     public Panel(PanelAlign panelAlign, int width, int height,
@@ -39,6 +41,7 @@ public abstract class Panel extends GuiElement {
                  boolean borders, int margin) {
         super(x, y, width, height);
 
+        this.panelAlign = null;
         this.margin = margin;
         this.backgroundColor = bgColor;
         this.drawBorders = borders;
@@ -49,6 +52,7 @@ public abstract class Panel extends GuiElement {
     public List<GuiElement> getElements() {
         return elements;
     }
+
 
     @Override
     public void render(Graphics g) {
@@ -62,7 +66,7 @@ public abstract class Panel extends GuiElement {
             int yy = y + (int) rectangle.getY();
 
             // calculate position using PanelAlignments
-            if(this.panelAlign != null) {
+            if (this.panelAlign != null) {
                 switch (this.panelAlign) {
                     case NORTH:
                         yy = (int) rectangle.getY();
@@ -74,6 +78,10 @@ public abstract class Panel extends GuiElement {
                         break;
                 }
             }
+
+            // cache the calculated position relative to camera
+            this.xrelcam = xx;
+            this.yrelcam = yy;
 
             // draw rect
             if(!this.isTransparent) {
@@ -95,30 +103,75 @@ public abstract class Panel extends GuiElement {
     }
 
     public void shrink() {
+        this.shrinkVertically();
+        this.shrinkHorizontally();
+    }
 
-        // GuiElement widestElement = null;
+    private void shrinkHorizontally() {
+//        GuiElement widestElement = null;
+//
+//        // calculate total element height
+//        for(GuiElement element : this.getElements()) {
+//
+//            // get widest element
+//            // if(widestElement == null) { widestElement = element; }
+//            // else { if(widestElement.w < element.w) { widestElement = element; } }
+//
+//            if(element instanceof Panel) {
+//                ((Panel) element).shrink();
+//            }
+//
+//            height += element.getHeight() + margin;
+//        }
+//
+//        // shrink the bottom of the panel to fit the content
+//        this.setHeight(height);
+
+        // this.setWidth(widestElement.w + margin); // TODO: breaks panel inside panel width
+    }
+
+    private void shrinkVertically() {
 
         // top and bottom margins
         int height = margin;
 
-        // calculate total element height
-        for(GuiElement element : this.getElements()) {
+        if(this instanceof VPanel) {
 
-            // get widest element
-            // if(widestElement == null) { widestElement = element; }
-            // else { if(widestElement.w < element.w) { widestElement = element; } }
+            // calculate total element height
+            for (GuiElement element : this.getElements()) {
 
-            if(element instanceof Panel) {
-                ((Panel) element).shrink();
+                if (element instanceof Panel) {
+                    ((Panel) element).shrink();
+                }
+
+                height += element.getHeight() + margin;
             }
 
-            height += element.getHeight() + margin;
+        } else {
+
+            Integer highestItemHeight = null;
+
+            // HPanel
+            for (GuiElement element : this.getElements()) {
+
+                if(highestItemHeight == null) {
+                    highestItemHeight = element.getHeight();
+                } else {
+                    if(element.getHeight() > highestItemHeight) {
+                        highestItemHeight = element.getHeight();
+                    }
+                }
+
+                if (element instanceof Panel) {
+                    ((Panel) element).shrink();
+                }
+            }
+
+            height += highestItemHeight + margin;
         }
 
         // shrink the bottom of the panel to fit the content
         this.setHeight(height);
-
-        // this.setWidth(widestElement.w + margin); // TODO: breaks panel inside panel width
 
     }
 
@@ -148,5 +201,13 @@ public abstract class Panel extends GuiElement {
 
     public void setPanelAlign(PanelAlign panelAlign) {
         this.panelAlign = panelAlign;
+    }
+
+    public int getXrelcam() {
+        return xrelcam;
+    }
+
+    public int getYrelcam() {
+        return yrelcam;
     }
 }

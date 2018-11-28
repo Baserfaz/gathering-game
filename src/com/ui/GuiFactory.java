@@ -34,7 +34,7 @@ public class GuiFactory {
     public static HPanel createDefaultHorizontalPanel(Panel parent, Panel.PanelAlign panelAlign,
                                                       boolean isTransparent, Color bgcolor) {
 
-        return new HPanel(panelAlign, DEFAULT_PANEL_WIDTH, 50, parent, bgcolor,
+        return new HPanel(panelAlign, Game.WIDTH + 10, 50, parent, bgcolor,
                 isTransparent, false, 15);
     }
 
