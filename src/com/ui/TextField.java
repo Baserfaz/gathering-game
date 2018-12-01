@@ -46,12 +46,15 @@ public class TextField extends InteractableGuiElement {
 
         Graphics2D g2d = (Graphics2D) g;
 
+        int xx = x + parent.xrelcam;
+        int yy = y + parent.yrelcam;
+
         // cache default stroke
         Stroke oldStroke = g2d.getStroke();
 
         // render a box
         g2d.setColor(Colors.WHITE);
-        g2d.fillRect(x, y, w, h);
+        g2d.fillRect(xx, yy, w, h);
 
         // set the border thickness
         g2d.setStroke(new BasicStroke(borderThickness));
@@ -61,19 +64,19 @@ public class TextField extends InteractableGuiElement {
 
             // make borders glow when selected
             g2d.setColor(Colors.YELLOW);
-            g2d.drawRect(x - borderMargin, y - borderMargin, w + (borderMargin * 2), h + (borderMargin * 2));
+            g2d.drawRect(xx - borderMargin, yy - borderMargin, w + (borderMargin * 2), h + (borderMargin * 2));
 
         } else {
 
             g2d.setColor(Colors.GRAY);
-            g2d.drawRect(x - borderMargin, y - borderMargin, w + (borderMargin * 2), h + (borderMargin * 2));
+            g2d.drawRect(xx - borderMargin, yy - borderMargin, w + (borderMargin * 2), h + (borderMargin * 2));
 
         }
 
         // render text
         g2d.setFont(font);
         g2d.setColor(fontColor);
-        g2d.drawString(value, x + textMargin, y + textMargin + (this.fontMetrics.getHeight() / 2));
+        g2d.drawString(value, xx + textMargin, yy + textMargin + (this.fontMetrics.getHeight() / 2));
 
         // set the old stroke
         g2d.setStroke(oldStroke);

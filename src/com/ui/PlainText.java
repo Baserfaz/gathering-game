@@ -5,6 +5,8 @@ import com.enumerations.HorizontalAlign;
 
 import java.awt.*;
 
+import static com.engine.Game.instance;
+
 public class PlainText extends GuiElement {
 
     private Panel parent;
@@ -17,14 +19,12 @@ public class PlainText extends GuiElement {
     public PlainText(Panel parent, HorizontalAlign align, String text, int size, Color color) {
         super(parent.x, parent.y, 0, 0);
 
-        // TODO: update x position with using align
-
         this.align = align;
         this.text = text;
         this.parent = parent;
         this.color = color;
         this.fontSize = size;
-        this.font = Game.instance.getCustomFont().deriveFont(Font.PLAIN, fontSize);
+        this.font = instance.getCustomFont().deriveFont(Font.PLAIN, fontSize);
 
         FontMetrics fontMetric = new Canvas().getFontMetrics(font);
 
@@ -39,10 +39,22 @@ public class PlainText extends GuiElement {
         g2d.setColor(color);
         g2d.setFont(font);
 
-        int yy = y + g2d.getFontMetrics().getHeight();
+        int xx = this.x + this.parent.xrelcam;
+        int yy = y + g2d.getFontMetrics().getHeight() + this.parent.yrelcam;
+
+        switch (align) {
+            case CENTER:
+                break;
+            case RIGHT:
+                break;
+            case LEFT:
+                break;
+            default:
+                break;
+        }
 
         for (String line : text.split("\n")) {
-            g2d.drawString(line, x, yy);
+            g2d.drawString(line, xx, yy);
             yy += g.getFontMetrics().getHeight() + Game.TEXT_LINEHEIGHT;
         }
     }

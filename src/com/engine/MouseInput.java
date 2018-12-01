@@ -97,9 +97,9 @@ public class MouseInput implements MouseMotionListener, MouseListener {
     }
 
     private boolean handleHoverOnElement(Panel panel, GuiElement el, MouseEvent e) {
-        if(el instanceof InteractableGuiElement == false ||
-                el.isEnabled() == false ||
-                el.getBounds().contains(e.getPoint()) == false) { return false; }
+        if(el instanceof InteractableGuiElement == false
+                || el.isEnabled() == false
+                || el.getBounds().contains(e.getPoint()) == false) { return false; }
 
         InteractableGuiElement iel = (InteractableGuiElement) el;
         this.hoveredOnSomething = true;

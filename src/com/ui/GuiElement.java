@@ -33,7 +33,8 @@ public abstract class GuiElement {
     public abstract void tick();
 
     // ---- GETTERS & SETTERS ----
-    public Rectangle getBounds() { return new Rectangle(this.x, this.y, this.w, this.h); }
+    public Rectangle getBounds() { return new Rectangle(this.x, this.y, this.w, this.h); } // TODO: should also have parent.x/y cam offset positions...
+
     public int getX() { return x; }
     public void setX(int x) { this.x = x; }
     public int getY() { return y; }

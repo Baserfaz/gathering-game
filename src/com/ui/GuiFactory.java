@@ -11,8 +11,8 @@ public class GuiFactory {
     private static final int DEFAULT_PANEL_WIDTH = 500;
     private static final int DEFAULT_PANEL_HEIGHT = 300;
 
-    private static final int DEFAULT_BUTTON_WIDTH = 350;
-    private static final int DEFAULT_BUTTON_HEIGHT = 75;
+    private static final int DEFAULT_BUTTON_WIDTH = 150;
+    private static final int DEFAULT_BUTTON_HEIGHT = 35;
     private static final int DEFAULT_FONTSIZE = 40;
 
     private static final int DEFAULT_TEXTFIELD_WIDTH = 350;
@@ -39,17 +39,7 @@ public class GuiFactory {
     }
 
     public static VPanel createDefaultCenteredPanel(Panel parent, boolean isTransparent, Color bgcolor) {
-
-        int x, y;
-        if(parent == null) {
-            x = (Game.WIDTH / 2) - (DEFAULT_PANEL_WIDTH / 2);
-            y = Game.HEIGHT / 2;
-        } else {
-            x = parent.getX();
-            y = parent.getY();
-        }
-
-        return new VPanel(x, y, DEFAULT_PANEL_WIDTH, DEFAULT_PANEL_HEIGHT, parent,
+        return new VPanel(Panel.PanelAlign.MIDDLE, DEFAULT_PANEL_WIDTH, DEFAULT_PANEL_HEIGHT, parent,
                 bgcolor, isTransparent, false, 15, HorizontalAlign.CENTER);
     }
 
@@ -60,13 +50,13 @@ public class GuiFactory {
     }
 
     public static Button createDefaultExitToMainMenuButton(Panel panel) {
-        return new Button(panel, DEFAULT_BUTTON_WIDTH, DEFAULT_BUTTON_HEIGHT - 15,
+        return new Button(panel, DEFAULT_BUTTON_WIDTH, DEFAULT_BUTTON_HEIGHT,
                 "Exit to mainmenu", Color.black, Color.white, DEFAULT_FONTSIZE,
                 InteractAction.EXIT_TO_MENU, InteractAction.NONE);
     }
 
     public static Button createDefaultExitButton(Panel panel) {
-        return new Button(panel, DEFAULT_BUTTON_WIDTH, DEFAULT_BUTTON_HEIGHT - 15,
+        return new Button(panel, DEFAULT_BUTTON_WIDTH, DEFAULT_BUTTON_HEIGHT,
                 "Exit", Color.black, Color.white, DEFAULT_FONTSIZE,
                 InteractAction.EXIT_TO_OS, InteractAction.NONE);
     }

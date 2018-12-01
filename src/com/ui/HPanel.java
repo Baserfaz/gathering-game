@@ -22,18 +22,6 @@ public class HPanel extends Panel {
         this.margin = margin;
     }
 
-    public HPanel(int x, int y, int width, int height,
-                  Panel parent, Color bgColor, boolean isTransparent,
-                  boolean borders, int margin) {
-        super(x, y, width, height, parent, bgColor, isTransparent, borders, margin);
-
-        this.parent = parent;
-        this.backgroundColor = bgColor;
-        this.isTransparent = isTransparent;
-        this.hasBorders = borders;
-        this.margin = margin;
-    }
-
     @Override
     public GuiElement addElement(GuiElement e) {
         super.addElement(e);
@@ -55,45 +43,5 @@ public class HPanel extends Panel {
 
             currentWidth += element.getWidth() + margin;
         }
-    }
-
-    public Panel getParent() {
-        return parent;
-    }
-
-    public void setParent(Panel parent) {
-        this.parent = parent;
-    }
-
-    public Color getBackgroundColor() {
-        return backgroundColor;
-    }
-
-    public void setBackgroundColor(Color backgroundColor) {
-        this.backgroundColor = backgroundColor;
-    }
-
-    public boolean isTransparent() {
-        return isTransparent;
-    }
-
-    public void setTransparent(boolean transparent) {
-        isTransparent = transparent;
-    }
-
-    public boolean isHasBorders() {
-        return hasBorders;
-    }
-
-    public void setHasBorders(boolean hasBorders) {
-        this.hasBorders = hasBorders;
-    }
-
-    public int getMargin() {
-        return margin;
-    }
-
-    public void setMargin(int margin) {
-        this.margin = margin;
     }
 }

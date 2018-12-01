@@ -85,17 +85,25 @@ public class GuiRenderer {
         VPanel panel = GuiFactory.createDefaultCenteredPanel(null, false, Colors.GRAY);
         panel.addElement(GuiFactory.createDefaultPlainText(panel, HorizontalAlign.CENTER, "AWESOME GAME"));
         panel.addElement(new Separator(panel, 10));
+
         panel.addElement(GuiFactory.createDefaultPlayButton(panel));
         panel.addElement(GuiFactory.createDefaultExitButton(panel));
 
-        VPanel textfieldPanel = (VPanel) panel.addElement(GuiFactory.createDefaultCenteredPanel(panel, false, Colors.BLUE));
-        textfieldPanel.addElement(GuiFactory.createDefaultPlainText(textfieldPanel, HorizontalAlign.LEFT, "Username"));
-        textfieldPanel.addElement(GuiFactory.createDefaultTextField(textfieldPanel));
+        panel.addElement(GuiFactory.createDefaultPlainText(panel, HorizontalAlign.LEFT, "Username"));
+        panel.addElement(GuiFactory.createDefaultTextField(panel));
 
         // shrink the root panel
         panel.shrink();
 
+        HPanel panel2 = GuiFactory.createDefaultHorizontalPanel(null, Panel.PanelAlign.SOUTH, false, Colors.BLUE);
+        panel2.addElement(GuiFactory.createDefaultPlainText(panel2, HorizontalAlign.CENTER, "Awesome game"));
+        panel2.addElement(GuiFactory.createDefaultTextField(panel2));
+        panel2.addElement(GuiFactory.createDefaultPlayButton(panel2));
+
+        panel2.shrink();
+
         this.guiElementManager.addElementToMainmenu(panel);
+        this.guiElementManager.addElementToMainmenu(panel2);
     }
     
     // ----- RENDERING -----

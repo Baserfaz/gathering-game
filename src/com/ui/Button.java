@@ -29,15 +29,7 @@ public class Button extends InteractableGuiElement {
     public void render(Graphics g) {
         if(this.isVisible()) {
 
-            System.out.println(this.txt);
-            System.out.println("parent rel cam: " + this.parent.xrelcam + ", " + this.parent.yrelcam);
-            System.out.println("this x, y: " + this.x + ", " + this.y);
-
             Rectangle r = new Rectangle(this.x + this.parent.xrelcam, this.y + this.parent.yrelcam, this.w, this.h);
-
-            System.out.println("actual position: " + r.x + ", " + r.y);
-
-            // TODO: problem with calculating actual position when using Vpanel
 
             if (this.isHovering) g.setColor(this.bgColor.darker());
             else g.setColor(this.bgColor);
@@ -79,7 +71,9 @@ public class Button extends InteractableGuiElement {
                     break;
             }
         } else {
-            this.getOnHoverRunnable().run();
+            if(this.getOnHoverRunnable() != null) {
+                this.getOnHoverRunnable().run();
+            }
         }
     }
 
@@ -105,21 +99,13 @@ public class Button extends InteractableGuiElement {
                         break;
                 }
             } else {
-
-                this.getOnClickRunnable().run();
-
+                if(this.getOnClickRunnable() != null) {
+                    this.getOnClickRunnable().run();
+                }
             }
         }
     }
 
     @Override
     public void onUnfocus() { }
-
-    // ------- GETTERS & SETTERS --------
-    public Color getFontColor() { return fontColor; }
-    public void setFontColor(Color fontColor) { this.fontColor = fontColor; }
-    public int getFontSize() { return fontSize; }
-    public void setFontSize(int fontSize) { this.fontSize = fontSize; }
-    public Color getBgColor() { return bgColor; }
-    public void setBgColor(Color bgColor) { this.bgColor = bgColor; }
 }

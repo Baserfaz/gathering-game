@@ -36,19 +36,6 @@ public abstract class Panel extends GuiElement {
         this.margin = margin;
     }
 
-    public Panel(int x, int y, int width, int height,
-                 Panel parent, Color bgColor, boolean isTransparent,
-                 boolean borders, int margin) {
-        super(x, y, width, height);
-
-        this.panelAlign = null;
-        this.margin = margin;
-        this.backgroundColor = bgColor;
-        this.drawBorders = borders;
-        this.isTransparent = isTransparent;
-        this.parent = parent;
-    }
-
     public List<GuiElement> getElements() {
         return elements;
     }
@@ -61,19 +48,26 @@ public abstract class Panel extends GuiElement {
             if(this.elements.isEmpty()) return;
 
             // relative to camera position
-            Rectangle rectangle = Game.instance.getCamera().getCameraBounds();
-            int xx = x + (int) rectangle.getX();
-            int yy = y + (int) rectangle.getY();
+            Rectangle cameraBounds = Game.instance.getCamera().getCameraBounds();
+            int xx = x + (int) cameraBounds.getX();
+            int yy = y + (int) cameraBounds.getY();
 
             // calculate position using PanelAlignments
             if (this.panelAlign != null) {
                 switch (this.panelAlign) {
                     case NORTH:
-                        yy = (int) rectangle.getY();
+                        yy = (int) cameraBounds.getY();
                         break;
                     case SOUTH:
-                        yy = (int) rectangle.getY() + (int) rectangle.getHeight() - this.h;
+                        yy = (int) cameraBounds.getY() + (int) cameraBounds.getHeight() - this.h;
                         break;
+                    case MIDDLE:
+                        yy = ((int) cameraBounds.getHeight() / 2) - (h / 2);
+                        xx = ((int) cameraBounds.getWidth() / 2) - (w / 2);
+                    case WEST:
+                        break;
+                    case EAST:
+                        xx = ((int) cameraBounds.getWidth()) - w;
                     default:
                         break;
                 }

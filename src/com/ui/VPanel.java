@@ -16,14 +16,6 @@ public class VPanel extends Panel {
         this.itemHorAlign = itemHorAlign;
     }
 
-    public VPanel(int x, int y, int w, int h, Panel parent, Color bgColor,
-                  boolean isTransparent, boolean borders, int margin,
-                  HorizontalAlign itemHorAlign) {
-
-        super(x, y, w, h, parent, bgColor, isTransparent, borders, margin);
-        this.itemHorAlign = itemHorAlign;
-    }
-
     @Override
     public void updatePanelItems() {
 

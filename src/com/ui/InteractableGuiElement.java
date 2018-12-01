@@ -3,6 +3,8 @@ package com.ui;
 
 import com.enumerations.InteractAction;
 
+import java.awt.*;
+
 public abstract class InteractableGuiElement extends GuiElement {
 
     public abstract void onHover();
