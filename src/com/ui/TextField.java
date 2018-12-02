@@ -101,6 +101,11 @@ public class TextField extends InteractableGuiElement {
         }
     }
 
+    @Override
+    public Rectangle getBounds() {
+        return new Rectangle(x + parent.xrelcam, y + parent.yrelcam, w, h);
+    }
+
     // ---------
 
     public String getValue() {

@@ -107,5 +107,11 @@ public class Button extends InteractableGuiElement {
     }
 
     @Override
+    public Rectangle getBounds() {
+        Rectangle r = new Rectangle(x + parent.xrelcam, y + parent.yrelcam, w, h);
+        return r;
+    }
+
+    @Override
     public void onUnfocus() { }
 }

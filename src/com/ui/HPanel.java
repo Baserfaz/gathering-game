@@ -9,12 +9,14 @@ public class HPanel extends Panel {
     private boolean isTransparent;
     private boolean hasBorders;
     private int margin;
+    private boolean elementsEqualSize;
 
     public HPanel(PanelAlign panelAlign, int width, int height,
                   Panel parent, Color bgColor, boolean isTransparent,
-                  boolean borders, int margin) {
+                  boolean borders, int margin, boolean elementsEqualSize) {
         super(panelAlign, width, height, parent, bgColor, isTransparent, borders, margin);
 
+        this.elementsEqualSize = elementsEqualSize;
         this.parent = parent;
         this.backgroundColor = bgColor;
         this.isTransparent = isTransparent;
@@ -25,6 +27,11 @@ public class HPanel extends Panel {
     @Override
     public GuiElement addElement(GuiElement e) {
         super.addElement(e);
+
+        if(this.elementsEqualSize) {
+            // TODO: get highest element height and set it to all elements.
+        }
+
         this.updatePanelItems();
         return e;
     }

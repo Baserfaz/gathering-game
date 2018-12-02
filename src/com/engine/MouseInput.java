@@ -1,6 +1,6 @@
 package com.engine;
 
-import java.awt.Point;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -46,7 +46,15 @@ public class MouseInput implements MouseMotionListener, MouseListener {
     }
 
     private boolean handleClick(Panel panel, GuiElement el, Point mousePos) {
-        if(el.getBounds().contains(mousePos) == false) {
+
+        // tie mouse position to camera position
+
+        Rectangle cameraBounds = Game.instance.getCamera().getCameraBounds();
+        Point mousePoint = mousePos;
+        mousePoint.x += cameraBounds.x;
+        mousePoint.y += cameraBounds.y;
+
+        if(el.getBounds().contains(mousePoint) == false) {
             // we didn't click this element -> call unfocus
             if(el instanceof InteractableGuiElement) {
                 InteractableGuiElement iel = (InteractableGuiElement) el;
@@ -97,9 +105,17 @@ public class MouseInput implements MouseMotionListener, MouseListener {
     }
 
     private boolean handleHoverOnElement(Panel panel, GuiElement el, MouseEvent e) {
-        if(el instanceof InteractableGuiElement == false
-                || el.isEnabled() == false
-                || el.getBounds().contains(e.getPoint()) == false) { return false; }
+        if(el instanceof InteractableGuiElement == false || el.isEnabled() == false) { return false; }
+
+        // tie the mouse position to camera position
+
+        Rectangle cameraBounds = Game.instance.getCamera().getCameraBounds();
+        Point mousePoint = e.getPoint();
+        mousePoint.x += cameraBounds.x;
+        mousePoint.y += cameraBounds.y;
+
+        boolean hovering = el.getBounds().contains(mousePoint);
+        if(!hovering) return false;
 
         InteractableGuiElement iel = (InteractableGuiElement) el;
         this.hoveredOnSomething = true;

@@ -35,7 +35,7 @@ public class GuiFactory {
                                                       boolean isTransparent, Color bgcolor) {
 
         return new HPanel(panelAlign, Game.WIDTH + 10, 50, parent, bgcolor,
-                isTransparent, false, 15);
+                isTransparent, false, 15, true);
     }
 
     public static VPanel createDefaultCenteredPanel(Panel parent, boolean isTransparent, Color bgcolor) {
