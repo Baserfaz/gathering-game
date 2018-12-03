@@ -15,15 +15,25 @@ import com.enumerations.UnitType;
 import com.utilities.RenderUtils;
 
 public class Actor extends GameObject {
-    
+
+    final double deaccelerationValue = 0.05;
+    final double accelerationValue = 0.05;
+
+    final double maxAcceleration = 1.0;
+    final double maxVelocity = 1.0;
+
+    private float lastAccelx, lastAccely;
+
     protected String name;
     protected Health HP;
     protected UnitType unitType;
     protected Direction facingDirection = Direction.WEST;
-    protected int attackDamage = 1;
+    protected int attackDamage;
     protected KeyInput keyInput;
     protected Level level;
-    protected Block currentBlock;
+
+    protected float velocity_x, velocity_y;
+    protected float acceleration_x, acceleration_y;
 
     public Actor(String name, Point tilePos, UnitType unitType,
                  SpriteType spriteType, int hp, int damage) {
@@ -39,16 +49,51 @@ public class Actor extends GameObject {
 
         // register this actor the the block we spawned on
         this.level.getBlock(tilePos).addActor(this);
+
     }
-    
+
     public void tick() {
+        if(this.unitType == UnitType.PLAYER_UNIT) {
+            this.handleButtons();
+        }
 
-        // TODO: perhaps handle the buttons on key press.
-        // TODO: now it polls the keypresses, which is not good.
+        // velocity x & y can be positive or negative here.
+        //if(velocity_x < maxVelocity) {
+            velocity_x += acceleration_x;
+        //} else {
+        //    velocity_x = (int) maxVelocity;
+        //}
 
-        // Game.instance
+        //if(velocity_y < maxVelocity) {
+            velocity_y += acceleration_y;
+        //} else {
+        //    velocity_y = (int) maxVelocity;
+        //}
 
-        if(this.unitType == UnitType.PLAYER_UNIT) this.handleButtons();
+        worldPosition.x += velocity_x;
+        worldPosition.y += velocity_y;
+
+        // de-accelerate x
+        if(acceleration_x > 0) { acceleration_x -= deaccelerationValue; }
+        else { acceleration_x += deaccelerationValue; }
+
+        // de-accelerate y
+        if(acceleration_y > 0) { acceleration_y -= deaccelerationValue; }
+        else { acceleration_y += deaccelerationValue; }
+
+        // if the actor has de-accelerated so that its going to the other direction, just stop
+        if(this.keyInput.getButtons().isEmpty()) {
+            if (lastAccelx > 0 && acceleration_x < 0 || lastAccelx < 0 && acceleration_x > 0) {
+                acceleration_x = 0;
+                velocity_x = 0;
+            } else if (lastAccely > 0 && acceleration_y < 0 || lastAccely < 0 && acceleration_y > 0) {
+                acceleration_y = 0;
+                velocity_y = 0;
+            }
+        }
+
+        lastAccelx = acceleration_x;
+        lastAccely = acceleration_y;
     }
     
     public void render(Graphics g) {
@@ -63,118 +108,83 @@ public class Actor extends GameObject {
     public void onDeath() {
         this.deactivate();
     }
-    
-    public void moveUp() {
-        Point newPos = new Point(
-                this.tilePosition.x,
-                this.tilePosition.y - 1);
-
-        this.updateTileposition(newPos);
-    }
-    
-    public void moveDown() {
-        Point newPos = new Point(
-                this.tilePosition.x,
-                this.tilePosition.y + 1);
-
-        this.updateTileposition(newPos);
-    }
-    
-    public void moveLeft() {
-        Point newPos = new Point(
-                this.tilePosition.x - 1,
-                this.tilePosition.y);
-
-        this.updateTileposition(newPos);
-    }
-    
-    public void moveRight() {
-        Point newPos = new Point(
-                this.tilePosition.x + 1,
-                this.tilePosition.y);
-
-        this.updateTileposition(newPos);
-    }
-
-    private void updateTileposition(Point newPos) {
-        Block block = level.getBlock(newPos);
-        if(level.validateBlock(block)) {
-
-            if(currentBlock != null) {
-                currentBlock.removeActor(this);
-            }
-
-            this.setTilePosition(newPos);
-            this.setWorldPosition(block);
-            block.addActor(this);
-            currentBlock = block;
-
-        }
-    }
-
-    public void doAction() {
-        
-    }
 
     private void handleButtons() {
+
+        // current buttons that are held down
         Map<Integer, KeyInput.Command> buttons = this.keyInput.getButtons();
-        if(buttons.containsValue(KeyInput.Command.MOVE_DOWN)) { this.moveDown(); }
-        if(buttons.containsValue(KeyInput.Command.MOVE_UP)) { this.moveUp(); } 
-        if(buttons.containsValue(KeyInput.Command.MOVE_LEFT)) { this.moveLeft(); }
-        if(buttons.containsValue(KeyInput.Command.MOVE_RIGHT)) { this.moveRight(); }
-        if(buttons.containsValue(KeyInput.Command.ACTION)) { this.doAction(); }
-    }
 
-    public Health getHP() { return this.HP; }
-    public String getName() { return this.name; }
-    public Direction getFacingDirection() { return facingDirection; }
-    public void setFacingDirection(Direction facingDirection) { this.facingDirection = facingDirection; }
+        if (buttons.containsValue(KeyInput.Command.MOVE_DOWN)) {
 
-    public void setName(String name) {
-        this.name = name;
-    }
+            if(acceleration_y < maxAcceleration) {
+                acceleration_y += (deaccelerationValue + accelerationValue);
+            }
+        }
 
-    public void setHP(Health HP) {
-        this.HP = HP;
+        if (buttons.containsValue(KeyInput.Command.MOVE_UP)) {
+
+            if(acceleration_y > -maxAcceleration) {
+                acceleration_y -= (deaccelerationValue + accelerationValue);
+            }
+        }
+
+        if (buttons.containsValue(KeyInput.Command.MOVE_RIGHT)) {
+
+            facingDirection = Direction.EAST;
+
+            if(acceleration_x < maxAcceleration) {
+                acceleration_x += (deaccelerationValue + accelerationValue);
+            }
+        }
+
+        if (buttons.containsValue(KeyInput.Command.MOVE_LEFT)) {
+
+            facingDirection = Direction.WEST;
+            if(acceleration_x > -maxAcceleration) {
+                acceleration_x -= (deaccelerationValue + accelerationValue);
+            }
+
+        }
+
+        if (buttons.containsValue(KeyInput.Command.ACTION)) {
+
+        }
+
+        if(buttons.containsValue(KeyInput.Command.ATTACK_DOWN)) {
+
+        }
+
+        if(buttons.containsValue(KeyInput.Command.ATTACK_UP)) {
+
+        }
+
+        if(buttons.containsValue(KeyInput.Command.ATTACK_LEFT)) {
+
+        }
+
+        if(buttons.containsValue(KeyInput.Command.ATTACK_RIGHT)) {
+
+        }
+
     }
 
     public UnitType getUnitType() {
         return unitType;
     }
 
-    public void setUnitType(UnitType unitType) {
-        this.unitType = unitType;
+    public float getVelocity_x() {
+        return velocity_x;
     }
 
-    public int getAttackDamage() {
-        return attackDamage;
+    public float getVelocity_y() {
+        return velocity_y;
     }
 
-    public void setAttackDamage(int attackDamage) {
-        this.attackDamage = attackDamage;
+    public float getAcceleration_x() {
+        return acceleration_x;
     }
 
-    public KeyInput getKeyInput() {
-        return keyInput;
-    }
-
-    public void setKeyInput(KeyInput keyInput) {
-        this.keyInput = keyInput;
-    }
-
-    public Level getLevel() {
-        return level;
-    }
-
-    public void setLevel(Level level) {
-        this.level = level;
-    }
-
-    public Block getCurrentBlock() {
-        return currentBlock;
-    }
-
-    public void setCurrentBlock(Block currentBlock) {
-        this.currentBlock = currentBlock;
+    public float getAcceleration_y() {
+        return acceleration_y;
     }
 }

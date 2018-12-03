@@ -251,7 +251,7 @@ public class Game extends Canvas implements Runnable {
         this.gamestate = GameState.LOADING;
 
         // create world
-        this.level = new Level(10, 10);
+        this.level = new Level(20, 20);
 
         this.unitManager.createPlayerUnit(this.level);
 

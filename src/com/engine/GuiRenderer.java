@@ -43,11 +43,11 @@ public class GuiRenderer {
 
         HPanel panel = GuiFactory.createDefaultHorizontalPanel(null, Panel.PanelAlign.SOUTH, false, Colors.GRAY);
 
-//        for(int i = 0; i < 5; i++) {
-//            Button btn = new Button(panel, 100, 50, "btn" + i, Colors.BLACK, Colors.WHITE, 16,
-//                    null, null);
-//            panel.addElement(btn);
-//        }
+        for(int i = 0; i < 5; i++) {
+            Button btn = new Button(panel, 100, 50, "btn" + i, Colors.BLACK, Colors.WHITE, 16,
+                    null, null);
+            panel.addElement(btn);
+        }
 
         panel.addElement(GuiFactory.createDefaultTextField(panel));
 
@@ -68,6 +68,8 @@ public class GuiRenderer {
         panel.addElement(separator);
         panel.addElement(resumeButton);
         panel.addElement(exitButton);
+
+        panel.shrink();
 
         this.guiElementManager.addElementToPauseMenu(panel);
         
@@ -94,18 +96,7 @@ public class GuiRenderer {
         panel.addElement(GuiFactory.createDefaultPlainText(panel, HorizontalAlign.LEFT, "Username"));
         panel.addElement(GuiFactory.createDefaultTextField(panel));
 
-        // shrink the root panel
-        panel.shrink();
-
-        HPanel panel2 = GuiFactory.createDefaultHorizontalPanel(null, Panel.PanelAlign.SOUTH, false, Colors.BLUE);
-        panel2.addElement(GuiFactory.createDefaultPlainText(panel2, HorizontalAlign.CENTER, "Awesome game"));
-        panel2.addElement(GuiFactory.createDefaultTextField(panel2));
-        panel2.addElement(GuiFactory.createDefaultPlayButton(panel2));
-
-        panel2.shrink();
-
         this.guiElementManager.addElementToMainmenu(panel);
-        this.guiElementManager.addElementToMainmenu(panel2);
     }
     
     // ----- RENDERING -----
@@ -144,18 +135,26 @@ public class GuiRenderer {
             Rectangle camRect = Game.instance.getCamera().getCameraBounds();
             
             // create info strings
-            String info = "---- SYSTEM ----\n";
-            info += "fps: " + Game.FPS + "\n";
-            info += "version: " + Game.VERSION + "\n";
-            info += "cam pos: " + camRect.x + ", " + camRect.y + "\n";
+            StringBuilder builder = new StringBuilder();
+            builder.append("---- SYSTEM ----\n");
+            builder.append("fps: " + Game.FPS + "\n");
+            builder.append("version: " + Game.VERSION + "\n");
+            builder.append("cam pos: " + camRect.x + ", " + camRect.y + "\n");
 
             if(Game.instance.getUnitManager().getPlayer() != null) {
-                Point wpos = Game.instance.getUnitManager().getPlayer().getWorldPosition();
-                Point tilepos = Game.instance.getUnitManager().getPlayer().getTilePosition();
-                info += "player world pos: [" + wpos.x + ", " + wpos.y + "]\n";
-                info += "player tile pos: [" + tilepos.x + ", " + tilepos.y + "]\n";
+
+                Actor player = Game.instance.getUnitManager().getPlayer();
+
+                Point wpos = player.getWorldPosition();
+                Point tilepos = player.getTilePosition();
+                builder.append("player world pos: [" + wpos.x + ", " + wpos.y + "]\n");
+                builder.append("player tile pos: [" + tilepos.x + ", " + tilepos.y + "]\n");
+
+                builder.append(String.format("Acceleration: %.2f, %.2f\n", player.getAcceleration_x(), player.getAcceleration_y()));
+                builder.append(String.format("Velocity: %.2f, %.2f\n", player.getVelocity_x(), player.getVelocity_y()));
+
             }
-            this.renderString(info, x, y, Game.debugInfoColor, 24f, HorizontalAlign.RIGHT, g);
+            this.renderString(builder.toString(), x, y, Game.debugInfoColor, 24f, HorizontalAlign.RIGHT, g);
         }
     }
 

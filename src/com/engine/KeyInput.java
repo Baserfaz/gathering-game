@@ -17,7 +17,10 @@ public class KeyInput extends KeyAdapter {
     private Map<Integer, Command> buttons = new HashMap<>();
     private Map<Integer, Command> keyBinds = new HashMap<>();
     
-    public enum Command { MOVE_LEFT, MOVE_RIGHT, MOVE_DOWN, MOVE_UP, ACTION }
+    public enum Command {
+        MOVE_LEFT, MOVE_RIGHT, MOVE_DOWN, MOVE_UP, ACTION,
+        ATTACK_LEFT, ATTACK_RIGHT, ATTACK_UP, ATTACK_DOWN
+    }
 
     public final char[] validTextFieldCharacters =
     {
@@ -38,18 +41,17 @@ public class KeyInput extends KeyAdapter {
         
         // bind keys
         this.keyBinds.put(KeyEvent.VK_A, Command.MOVE_LEFT);
-        this.keyBinds.put(KeyEvent.VK_LEFT, Command.MOVE_LEFT);
+        this.keyBinds.put(KeyEvent.VK_LEFT, Command.ATTACK_LEFT);
         
         this.keyBinds.put(KeyEvent.VK_D, Command.MOVE_RIGHT);
-        this.keyBinds.put(KeyEvent.VK_RIGHT, Command.MOVE_RIGHT);
+        this.keyBinds.put(KeyEvent.VK_RIGHT, Command.ATTACK_RIGHT);
         
         this.keyBinds.put(KeyEvent.VK_S, Command.MOVE_DOWN);
-        this.keyBinds.put(KeyEvent.VK_DOWN, Command.MOVE_DOWN);
+        this.keyBinds.put(KeyEvent.VK_DOWN, Command.ATTACK_DOWN);
         
         this.keyBinds.put(KeyEvent.VK_W, Command.MOVE_UP);
-        this.keyBinds.put(KeyEvent.VK_UP, Command.MOVE_UP);
-        
-        this.keyBinds.put(KeyEvent.VK_SPACE, Command.ACTION);
+        this.keyBinds.put(KeyEvent.VK_UP, Command.ATTACK_UP);
+
         this.keyBinds.put(KeyEvent.VK_SPACE, Command.ACTION);
         
     }
@@ -65,9 +67,6 @@ public class KeyInput extends KeyAdapter {
 
         // -------------- HANDLE INPUTS ------------------
 
-        // handle UI objects
-        this.handleKeysInUI(e);
-
         if(Game.instance.getGamestate() == GameState.MAINMENU) this.handleKeysInMenu(e);
         else if(Game.instance.getGamestate() == GameState.INGAME) this.handleKeysInGame(e);
         else if(Game.instance.getGamestate() == GameState.PAUSEMENU) this.handleKeysInPauseMenu(e);
@@ -76,7 +75,17 @@ public class KeyInput extends KeyAdapter {
 
     public void keyReleased(KeyEvent e) {
         int key = e.getKeyCode();
-        buttons.remove(key);
+
+        // handle UI objects
+        this.handleKeysInUI(e);
+
+        if(buttons.containsKey(key)) {
+            buttons.remove(key);
+        }
+    }
+
+    public void resetButtons() {
+        this.buttons.clear();
     }
 
     private void handleKeysInUI(KeyEvent e) {
