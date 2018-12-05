@@ -17,11 +17,11 @@ import com.utilities.RenderUtils;
 
 public class Actor extends GameObject {
 
-    final double friction = 0.05;               // how fast velocity decreases over time
-    final double deaccelerationValue = 0.03;    // how fast acceleration decreases
-    final double accelerationValue = 0.15;      // how fast acceleration happens
+    final double friction = 0.15;               // how fast velocity decreases over time
+    final double deaccelerationValue = 0.30;    // how fast acceleration decreases
+    final double accelerationValue = 0.30;      // how fast acceleration happens
 
-    final double maxAcceleration = 1.0;
+    final double maxAcceleration = 2.0;
     final double maxVelocity = 5.0;
 
     protected String name;
@@ -55,7 +55,6 @@ public class Actor extends GameObject {
     }
 
     public void tick() {
-
         if(this.unitType == UnitType.PLAYER_UNIT) { this.handleButtons(); }
         this.move();
     }
@@ -71,30 +70,35 @@ public class Actor extends GameObject {
 
     private void move() {
 
+        // TODO: acceleration is no more capped???
+
         // clamp the maximum acceleration to some values
         double axx = Mathf.clamp(-maxAcceleration, maxAcceleration, acceleration_x);
         double ayy = Mathf.clamp(-maxAcceleration, maxAcceleration, acceleration_y);
 
         // handle velocity in x-axis
-        if(Math.abs(velocity_x) < maxVelocity) {
+        double absVelx = Math.abs(velocity_x);
+        if(absVelx < maxVelocity) {
             velocity_x += axx;
-        } else {
+        } else if(absVelx > maxVelocity) {
             if(velocity_x > 0) { velocity_x = maxVelocity; }
-            else { velocity_x = -maxVelocity; }
+            else if(velocity_x < 0) { velocity_x = -maxVelocity; }
         }
 
         // handle velocity in y-axis
-        if(Math.abs(velocity_y) < maxVelocity) {
+        double absVely = Math.abs(velocity_y);
+        if(absVely < maxVelocity) {
             velocity_y += ayy;
-        } else {
+        } else if(absVely > maxVelocity) {
             if(velocity_y > 0) { velocity_y = maxVelocity; }
-            else { velocity_y = -maxVelocity; }
+            else if(velocity_y < 0) { velocity_y = -maxVelocity; }
         }
 
         // actually move the character using velocity
         worldPosition.x += velocity_x;
         worldPosition.y += velocity_y;
 
+        // handle acceleration and velocity after applying the forces to world position
         this.updateAcceleration();
         this.updateVelocity();
 
@@ -109,16 +113,18 @@ public class Actor extends GameObject {
 
         // de-accelerate x
         if(acceleration_x > 0) { acceleration_x -= deaccelerationValue; }
-        else { acceleration_x += deaccelerationValue; }
+        else if(acceleration_x < 0) { acceleration_x += deaccelerationValue; }
 
         // de-accelerate y
         if(acceleration_y > 0) { acceleration_y -= deaccelerationValue; }
-        else { acceleration_y += deaccelerationValue; }
+        else if(acceleration_y < 0) { acceleration_y += deaccelerationValue; }
 
         // when changing polarity -> stop
-        if (lastAccelx > 0 && acceleration_x < 0 || lastAccelx < 0 && acceleration_x > 0) {
+        if (lastAccelx > 0 && acceleration_x <= 0 || lastAccelx < 0 && acceleration_x >= 0) {
             acceleration_x = 0;
-        } else if (lastAccely > 0 && acceleration_y < 0 || lastAccely < 0 && acceleration_y > 0) {
+        }
+
+        if (lastAccely > 0 && acceleration_y <= 0 || lastAccely < 0 && acceleration_y >= 0) {
             acceleration_y = 0;
         }
     }
@@ -127,16 +133,18 @@ public class Actor extends GameObject {
 
         // add friction to the velocity, so it decreases over time
         if(velocity_x > 0) { velocity_x -= friction; }
-        else { velocity_x += friction; }
+        else if(velocity_x < 0) { velocity_x += friction; }
 
         if(velocity_y > 0) { velocity_y -= friction; }
-        else { velocity_y += friction; }
+        else if(velocity_y < 0) { velocity_y += friction; }
 
         // when changing polarity -> stop
-        if (lastVelocityx > 0 && velocity_x < 0 || lastVelocityx < 0 && velocity_x > 0) {
+        if (lastVelocityx > 0 && velocity_x <= 0 || lastVelocityx < 0 && velocity_x >= 0) {
             velocity_x = 0;
             acceleration_x = 0;
-        } else if (lastVelocityy > 0 && velocity_y < 0 || lastVelocityy < 0 && velocity_y > 0) {
+        }
+
+        if (lastVelocityy > 0 && velocity_y <= 0 || lastVelocityy < 0 && velocity_y >= 0) {
             velocity_y = 0;
             acceleration_y = 0;
         }
@@ -152,29 +160,21 @@ public class Actor extends GameObject {
         Map<Integer, KeyInput.Command> buttons = this.keyInput.getButtons();
 
         if (buttons.containsValue(KeyInput.Command.MOVE_DOWN)) {
-            if(acceleration_y < maxAcceleration) {
-                acceleration_y += (deaccelerationValue + accelerationValue);
-            }
+            acceleration_y += (deaccelerationValue + accelerationValue);
         }
 
         if (buttons.containsValue(KeyInput.Command.MOVE_UP)) {
-            if(acceleration_y > -maxAcceleration) {
-                acceleration_y -= (deaccelerationValue + accelerationValue);
-            }
+            acceleration_y -= (deaccelerationValue + accelerationValue);
         }
 
         if (buttons.containsValue(KeyInput.Command.MOVE_RIGHT)) {
             facingDirection = Direction.EAST;
-            if(acceleration_x < maxAcceleration) {
-                acceleration_x += (deaccelerationValue + accelerationValue);
-            }
+            acceleration_x += (deaccelerationValue + accelerationValue);
         }
 
         if (buttons.containsValue(KeyInput.Command.MOVE_LEFT)) {
             facingDirection = Direction.WEST;
-            if(acceleration_x > -maxAcceleration) {
-                acceleration_x -= (deaccelerationValue + accelerationValue);
-            }
+            acceleration_x -= (deaccelerationValue + accelerationValue);
         }
 
         if (buttons.containsValue(KeyInput.Command.ACTION)) {

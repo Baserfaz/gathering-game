@@ -210,8 +210,12 @@ public class Game extends Canvas implements Runnable {
 
     private void render() {
 
-        BufferStrategy bs = this.getBufferStrategy();
+        // "First" buffer has the current frame drawn and
+        // the latter buffers the other (second and third and etc.) frames.
+        // When BufferStrategy.show() is called, the buffers are changed
+        // to show the next frame.
 
+        BufferStrategy bs = this.getBufferStrategy();
         if (bs == null) {
             this.createBufferStrategy(2);
             return;
