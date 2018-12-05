@@ -41,16 +41,14 @@ public class KeyInput extends KeyAdapter {
         
         // bind keys
         this.keyBinds.put(KeyEvent.VK_A, Command.MOVE_LEFT);
-        this.keyBinds.put(KeyEvent.VK_LEFT, Command.ATTACK_LEFT);
-        
         this.keyBinds.put(KeyEvent.VK_D, Command.MOVE_RIGHT);
-        this.keyBinds.put(KeyEvent.VK_RIGHT, Command.ATTACK_RIGHT);
-        
         this.keyBinds.put(KeyEvent.VK_S, Command.MOVE_DOWN);
-        this.keyBinds.put(KeyEvent.VK_DOWN, Command.ATTACK_DOWN);
-        
         this.keyBinds.put(KeyEvent.VK_W, Command.MOVE_UP);
+
+        this.keyBinds.put(KeyEvent.VK_RIGHT, Command.ATTACK_RIGHT);
+        this.keyBinds.put(KeyEvent.VK_DOWN, Command.ATTACK_DOWN);
         this.keyBinds.put(KeyEvent.VK_UP, Command.ATTACK_UP);
+        this.keyBinds.put(KeyEvent.VK_LEFT, Command.ATTACK_LEFT);
 
         this.keyBinds.put(KeyEvent.VK_SPACE, Command.ACTION);
         

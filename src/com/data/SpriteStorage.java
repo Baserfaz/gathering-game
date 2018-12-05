@@ -13,20 +13,14 @@ public class SpriteStorage {
     private Map<SpriteType, BufferedImage> sprites;
     
     public SpriteStorage() {
-        this.sprites = new HashMap<SpriteType, BufferedImage>();
+        this.sprites = new HashMap<>();
     }
  
     public void loadSprites() {
-        
         SpriteCreator sc = Game.instance.getSpriteCreator();
         for(SpriteType s : SpriteType.values()) {
-            
             BufferedImage img = sc.CreateSprite(s);
-            
-            if(img != null) {
-                this.addSprite(s, img);
-            }
-
+            if(img != null) { this.addSprite(s, img); }
         }
     }
     

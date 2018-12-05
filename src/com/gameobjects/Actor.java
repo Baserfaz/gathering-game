@@ -19,7 +19,7 @@ public class Actor extends GameObject {
 
     final double friction = 0.05;               // how fast velocity decreases over time
     final double deaccelerationValue = 0.03;    // how fast acceleration decreases
-    final double accelerationValue = 0.05;      // how fast acceleration happens
+    final double accelerationValue = 0.15;      // how fast acceleration happens
 
     final double maxAcceleration = 1.0;
     final double maxVelocity = 5.0;

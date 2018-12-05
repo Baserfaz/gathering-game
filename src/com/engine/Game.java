@@ -88,6 +88,10 @@ public class Game extends Canvas implements Runnable {
 
     private KeyInput keyInput;
 
+    public static void main(String args[]) {
+        new Game();
+    }
+
     public Game() {
 
         if (instance != null) return;
@@ -102,8 +106,9 @@ public class Game extends Canvas implements Runnable {
 
         // create input listeners
         this.keyInput = new KeyInput();
-        this.addKeyListener(this.keyInput);
         MouseInput mouseInput = new MouseInput();
+
+        this.addKeyListener(this.keyInput);
         this.addMouseMotionListener(mouseInput);
         this.addMouseListener(mouseInput);
 
@@ -122,9 +127,8 @@ public class Game extends Canvas implements Runnable {
         this.camera = new Camera();
         this.renderer = new Renderer();
 
-        this.spriteStorage = new SpriteStorage();
-
         // load all sprites and animations to memory
+        this.spriteStorage = new SpriteStorage();
         this.spriteStorage.loadSprites();
 
         this.gamestate = GameState.MAINMENU;
@@ -163,50 +167,53 @@ public class Game extends Canvas implements Runnable {
         int frames = 0;
         long frameCounter = 0;
 
-        final double frameTime = 1 / FRAME_CAP;
-        final long SECOND = 1000000000L;
+        final double frameTime = 1 / FRAME_CAP; // time for each frame
+        final long SECOND = 1000000000L;        // second in nano seconds 10^9
 
-        boolean render;
         long now, passedTime;
 
+        // this is the heart of the engine,
+        // ticks everything and renders the scene
         while (isRunning) {
 
-            render = false;
-
+            // calculate passed time between frames
             now = System.nanoTime();
             passedTime = now - lastTime;
             lastTime = now;
 
             // calculate tick in seconds
             unprocessedTime += passedTime / (double) SECOND;
+
+            // this trips the frame counter
             frameCounter += passedTime;
 
+            // Consume the left over time of handling the frame.
+            // When fps cap is set to 60, one frame has 1/60 seconds (0.016s = 16ms) to draw.
+            // Can tick the game multiple times if there is time to do that.
             while (unprocessedTime > frameTime) {
-
-                render = true;
                 unprocessedTime -= frameTime;
                 this.tick();
+            }
 
-                if (frameCounter >= SECOND) {
-                    Game.FPS = frames;
-                    frames = 0;
-                    frameCounter = 0;
-                }
+            // this is only for counting the frame rate
+            if (frameCounter >= SECOND) {
+                Game.FPS = frames;
+                frames = 0;
+                frameCounter = 0;
             }
 
             // render the scene
-            if (isRunning && render) {
-                this.render();
-                frames++;
-            }
+            this.render();
+            frames++;
         }
     }
 
     private void render() {
+
         BufferStrategy bs = this.getBufferStrategy();
 
         if (bs == null) {
-            this.createBufferStrategy(3);
+            this.createBufferStrategy(2);
             return;
         }
 
@@ -219,6 +226,9 @@ public class Game extends Canvas implements Runnable {
         bs.show();
     }
 
+    /**
+     * master tick
+     */
     private void tick() {
 
         // handle game state change.
@@ -259,10 +269,6 @@ public class Game extends Canvas implements Runnable {
 
         System.out.println("-------- LOGS --------");
 
-    }
-
-    public static void main(String args[]) {
-        new Game();
     }
 
     private void printEngineStart() {
