@@ -10,7 +10,7 @@ public class Mathf {
         return point1 + alpha * (point2 - point1);
     }
 
-    public static float clamp(float min, float max, float current) {
+    public static double clamp(double min, double max, double current) {
         if(current < min) return min;
         else if(current > max) return max;
         else return current;
