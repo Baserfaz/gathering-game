@@ -2,7 +2,9 @@ package com.data;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.enumerations.BlockType;
 import com.enumerations.Direction;
@@ -25,22 +27,39 @@ public class Level {
     }
 
     private void createInitialLevel() {
-        
-        System.out.println("Creating initial level.");
-        
+
+        // create floor
         for(int y = 0; y < this.height; y++) {
             for(int x = 0; x < this.width; x++) {
                 Point tilePos = new Point(x, y);
                 Block block = new Block(tilePos, BlockType.WALKABLE, SpriteType.FLOOR);
                 blocks.add(block);
             }
-        }   
+        }
+
+        ArrayList<Block> floors = new ArrayList<>(blocks);
+
+        for (Block floor : floors) {
+            for(Map.Entry<Direction, Block> neighbor : this.getNeighbors(floor).entrySet()) {
+
+                // TODO: if there is no north neighbor -> create a north wall.
+
+
+            }
+        }
     }
-    
-    public List<Block> getNeighbors(Block block) {
-        List<Block> ns = new ArrayList<>();
+
+    /**
+     * Doesn't return null blocks, so if direction is in the result set then there is neighbor.
+     * @param block
+     * @return
+     */
+    public HashMap<Direction, Block> getNeighbors(Block block) {
+        HashMap<Direction, Block> ns = new HashMap<>();
         for(Direction dir : Direction.values()) {
-            ns.add(this.getNeighbor(block, dir));
+            Block b = this.getNeighbor(block, dir);
+            if(b == null) continue;
+            ns.put(dir, b);
         }
         return ns;
     }
@@ -48,8 +67,6 @@ public class Level {
     public boolean validateBlock(Block block) {
         if(block == null) return false;
         if(block.getBlocktype().equals(BlockType.UNWALKABLE)) return false;
-
-
         return true;
     }
 

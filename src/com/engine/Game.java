@@ -65,7 +65,7 @@ public class Game extends Canvas implements Runnable {
     public static boolean isPaused = false;
     public static boolean isMuted = false;
 
-    private Thread thread;
+    private Thread mainGameThread;
     private Window window;
 
     private SpriteStorage spriteStorage;
@@ -134,21 +134,21 @@ public class Game extends Canvas implements Runnable {
         this.gamestate = GameState.MAINMENU;
         this.lastGameState = this.gamestate;
 
-        // start game thread
+        // start game mainGameThread
         start();
 
         System.out.println("Engine resources loaded succesfully.");
     }
 
     public synchronized void start() {
-        thread = new Thread(this);
-        thread.start();
+        mainGameThread = new Thread(this);
+        mainGameThread.start();
         isRunning = true;
     }
 
     public synchronized void stop() {
         try {
-            thread.join();
+            mainGameThread.join();
             isRunning = false;
         } catch (Exception e) {
             e.printStackTrace();
@@ -157,9 +157,12 @@ public class Game extends Canvas implements Runnable {
 
     public void run() {
         this.gameloop();
+        this.stop();
     }
 
     private void gameloop() {
+
+        // TODO: there is problem in this game loop, FPS is not counted right.
 
         long lastTime = System.nanoTime();
         double unprocessedTime = 0;
@@ -195,16 +198,16 @@ public class Game extends Canvas implements Runnable {
                 this.tick();
             }
 
+            // render the scene
+            this.render();
+            frames++;
+
             // this is only for counting the frame rate
             if (frameCounter >= SECOND) {
                 Game.FPS = frames;
                 frames = 0;
                 frameCounter = 0;
             }
-
-            // render the scene
-            this.render();
-            frames++;
         }
     }
 

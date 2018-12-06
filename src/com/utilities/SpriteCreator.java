@@ -301,13 +301,49 @@ public class SpriteCreator {
             pos.x = 0;
             pos.y = 0;
             break;
-        case FLOOR:
-            pos.x = 0;
-            pos.y = 1;
+        case NORTH_WALL:
+            pos.x = 1;
+            pos.y = 4;
             break;
-            default:
-                System.out.println("Could not find a sprite of spritetype:" + type);
-                break;
+        case SOUTH_WALL:
+            pos.x = 1;
+            pos.y = 7;
+            break;
+        case WEST_WALL:
+            pos.x = 0;
+            pos.y = 4;
+            break;
+        case EAST_WALL:
+            pos.x = 4;
+            pos.y = 4;
+            break;
+        case NORTH_WALL_TOP:
+            pos.x = 1;
+            pos.y = 3;
+            break;
+        case NW_WALL:
+            pos.x = 0;
+            pos.y = 3;
+            break;
+        case NE_WALL:
+            pos.x = 4;
+            pos.y = 3;
+            break;
+        case SW_WALL:
+            pos.x = 0;
+            pos.y = 7;
+            break;
+        case SE_WALL:
+            pos.x = 4;
+            pos.y = 7;
+            break;
+        case FLOOR:
+            pos.x = 3;
+            pos.y = 5;
+            break;
+        default:
+            System.out.println("Could not find a sprite of spritetype:" + type);
+            break;
         }
 
         return pos;
