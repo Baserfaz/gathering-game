@@ -14,6 +14,7 @@ import com.enumerations.SpriteType;
 import com.enumerations.UnitType;
 import com.utilities.Mathf;
 import com.utilities.RenderUtils;
+import org.omg.CORBA.MARSHAL;
 
 public class Actor extends GameObject {
 
@@ -69,8 +70,6 @@ public class Actor extends GameObject {
     }
 
     private void move() {
-
-        // TODO: acceleration is no more capped???
 
         // clamp the maximum acceleration to some values
         double axx = Mathf.clamp(-maxAcceleration, maxAcceleration, acceleration_x);
@@ -160,21 +159,29 @@ public class Actor extends GameObject {
         Map<Integer, KeyInput.Command> buttons = this.keyInput.getButtons();
 
         if (buttons.containsValue(KeyInput.Command.MOVE_DOWN)) {
-            acceleration_y += (deaccelerationValue + accelerationValue);
+            if(acceleration_y < maxAcceleration) {
+                acceleration_y += (deaccelerationValue + accelerationValue);
+            }
         }
 
         if (buttons.containsValue(KeyInput.Command.MOVE_UP)) {
-            acceleration_y -= (deaccelerationValue + accelerationValue);
+            if(Math.abs(acceleration_y) < maxAcceleration) {
+                acceleration_y -= (deaccelerationValue + accelerationValue);
+            }
         }
 
         if (buttons.containsValue(KeyInput.Command.MOVE_RIGHT)) {
             facingDirection = Direction.EAST;
-            acceleration_x += (deaccelerationValue + accelerationValue);
+            if(acceleration_x < maxAcceleration) {
+                acceleration_x += (deaccelerationValue + accelerationValue);
+            }
         }
 
         if (buttons.containsValue(KeyInput.Command.MOVE_LEFT)) {
             facingDirection = Direction.WEST;
-            acceleration_x -= (deaccelerationValue + accelerationValue);
+            if(Math.abs(acceleration_x) < maxAcceleration) {
+                acceleration_x -= (deaccelerationValue + accelerationValue);
+            }
         }
 
         if (buttons.containsValue(KeyInput.Command.ACTION)) {
