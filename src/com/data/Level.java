@@ -4,7 +4,6 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.enumerations.BlockType;
 import com.enumerations.Direction;
@@ -39,13 +38,76 @@ public class Level {
 
         ArrayList<Block> floors = new ArrayList<>(blocks);
 
+        // create north walls
         for (Block floor : floors) {
-            for(Map.Entry<Direction, Block> neighbor : this.getNeighbors(floor).entrySet()) {
 
-                // TODO: if there is no north neighbor -> create a north wall.
+            // walls have two parts to the north
+            Point tilepos = floor.getTilePosition();
 
+            Block b1 = this.getBlock(new Point(tilepos.x, tilepos.y - 1));
+            Block b2 = this.getBlock(new Point(tilepos.x, tilepos.y - 2));
 
+            if(b1 == null && b2 == null) {
+                blocks.add(new Block(new Point(tilepos.x, tilepos.y - 1), BlockType.UNWALKABLE, SpriteType.NORTH_WALL));
+                blocks.add(new Block(new Point(tilepos.x, tilepos.y - 2), BlockType.UNWALKABLE, SpriteType.NORTH_WALL_TOP));
             }
+        }
+
+        // create w & e walls
+        for(Block floor : floors) {
+            Point tilepos = floor.getTilePosition();
+            Block bw = this.getBlock(new Point(tilepos.x - 1, tilepos.y));
+            Block be = this.getBlock(new Point(tilepos.x + 1, tilepos.y));
+
+            if(bw == null) {
+                blocks.add(new Block(new Point(tilepos.x - 1, tilepos.y), BlockType.UNWALKABLE, SpriteType.WEST_WALL));
+            }
+
+            if(be == null) {
+                blocks.add(new Block(new Point(tilepos.x + 1, tilepos.y), BlockType.UNWALKABLE, SpriteType.EAST_WALL));
+            }
+        }
+
+        // create south walls
+        for(Block floor : floors) {
+            Point tilepos = floor.getTilePosition();
+            Block b = this.getBlock(new Point(tilepos.x, tilepos.y + 1));
+            if(b == null) {
+                blocks.add(new Block(new Point(tilepos.x, tilepos.y + 1), BlockType.UNWALKABLE, SpriteType.SOUTH_WALL));
+            }
+        }
+
+        // do corners last
+
+        // create sw & se walls
+        for(Block floor : floors) {
+            Point tilepos = floor.getTilePosition();
+            Block bsw = this.getBlock(new Point(tilepos.x - 1, tilepos.y + 1));
+            Block bse = this.getBlock(new Point(tilepos.x + 1, tilepos.y + 1));
+            if(bsw == null) {
+                blocks.add(new Block(new Point(tilepos.x - 1, tilepos.y + 1), BlockType.UNWALKABLE, SpriteType.SW_WALL));
+            }
+            if(bse == null) {
+                blocks.add(new Block(new Point(tilepos.x + 1, tilepos.y + 1), BlockType.UNWALKABLE, SpriteType.SE_WALL));
+            }
+        }
+
+        // create nw & ne walls
+        for(Block floor : floors) {
+
+            Point tilepos = floor.getTilePosition();
+
+            Block bnw = this.getBlock(new Point(tilepos.x - 1, tilepos.y - 2));
+            Block bne = this.getBlock(new Point(tilepos.x + 1, tilepos.y - 2));
+
+            if(bnw == null) {
+                blocks.add(new Block(new Point(tilepos.x - 1, tilepos.y - 2), BlockType.UNWALKABLE, SpriteType.NW_WALL));
+            }
+
+            if(bne == null) {
+                blocks.add(new Block(new Point(tilepos.x + 1, tilepos.y - 2), BlockType.UNWALKABLE, SpriteType.NE_WALL));
+            }
+
         }
     }
 
@@ -71,7 +133,6 @@ public class Level {
     }
 
     public Block getNeighbor(Block block, Direction dir) {
-        Block b;
         
         int x = block.getTilePosition().x;
         int y = block.getTilePosition().y;
@@ -106,10 +167,7 @@ public class Level {
                 x -= 1;
                 break;
         }
-        
-        b = this.getBlock(new Point(x, y));
-        
-        return b;
+        return this.getBlock(new Point(x, y));
     }
     
     public Block getBlock(Point pos) {
