@@ -28,6 +28,7 @@ public class Level {
     private void createInitialLevel() {
 
         // create floor
+        // TODO: this could create other shaped floors too.
         for(int y = 0; y < this.height; y++) {
             for(int x = 0; x < this.width; x++) {
                 Point tilePos = new Point(x, y);
@@ -36,59 +37,97 @@ public class Level {
             }
         }
 
+        // cache some blocks as we go
         ArrayList<Block> floors = new ArrayList<>(blocks);
+        ArrayList<Block> northWalls = new ArrayList<>();
 
         // create north walls
         for (Block floor : floors) {
 
             // walls have two parts to the north
             Point tilepos = floor.getTilePosition();
+            Point b1p = new Point(tilepos.x, tilepos.y - 1);
+            Point b2p = new Point(tilepos.x, tilepos.y - 2);
 
-            Block b1 = this.getBlock(new Point(tilepos.x, tilepos.y - 1));
-            Block b2 = this.getBlock(new Point(tilepos.x, tilepos.y - 2));
+            Block b1 = this.getBlock(b1p);
+            Block b2 = this.getBlock(b2p);
 
             if(b1 == null && b2 == null) {
-                blocks.add(new Block(new Point(tilepos.x, tilepos.y - 1), BlockType.UNWALKABLE, SpriteType.NORTH_WALL));
-                blocks.add(new Block(new Point(tilepos.x, tilepos.y - 2), BlockType.UNWALKABLE, SpriteType.NORTH_WALL_TOP));
+
+                // wall
+                Block bn = new Block(b1p, BlockType.UNWALKABLE, SpriteType.NORTH_WALL);
+                blocks.add(bn);
+                northWalls.add(bn);
+
+                // top wall
+                blocks.add(new Block(b2p, BlockType.UNWALKABLE, SpriteType.NORTH_WALL_TOP));
+            }
+        }
+
+        // create w & e walls next to north walls
+        for(Block wall : northWalls) {
+            Point tilepos = wall.getTilePosition();
+            Point bwp = new Point(tilepos.x - 1, tilepos.y);
+            Point bep = new Point(tilepos.x + 1, tilepos.y);
+
+            Block bw = this.getNeighbor(wall, Direction.WEST);
+            Block be = this.getNeighbor(wall, Direction.EAST);
+
+            if(bw == null) {
+                blocks.add(new Block(bwp, BlockType.UNWALKABLE, SpriteType.WEST_WALL));
+            }
+
+            if(be == null) {
+                blocks.add(new Block(bep, BlockType.UNWALKABLE, SpriteType.EAST_WALL));
             }
         }
 
         // create w & e walls
         for(Block floor : floors) {
             Point tilepos = floor.getTilePosition();
-            Block bw = this.getBlock(new Point(tilepos.x - 1, tilepos.y));
-            Block be = this.getBlock(new Point(tilepos.x + 1, tilepos.y));
+            Point bwp = new Point(tilepos.x - 1, tilepos.y);
+            Point bep = new Point(tilepos.x + 1, tilepos.y);
+
+            Block bw = this.getBlock(bwp);
+            Block be = this.getBlock(bep);
 
             if(bw == null) {
-                blocks.add(new Block(new Point(tilepos.x - 1, tilepos.y), BlockType.UNWALKABLE, SpriteType.WEST_WALL));
+                blocks.add(new Block(bwp, BlockType.UNWALKABLE, SpriteType.WEST_WALL));
             }
 
             if(be == null) {
-                blocks.add(new Block(new Point(tilepos.x + 1, tilepos.y), BlockType.UNWALKABLE, SpriteType.EAST_WALL));
+                blocks.add(new Block(bep, BlockType.UNWALKABLE, SpriteType.EAST_WALL));
             }
         }
 
         // create south walls
         for(Block floor : floors) {
             Point tilepos = floor.getTilePosition();
-            Block b = this.getBlock(new Point(tilepos.x, tilepos.y + 1));
+            Point bp = new Point(tilepos.x, tilepos.y + 1);
+
+            Block b = this.getBlock(bp);
+
             if(b == null) {
-                blocks.add(new Block(new Point(tilepos.x, tilepos.y + 1), BlockType.UNWALKABLE, SpriteType.SOUTH_WALL));
+                blocks.add(new Block(bp, BlockType.UNWALKABLE, SpriteType.SOUTH_WALL));
             }
         }
 
-        // do corners last
+        // ----------- do corners last
 
         // create sw & se walls
         for(Block floor : floors) {
             Point tilepos = floor.getTilePosition();
-            Block bsw = this.getBlock(new Point(tilepos.x - 1, tilepos.y + 1));
-            Block bse = this.getBlock(new Point(tilepos.x + 1, tilepos.y + 1));
+            Point bswp = new Point(tilepos.x - 1, tilepos.y + 1);
+            Point bsep = new Point(tilepos.x + 1, tilepos.y + 1);
+
+            Block bsw = this.getBlock(bswp);
+            Block bse = this.getBlock(bsep);
+
             if(bsw == null) {
-                blocks.add(new Block(new Point(tilepos.x - 1, tilepos.y + 1), BlockType.UNWALKABLE, SpriteType.SW_WALL));
+                blocks.add(new Block(bswp, BlockType.UNWALKABLE, SpriteType.SW_WALL));
             }
             if(bse == null) {
-                blocks.add(new Block(new Point(tilepos.x + 1, tilepos.y + 1), BlockType.UNWALKABLE, SpriteType.SE_WALL));
+                blocks.add(new Block(bsep, BlockType.UNWALKABLE, SpriteType.SE_WALL));
             }
         }
 
@@ -96,18 +135,19 @@ public class Level {
         for(Block floor : floors) {
 
             Point tilepos = floor.getTilePosition();
+            Point bnwp = new Point(tilepos.x - 1, tilepos.y - 2);
+            Point bnep = new Point(tilepos.x + 1, tilepos.y - 2);
 
-            Block bnw = this.getBlock(new Point(tilepos.x - 1, tilepos.y - 2));
-            Block bne = this.getBlock(new Point(tilepos.x + 1, tilepos.y - 2));
+            Block bnw = this.getBlock(bnwp);
+            Block bne = this.getBlock(bnep);
 
             if(bnw == null) {
-                blocks.add(new Block(new Point(tilepos.x - 1, tilepos.y - 2), BlockType.UNWALKABLE, SpriteType.NW_WALL));
+                blocks.add(new Block(bnwp, BlockType.UNWALKABLE, SpriteType.NW_WALL));
             }
 
             if(bne == null) {
-                blocks.add(new Block(new Point(tilepos.x + 1, tilepos.y - 2), BlockType.UNWALKABLE, SpriteType.NE_WALL));
+                blocks.add(new Block(bnep, BlockType.UNWALKABLE, SpriteType.NE_WALL));
             }
-
         }
     }
 

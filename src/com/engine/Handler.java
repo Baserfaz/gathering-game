@@ -5,7 +5,6 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.Interfaces.IUiComponent;
 import com.enumerations.UnitType;
 import com.gameobjects.Actor;
 import com.gameobjects.Block;

@@ -144,6 +144,8 @@ public class KeyInput extends KeyAdapter {
         } else if(key == KeyEvent.VK_F2) {
             Game.drawCameraRect = !Game.drawCameraRect;
         } else if(key == KeyEvent.VK_F3) {
+            Game.drawHitboxes = !Game.drawHitboxes;
+        } else if(key == KeyEvent.VK_F4) {
             Game.isPaused = !Game.isPaused;
         } else if(key == KeyEvent.VK_ESCAPE) {
             Game.instance.setGamestate(GameState.PAUSEMENU);

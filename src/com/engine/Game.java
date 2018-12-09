@@ -57,6 +57,9 @@ public class Game extends Canvas implements Runnable {
     public static boolean drawCameraRect = false;
     public static final Color cameraRectColor = Color.red;
 
+    public static boolean drawHitboxes = false;
+    public static final Color hitboxColor = Color.red;
+
     // -----------------------------
 
     public static int FPS = 0;
@@ -268,7 +271,7 @@ public class Game extends Canvas implements Runnable {
         this.gamestate = GameState.LOADING;
 
         // create world
-        this.level = new Level(20, 20);
+        this.level = new Level(5, 5);
 
         this.unitManager.createPlayerUnit(this.level);
 

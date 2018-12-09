@@ -1,7 +1,6 @@
 package com.gameobjects;
 
-import java.awt.Graphics;
-import java.awt.Point;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Map;
 
@@ -12,10 +11,11 @@ import com.engine.KeyInput;
 import com.enumerations.Direction;
 import com.enumerations.SpriteType;
 import com.enumerations.UnitType;
+import com.interfaces.ICollidable;
 import com.utilities.Mathf;
 import com.utilities.RenderUtils;
 
-public class Actor extends GameObject {
+public class Actor extends GameObject implements ICollidable {
 
     final double friction = 0.15;               // how fast velocity decreases over time
     final double deaccelerationValue = 0.30;    // how fast acceleration decreases
@@ -37,6 +37,9 @@ public class Actor extends GameObject {
 
     private double lastAccelx, lastAccely, lastVelocityx, lastVelocityy;
 
+    private boolean isCollisionsEnabled = true;
+    private Rectangle hitbox;
+
     public Actor(String name, Point tilePos, UnitType unitType,
                  SpriteType spriteType, int hp, int damage) {
         super(tilePos, spriteType);
@@ -52,6 +55,9 @@ public class Actor extends GameObject {
         // register this actor the the block we spawned on
         this.level.getBlock(tilePos).addActor(this);
 
+        // create hitbox
+        int size = Game.SPRITEGRIDSIZE * Game.SPRITESIZEMULT;
+        this.hitbox = new Rectangle(this.worldPosition.x, this.worldPosition.y, size, size);
     }
 
     public void tick() {
@@ -222,5 +228,25 @@ public class Actor extends GameObject {
 
     public double getAcceleration_y() {
         return acceleration_y;
+    }
+
+    @Override
+    public boolean isActive() {
+        return this.isCollisionsEnabled;
+    }
+
+    @Override
+    public void disableCollisions() {
+        this.isCollisionsEnabled = false;
+    }
+
+    @Override
+    public void enableCollisions() {
+        this.isCollisionsEnabled = true;
+    }
+
+    @Override
+    public Rectangle getHitbox() {
+        return this.hitbox;
     }
 }

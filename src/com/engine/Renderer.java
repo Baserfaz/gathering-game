@@ -10,6 +10,9 @@ import java.awt.RenderingHints;
 import com.enumerations.GameState;
 import com.gameobjects.GameObject;
 import com.gameobjects.Actor;
+import com.interfaces.ICollidable;
+import com.ui.Colors;
+import org.w3c.dom.css.Rect;
 
 public class Renderer {
 
@@ -74,7 +77,7 @@ public class Renderer {
         Rectangle r = cam.getCameraBounds();
         
         // set background
-        this.fillScreen(g, Color.BLACK);
+        this.fillScreen(g, Colors.GAME_BACKGROUND);
         
         // set zoom level
         g2d.scale(1, 1);
@@ -86,7 +89,6 @@ public class Renderer {
         
         this.renderDebug(g2d);
         this.guirenderer.renderIngame(g2d);
-        
     }
     
     private void renderDebug(Graphics g) {
@@ -98,7 +100,20 @@ public class Renderer {
             g.setColor(Game.cameraRectColor);
             g.drawRect(camRect.x, camRect.y, camRect.width, camRect.height);
         }
-        
+
+        // draw hitboxes
+        if(Game.drawHitboxes) {
+            g.setColor(Game.hitboxColor);
+            for (GameObject go : Game.instance.getHandler().getObjects()) {
+                if (go instanceof ICollidable) {
+                    Rectangle hitbox = ((ICollidable)go).getHitbox();
+                    if(hitbox != null) {
+                        g.drawRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
+                    }
+                }
+            }
+        }
+
         // DRAW CENTER POINT OF THE CAMERA
         //Point camCent = Game.instance.getCamera().getCameraCenterPosition();
         //g.setColor(Game.cameraRectColor);

@@ -15,13 +15,12 @@ public abstract class GameObject {
 
     protected boolean isEnabled = false;
     protected boolean isVisible = false;
-    
+
     public GameObject(Point tilePosition, SpriteType type) {
 
         this.tilePosition = tilePosition;
 
         // calculate world position
-
         int size = Game.SPRITEGRIDSIZE * Game.SPRITESIZEMULT;
         int margin = 0;
 
@@ -34,7 +33,6 @@ public abstract class GameObject {
         
         // add to handler
         Game.instance.getHandler().AddObject(this);
-        
     }
 
     public abstract void tick();
