@@ -40,59 +40,62 @@ public abstract class Panel extends GuiElement {
         return elements;
     }
 
+    protected Point calculatePanelAlignmentPos() {
+
+        // relative to camera position
+        Rectangle cameraBounds = Game.instance.getCamera().getCameraBounds();
+        int xx = x + (int) cameraBounds.getX();
+        int yy = y + (int) cameraBounds.getY();
+
+        // calculate position using PanelAlignments
+        if (this.panelAlign != null) {
+            switch (this.panelAlign) {
+                case NORTH:
+                    yy = (int) cameraBounds.getY();
+                    break;
+                case SOUTH:
+                    yy = (int) cameraBounds.getY() + (int) cameraBounds.getHeight() - this.h;
+                    break;
+                case MIDDLE:
+                    yy = ((int) cameraBounds.getHeight() / 2) - (h / 2);
+                    xx = ((int) cameraBounds.getWidth() / 2) - (w / 2);
+                case WEST:
+                    break;
+                case EAST:
+                    xx = ((int) cameraBounds.getWidth()) - w;
+                default:
+                    break;
+            }
+        }
+
+        // cache the calculated position relative to camera
+        this.xrelcam = xx;
+        this.yrelcam = yy;
+
+        return new Point(xx, yy);
+    }
 
     @Override
     public void render(Graphics g) {
-        if(this.isVisible()) {
+        if(!isVisible || this.elements.isEmpty()) return;
 
-            if(this.elements.isEmpty()) return;
+        Point pos = this.calculatePanelAlignmentPos();
 
-            // relative to camera position
-            Rectangle cameraBounds = Game.instance.getCamera().getCameraBounds();
-            int xx = x + (int) cameraBounds.getX();
-            int yy = y + (int) cameraBounds.getY();
+        // draw rect
+        if(!this.isTransparent) {
+            g.setColor(backgroundColor);
+            g.fillRect(pos.x, pos.y, w, h);
+        }
 
-            // calculate position using PanelAlignments
-            if (this.panelAlign != null) {
-                switch (this.panelAlign) {
-                    case NORTH:
-                        yy = (int) cameraBounds.getY();
-                        break;
-                    case SOUTH:
-                        yy = (int) cameraBounds.getY() + (int) cameraBounds.getHeight() - this.h;
-                        break;
-                    case MIDDLE:
-                        yy = ((int) cameraBounds.getHeight() / 2) - (h / 2);
-                        xx = ((int) cameraBounds.getWidth() / 2) - (w / 2);
-                    case WEST:
-                        break;
-                    case EAST:
-                        xx = ((int) cameraBounds.getWidth()) - w;
-                    default:
-                        break;
-                }
-            }
+        // draw borders
+        if (drawBorders) {
+            g.setColor(borderColor);
+            g.drawRect(pos.x - 1, pos.y - 1, w + 1, h + 1);
+        }
 
-            // cache the calculated position relative to camera
-            this.xrelcam = xx;
-            this.yrelcam = yy;
-
-            // draw rect
-            if(!this.isTransparent) {
-                g.setColor(backgroundColor);
-                g.fillRect(xx, yy, w, h);
-            }
-
-            // draw borders
-            if (drawBorders) {
-                g.setColor(borderColor);
-                g.drawRect(xx, yy, w, h);
-            }
-
-            // render all elements inside this panel
-            for(GuiElement e : elements) {
-                e.render(g);
-            }
+        // render all elements inside this panel
+        for(GuiElement e : elements) {
+            e.render(g);
         }
     }
 

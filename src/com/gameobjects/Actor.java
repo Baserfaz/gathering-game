@@ -17,9 +17,9 @@ import com.utilities.RenderUtils;
 
 public class Actor extends GameObject implements ICollidable {
 
-    final double friction = 0.15;               // how fast velocity decreases over time
+    final double friction = 0.25;               // how fast velocity decreases over time
     final double deaccelerationValue = 0.30;    // how fast acceleration decreases
-    final double accelerationValue = 0.30;      // how fast acceleration happens
+    final double accelerationValue = 0.15;      // how fast acceleration happens
 
     final double maxAcceleration = 2.0;
     final double maxVelocity = 5.0;

@@ -34,6 +34,7 @@ public class Game extends Canvas implements Runnable {
     public static final int CAMERA_WIDTH = Game.WIDTH;
     public static final int CAMERA_HEIGHT = Game.HEIGHT;
 
+    // this is basically how fast the game is running and not a frame cap.
     public static final double FRAME_CAP = 60.0;
 
     public static final String SPRITESHEETNAME = "/images/spritesheet.png";
@@ -165,10 +166,8 @@ public class Game extends Canvas implements Runnable {
 
     private void gameloop() {
 
-        // TODO: there is problem in this game loop, FPS is not counted right.
-
         long lastTime = System.nanoTime();
-        double unprocessedTime = 0;
+        double unprocessedTime = 0.0;
 
         int frames = 0;
         long frameCounter = 0;
@@ -187,10 +186,11 @@ public class Game extends Canvas implements Runnable {
             passedTime = now - lastTime;
             lastTime = now;
 
-            // calculate tick in seconds
+            // calculate tick in seconds, its important to cast second to double here.
             unprocessedTime += passedTime / (double) SECOND;
 
             // this trips the frame counter
+            // how many frames in one second
             frameCounter += passedTime;
 
             // Consume the left over time of handling the frame.

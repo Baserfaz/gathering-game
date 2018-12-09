@@ -4,11 +4,6 @@ import java.awt.*;
 
 public class HPanel extends Panel {
 
-    private Panel parent;
-    private Color backgroundColor;
-    private boolean isTransparent;
-    private boolean hasBorders;
-    private int margin;
     private boolean elementsEqualSize;
 
     public HPanel(PanelAlign panelAlign, int width, int height,
@@ -17,11 +12,7 @@ public class HPanel extends Panel {
         super(panelAlign, width, height, parent, bgColor, isTransparent, borders, margin);
 
         this.elementsEqualSize = elementsEqualSize;
-        this.parent = parent;
         this.backgroundColor = bgColor;
-        this.isTransparent = isTransparent;
-        this.hasBorders = borders;
-        this.margin = margin;
     }
 
     @Override

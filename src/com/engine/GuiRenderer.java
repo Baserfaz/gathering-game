@@ -48,12 +48,13 @@ public class GuiRenderer {
                     null, null);
             panel.addElement(btn);
         }
-
         panel.addElement(GuiFactory.createDefaultTextField(panel));
-
         panel.shrink();
 
+        DraggablePanel dp = new DraggablePanel(150, 100);
+
         this.guiElementManager.addElementToIngame(panel);
+        this.guiElementManager.addElementToIngame(dp);
     }
 
     private void createPauseMenuElements() {
