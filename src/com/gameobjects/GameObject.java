@@ -21,7 +21,7 @@ public abstract class GameObject {
         this.tilePosition = tilePosition;
 
         // calculate world position
-        int size = Game.SPRITEGRIDSIZE * Game.SPRITESIZEMULT;
+        int size = Game.CALCULATED_SPRITE_SIZE;
         int margin = 0;
 
         this.worldPosition = new Point(
@@ -40,7 +40,8 @@ public abstract class GameObject {
 
     public String getInfo() {
         return "GameObject: " + this.toString() + " worldPos: (" +
-                this.getWorldPosition().x + ", " + this.getWorldPosition().y + ")";
+                this.getWorldPosition().x + ", " + this.getWorldPosition().y + ")"
+                + " tilePos: (" + this.getTilePosition().x + ", " + this.getTilePosition().y + ")";
     }
 
     public void addWorldPosition(int x, int y) {
@@ -52,6 +53,13 @@ public abstract class GameObject {
     public Point getTilePosition() { return this.tilePosition; }
     public void setTilePosition(Point p) { this.tilePosition = p; }
     public void setWorldPosition(Block block) { this.worldPosition = block.getWorldPosition(); }
+
+    public Point getCenterPosition() {
+        int size = Game.CALCULATED_SPRITE_SIZE / 2;
+        int xx = this.worldPosition.x + size;
+        int yy = this.worldPosition.y + size;
+        return new Point(xx, yy);
+    }
 
     public void activate() { 
         this.isVisible = true;

@@ -58,7 +58,7 @@ public class Actor extends GameObject implements ICollidable {
         this.level.getBlock(tilePos).addActor(this);
 
         // create hitbox
-        int size = Game.SPRITEGRIDSIZE * Game.SPRITESIZEMULT;
+        int size = Game.CALCULATED_SPRITE_SIZE;
         this.hitbox = new Rectangle(this.worldPosition.x, this.worldPosition.y, size, size);
     }
 
@@ -66,6 +66,7 @@ public class Actor extends GameObject implements ICollidable {
         if(this.unitType == UnitType.PLAYER_UNIT) { this.handleButtons(); }
         this.move();
         this.calculateCollisions();
+        this.updateHitboxPos();
     }
     
     public void render(Graphics g) {
@@ -77,16 +78,25 @@ public class Actor extends GameObject implements ICollidable {
         }
     }
 
+    private void updateHitboxPos() {
+        this.hitbox.x = this.worldPosition.x;
+        this.hitbox.y = this.worldPosition.y;
+    }
+
     private void calculateCollisions() {
 
         Collection<GameObject> gos = Game.instance.getHandler().getObjects()
                 .stream()
                 .filter(a -> (a instanceof ICollidable))
                 .filter(a -> !a.equals(this))
-                .filter(a -> ((ICollidable) a).getDistanceFrom(this.getHitbox()) < Game.MAX_COLLISION_DISTANCE)
+                .filter(a -> ((ICollidable) a).isActive() && a.isEnabled)
+                .filter(a -> ((ICollidable) a).getDistanceFrom(this.getHitbox()) < Game.CALCULATED_MAX_COLLISION_DISTANCE)
+                .filter(a -> ((ICollidable) a).isColliding(this))
                 .collect(Collectors.toList());
 
-        // TODO collisions..
+        if(!gos.isEmpty()) {
+            gos.stream().forEach(g -> System.out.println(g.getInfo()));
+        }
 
     }
 

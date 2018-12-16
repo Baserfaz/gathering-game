@@ -112,6 +112,26 @@ public class Renderer {
                     }
                 }
             }
+
+            g.setColor(Color.BLUE);
+            for(Actor a : Game.instance.getUnitManager().getUnitInstances()) {
+                Rectangle hitbox = ((ICollidable)a).getHitbox();
+                if(hitbox != null) {
+                    g.drawRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
+                }
+            }
+
+        }
+
+        if(Game.drawCollisionDistance) {
+            Actor player = Game.instance.getUnitManager().getPlayer();
+            if(player == null) return;
+            Point pos = player.getCenterPosition();
+            int r = Game.CALCULATED_MAX_COLLISION_DISTANCE;
+            int r2 = r / 2;
+
+            g.setColor(Game.collisionCircleColor);
+            g.drawOval(pos.x - r2, pos.y - r2, r, r);
         }
 
         // DRAW CENTER POINT OF THE CAMERA

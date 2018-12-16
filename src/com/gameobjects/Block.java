@@ -29,7 +29,7 @@ public class Block extends GameObject implements ICollidable {
         else { this.isCollidable = false; }
 
         // create hitbox
-        int size = Game.SPRITEGRIDSIZE * Game.SPRITESIZEMULT;
+        int size = Game.CALCULATED_SPRITE_SIZE;
         this.hitbox = new Rectangle(this.worldPosition.x, this.worldPosition.y, size, size);
     }
 

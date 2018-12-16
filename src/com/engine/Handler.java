@@ -12,7 +12,7 @@ import com.gameobjects.GameObject;
 
 public class Handler {
 
-    private List<GameObject> objects = new ArrayList<GameObject>();
+    private List<GameObject> objects = new ArrayList<>();
 
     public void tickGameObjects() {
         for(int i = 0; i < objects.size(); i++) {
@@ -35,7 +35,7 @@ public class Handler {
         
         Rectangle camView = (Rectangle) cam.getCameraBounds().clone();
         
-        int size = Game.SPRITEGRIDSIZE * Game.SPRITESIZEMULT;
+        int size = Game.CALCULATED_SPRITE_SIZE;
         
         camView.x -= size;
         camView.width += 2 * size;

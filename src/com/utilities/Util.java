@@ -63,7 +63,7 @@ public class Util {
 
     public static void loadCustomFont() {
 
-        String fullPath = "/fonts/" + Game.CUSTOMFONTFOLDER + "/" + Game.CUSTOMFONTNAME + Game.CUSTOMFONTEXTENSION;
+        String fullPath = "/fonts/" + Game.CUSTOM_FONT_FOLDER + "/" + Game.CUSTOM_FONT_NAME + Game.CUSTOM_FONT_EXTENSION;
         Font font = null;
         
         System.out.println("Trying to load font: " + fullPath);
@@ -96,7 +96,7 @@ public class Util {
         // returns a position of the target, which is centered 
         // to the camera view.
         
-        int spriteSize = Game.SPRITEGRIDSIZE * Game.SPRITESIZEMULT;
+        int spriteSize = Game.CALCULATED_SPRITE_SIZE;
 
         int x = 0, y = 0;
         Camera cam = Game.instance.getCamera();

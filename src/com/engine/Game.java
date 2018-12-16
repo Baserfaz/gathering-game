@@ -21,9 +21,9 @@ public class Game extends Canvas implements Runnable {
 
     public static Game instance;
 
-    public static final String ENGINENAME = "Java Game Engine";
-    public static final String ENGINEVERSION = "ALPHA AF";
-    public static final String ENGINEAUTHOR = "Heikki Heiskanen";
+    public static final String ENGINE_NAME = "Java Game Engine";
+    public static final String ENGINE_VERSION = "ALPHA AF";
+    public static final String ENGINE_AUTHOR = "Heikki Heiskanen";
 
     public static final int WIDTH = 1920;
     public static final int HEIGHT = 1080;
@@ -37,17 +37,17 @@ public class Game extends Canvas implements Runnable {
     // this is basically how fast the game is running and not a frame cap.
     public static final double FRAME_CAP = 60.0;
 
-    public static final String SPRITESHEETNAME = "/images/spritesheet.png";
-    public static final String FRAMICONPATH = "/images/icon.png";
+    public static final String SPRITESHEET_NAME = "/images/spritesheet.png";
+    public static final String FRAME_ICON_PATH = "/images/icon.png";
 
-    public static final String CUSTOMFONTNAME = "coders_crux";
-    public static final String CUSTOMFONTEXTENSION = ".ttf";
-    public static final String CUSTOMFONTFOLDER = "coders_crux";
+    public static final String CUSTOM_FONT_NAME = "coders_crux";
+    public static final String CUSTOM_FONT_EXTENSION = ".ttf";
+    public static final String CUSTOM_FONT_FOLDER = "coders_crux";
 
-    public static final double MAX_COLLISION_DISTANCE = 20.0;
+    public static final int MAX_COLLISION_DISTANCE_MULT = 2;
 
-    public static final int SPRITEGRIDSIZE = 16;
-    public static final int SPRITESIZEMULT = 4;
+    public static final int SPRITE_GRID_SIZE = 16;
+    public static final int SPRITE_SIZE_MULT = 4;
 
     public static final int TEXT_LINEHEIGHT = 2;
 
@@ -62,6 +62,9 @@ public class Game extends Canvas implements Runnable {
 
     public static boolean drawHitboxes = false;
     public static final Color hitboxColor = Color.red;
+
+    public static boolean drawCollisionDistance = false;
+    public static final Color collisionCircleColor = Color.green;
 
     // -----------------------------
 
@@ -94,6 +97,9 @@ public class Game extends Canvas implements Runnable {
 
     private KeyInput keyInput;
 
+    public static int CALCULATED_SPRITE_SIZE;
+    public static int CALCULATED_MAX_COLLISION_DISTANCE;
+
     public static void main(String args[]) {
         new Game();
     }
@@ -106,6 +112,10 @@ public class Game extends Canvas implements Runnable {
         this.printEngineStart();
 
         System.out.println("-------- Loading Engine Resources --------");
+
+        // pre-calculate stuff that is otherwise calculated everywhere
+        CALCULATED_SPRITE_SIZE = SPRITE_GRID_SIZE * SPRITE_SIZE_MULT;
+        CALCULATED_MAX_COLLISION_DISTANCE = CALCULATED_SPRITE_SIZE * MAX_COLLISION_DISTANCE_MULT;
 
         // create object handler
         this.handler = new Handler();
@@ -122,7 +132,7 @@ public class Game extends Canvas implements Runnable {
         Util.loadCustomFont();
 
         this.window = new Window(Game.WIDTH, Game.HEIGHT, Game.TITLE, this);
-        this.spriteCreator = new SpriteCreator(Game.SPRITESHEETNAME);
+        this.spriteCreator = new SpriteCreator(Game.SPRITESHEET_NAME);
 
         this.guiElementManager = new GuiElementManager();
         this.soundManager = new SoundManager();
@@ -284,9 +294,9 @@ public class Game extends Canvas implements Runnable {
     }
 
     private void printEngineStart() {
-        System.out.println("Running " + Game.ENGINENAME);
-        System.out.println("Version " + Game.ENGINEVERSION);
-        System.out.println("Author " + Game.ENGINEAUTHOR);
+        System.out.println("Running " + Game.ENGINE_NAME);
+        System.out.println("Version " + Game.ENGINE_VERSION);
+        System.out.println("Author " + Game.ENGINE_AUTHOR);
     }
 
     // ----- GETTERS & SETTERS ------

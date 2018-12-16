@@ -146,6 +146,8 @@ public class KeyInput extends KeyAdapter {
         } else if(key == KeyEvent.VK_F3) {
             Game.drawHitboxes = !Game.drawHitboxes;
         } else if(key == KeyEvent.VK_F4) {
+            Game.drawCollisionDistance = !Game.drawCollisionDistance;
+        } else if(key == KeyEvent.VK_F10) {
             Game.isPaused = !Game.isPaused;
         } else if(key == KeyEvent.VK_ESCAPE) {
             Game.instance.setGamestate(GameState.PAUSEMENU);

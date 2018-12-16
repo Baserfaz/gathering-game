@@ -10,7 +10,6 @@ import java.awt.Toolkit;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
-import com.engine.Game;
 import com.enumerations.CursorMode;
 
 public class Window extends Canvas {
@@ -51,7 +50,7 @@ public class Window extends Canvas {
         frame.setLocationRelativeTo(null);
 
         // set frame icon
-        ImageIcon icon = new ImageIcon(Window.class.getResource(Game.FRAMICONPATH));
+        ImageIcon icon = new ImageIcon(Window.class.getResource(Game.FRAME_ICON_PATH));
         frame.setIconImage(icon.getImage());
 
         // add our game to the frame
