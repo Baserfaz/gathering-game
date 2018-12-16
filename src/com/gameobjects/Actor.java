@@ -2,7 +2,9 @@ package com.gameobjects;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.Collection;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.data.Health;
 import com.data.Level;
@@ -63,6 +65,7 @@ public class Actor extends GameObject implements ICollidable {
     public void tick() {
         if(this.unitType == UnitType.PLAYER_UNIT) { this.handleButtons(); }
         this.move();
+        this.calculateCollisions();
     }
     
     public void render(Graphics g) {
@@ -72,6 +75,19 @@ public class Actor extends GameObject implements ICollidable {
             else if(this.facingDirection == Direction.EAST) { RenderUtils.renderSpriteFlippedHorizontally(img, this.worldPosition, g); }
             else { g.drawImage(img, this.worldPosition.x, this.worldPosition.y, null); }
         }
+    }
+
+    private void calculateCollisions() {
+
+        Collection<GameObject> gos = Game.instance.getHandler().getObjects()
+                .stream()
+                .filter(a -> (a instanceof ICollidable))
+                .filter(a -> !a.equals(this))
+                .filter(a -> ((ICollidable) a).getDistanceFrom(this.getHitbox()) < Game.MAX_COLLISION_DISTANCE)
+                .collect(Collectors.toList());
+
+        // TODO collisions..
+
     }
 
     private void move() {

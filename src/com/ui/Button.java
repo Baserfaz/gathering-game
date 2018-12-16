@@ -3,8 +3,6 @@ package com.ui;
 import java.awt.*;
 
 import com.engine.Game;
-import com.enumerations.GameState;
-import com.enumerations.InteractAction;
 
 public class Button extends InteractableGuiElement {
 
@@ -15,9 +13,9 @@ public class Button extends InteractableGuiElement {
     private Panel parent;
 
     public Button(Panel parent, int width, int height,
-            String txt, Color fontColor, Color bgColor, int fontSize,
-            InteractAction onClickAction, InteractAction onHoverAction) {
-        super(parent.x, parent.y, width, height, onClickAction, onHoverAction);
+                  String txt, Color fontColor, Color bgColor, int fontSize,
+                  Runnable onClickRunnable, Runnable onHoverRunnable) {
+        super(parent.x, parent.y, width, height, onClickRunnable, onHoverRunnable);
 
         this.parent = parent;
         this.fontColor = fontColor;
@@ -55,53 +53,17 @@ public class Button extends InteractableGuiElement {
 
     @Override
     public void onHover() {
-        if(this.onHoverAction != null) {
-            switch (this.onHoverAction) {
-                case EXIT_TO_OS:
-                    System.exit(0);
-                    break;
-                case PLAY:
-                    Game.instance.startNewGame();
-                    break;
-                case RESUME:
-                    Game.instance.setGamestate(GameState.INGAME);
-                    Game.isPaused = false;
-                    break;
-                default:
-                    break;
-            }
-        } else {
-            if(this.getOnHoverRunnable() != null) {
-                this.getOnHoverRunnable().run();
-            }
+        if(this.getOnHoverRunnable() != null) {
+            this.getOnHoverRunnable().run();
         }
     }
+
 
     @Override
     public void onClick() {
         if(this.isEnabled) {
-            if(this.onClickAction != null) {
-
-                System.out.println("action: " + this.onClickAction.toString());
-
-                switch (this.onClickAction) {
-                    case EXIT_TO_OS:
-                        System.exit(0);
-                        break;
-                    case PLAY:
-                        Game.instance.startNewGame();
-                        break;
-                    case RESUME:
-                        Game.instance.setGamestate(GameState.INGAME);
-                        Game.isPaused = false;
-                        break;
-                    default:
-                        break;
-                }
-            } else {
-                if(this.getOnClickRunnable() != null) {
-                    this.getOnClickRunnable().run();
-                }
+            if (this.getOnClickRunnable() != null) {
+                this.getOnClickRunnable().run();
             }
         }
     }

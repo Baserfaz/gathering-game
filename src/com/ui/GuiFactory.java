@@ -1,8 +1,8 @@
 package com.ui;
 
 import com.engine.Game;
+import com.enumerations.GameState;
 import com.enumerations.HorizontalAlign;
-import com.enumerations.InteractAction;
 
 import java.awt.*;
 
@@ -46,25 +46,28 @@ public class GuiFactory {
     public static Button createDefaultPlayButton(Panel panel) {
         return new Button(panel, DEFAULT_BUTTON_WIDTH, DEFAULT_BUTTON_HEIGHT,
                 "Play", Color.black, Color.white, DEFAULT_FONTSIZE,
-                InteractAction.PLAY, InteractAction.NONE);
+                () -> Game.instance.startNewGame(), null);
     }
 
     public static Button createDefaultExitToMainMenuButton(Panel panel) {
         return new Button(panel, DEFAULT_BUTTON_WIDTH, DEFAULT_BUTTON_HEIGHT,
                 "Exit to mainmenu", Color.black, Color.white, DEFAULT_FONTSIZE,
-                InteractAction.EXIT_TO_MENU, InteractAction.NONE);
+                null, null);
     }
 
     public static Button createDefaultExitButton(Panel panel) {
         return new Button(panel, DEFAULT_BUTTON_WIDTH, DEFAULT_BUTTON_HEIGHT,
                 "Exit", Color.black, Color.white, DEFAULT_FONTSIZE,
-                InteractAction.EXIT_TO_OS, InteractAction.NONE);
+                () -> System.exit(0), null);
     }
 
     public static Button createDefaultResumeButton(Panel panel) {
         return new Button(panel, DEFAULT_BUTTON_WIDTH, DEFAULT_BUTTON_HEIGHT,
                 "Resume", Color.black, Color.white, DEFAULT_FONTSIZE,
-                InteractAction.RESUME, InteractAction.NONE);
+                () -> {
+                    Game.instance.setGamestate(GameState.INGAME);
+                    Game.isPaused = false;
+                }, null);
     }
 
 }

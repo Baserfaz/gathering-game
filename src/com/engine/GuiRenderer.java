@@ -4,7 +4,6 @@ import java.awt.*;
 import java.text.DecimalFormat;
 
 import com.enumerations.HorizontalAlign;
-import com.enumerations.InteractAction;
 import com.enumerations.GameState;
 import com.gameobjects.Actor;
 import com.ui.*;
@@ -44,8 +43,12 @@ public class GuiRenderer {
         HPanel panel = GuiFactory.createDefaultHorizontalPanel(null, Panel.PanelAlign.SOUTH, false, Colors.GRAY);
 
         for(int i = 0; i < 5; i++) {
-            Button btn = new Button(panel, 100, 50, "btn" + i, Colors.BLACK, Colors.WHITE, 16,
-                    null, null);
+            Button btn = new Button(
+                    panel,
+                    100, 50,
+                    "btn" + i,
+                    Colors.BLACK, Colors.WHITE,
+                    16, null, null);
             panel.addElement(btn);
         }
         panel.addElement(GuiFactory.createDefaultTextField(panel));

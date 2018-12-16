@@ -1,7 +1,6 @@
 package com.ui;
 
 import com.engine.Game;
-import com.enumerations.InteractAction;
 
 import java.awt.*;
 
@@ -27,7 +26,7 @@ public class TextField extends InteractableGuiElement {
     public TextField(Panel panel, int w, int h,
                      int textMargin, int fontSize, int maxlen,
                      boolean isEditable) {
-        super(panel.x, panel.y, w, h, InteractAction.NONE, InteractAction.NONE);
+        super(panel.x, panel.y, w, h, null, null);
 
         this.maxLength = maxlen;
         this.isEditable = isEditable;
