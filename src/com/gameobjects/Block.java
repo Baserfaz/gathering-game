@@ -63,6 +63,11 @@ public class Block extends GameObject implements ICollidable {
     public void setBlocktype(BlockType blocktype) { this.blockType = blocktype; }
 
     @Override
+    public void onCollision(ICollidable other) {
+
+    }
+
+    @Override
     public boolean isActive() {
         return isCollidable;
     }

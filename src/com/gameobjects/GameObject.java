@@ -1,7 +1,6 @@
 package com.gameobjects;
 
-import java.awt.Graphics;
-import java.awt.Point;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 import com.engine.Game;
@@ -37,6 +36,50 @@ public abstract class GameObject {
 
     public abstract void tick();
     public abstract void render(Graphics g);
+
+    /**
+     * Calculates the hitbox size based on the given sprite.
+     * Doesn't care about full alpha pixels.
+     * @return
+     */
+    public Rectangle recalculateBoundingBox() {
+
+        int[] pixels = defaultStaticSprite.getRGB(0, 0,
+                        defaultStaticSprite.getWidth(), defaultStaticSprite.getHeight(),
+                        null, 0, defaultStaticSprite.getWidth());
+
+        int x = this.worldPosition.x, y = this.worldPosition.y;
+        int w = defaultStaticSprite.getWidth(), h = defaultStaticSprite.getHeight();
+
+        int largestX = 0, smallestX = w;
+        int largestY = 0, smallestY = h;
+
+        for(int i = 0; i < pixels.length; i++) {
+
+            int current = pixels[i];
+            int alpha = (current & 0xff000000) >>> 24;
+
+            if(alpha == 255) {
+
+                // pixel position in the sprite convert from 1D to 2D array.
+                int yy = i / w;
+                int xx = i % w;
+
+                if(yy < smallestY) { smallestY = yy; }
+                else if(yy > largestY) { largestY = yy; }
+
+                if(xx > largestX) { largestX = xx; }
+                else if(xx < smallestX) { smallestX = xx; }
+            }
+        }
+
+        y += smallestY;
+        x += smallestX;
+        w = largestX - smallestX;
+        h = largestY - smallestY;
+
+        return new Rectangle(x, y, w, h);
+    }
 
     public String getInfo() {
         return "GameObject: " + this.toString() + " worldPos: (" +

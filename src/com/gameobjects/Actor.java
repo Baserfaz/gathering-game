@@ -97,7 +97,6 @@ public class Actor extends GameObject implements ICollidable {
         if(!gos.isEmpty()) {
             gos.stream().forEach(g -> System.out.println(g.getInfo()));
         }
-
     }
 
     private void move() {
@@ -254,6 +253,11 @@ public class Actor extends GameObject implements ICollidable {
 
     public double getAcceleration_y() {
         return acceleration_y;
+    }
+
+    @Override
+    public void onCollision(ICollidable other) {
+
     }
 
     @Override

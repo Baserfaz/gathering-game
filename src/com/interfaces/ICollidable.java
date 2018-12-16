@@ -33,6 +33,7 @@ public interface ICollidable {
         return result;
     }
 
+    void onCollision(ICollidable other);
     boolean isActive();
     void disableCollisions();
     void enableCollisions();

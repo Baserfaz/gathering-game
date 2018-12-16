@@ -9,6 +9,7 @@ import com.enumerations.UnitType;
 import com.gameobjects.Actor;
 import com.gameobjects.Block;
 import com.gameobjects.GameObject;
+import com.gameobjects.Item;
 
 public class Handler {
 
@@ -26,6 +27,7 @@ public class Handler {
         // references
         List<Block> solidBlocks = new ArrayList<>();
         List<Actor> actors = new ArrayList<>();
+        List<Item> items = new ArrayList<>();
         Actor player = null;
         
         Camera cam = Game.instance.getCamera();
@@ -54,26 +56,30 @@ public class Handler {
         }
         
         // ---------------------- RENDER ---------------------------------
-        
-        // render all game objects 
+
         for(int i = 0; i < objInView.size(); i++) {
             GameObject current = objInView.get(i);
             
             if(current instanceof Actor) {
                 if(((Actor) current).getUnitType().equals(UnitType.PLAYER_UNIT)) {
                     player = (Actor) current;
-                } else{
+                } else {
                     actors.add((Actor) current);
                 }
             } else if(current instanceof Block) {
                 Block block = (Block) current;
                 solidBlocks.add(block);
+            } else if(current instanceof Item) {
+                Item item = (Item) current;
+                items.add(item);
             }
         }
         
         // render queue: back to front
-        for(Block block : solidBlocks) { block.render(g); }
-        for(Actor actor : actors) { actor.render(g); }
+        for(Block block : solidBlocks) block.render(g);
+        for(Actor actor : actors) actor.render(g);
+        for(Item item : items) item.render(g);
+
         if(player != null) player.render(g);
     }
 

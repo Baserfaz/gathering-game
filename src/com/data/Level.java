@@ -7,8 +7,10 @@ import java.util.List;
 
 import com.enumerations.BlockType;
 import com.enumerations.Direction;
+import com.enumerations.ItemType;
 import com.enumerations.SpriteType;
 import com.gameobjects.Block;
+import com.utilities.ItemCreator;
 import com.utilities.Util;
 
 public class Level {
@@ -149,6 +151,10 @@ public class Level {
                 blocks.add(new Block(bnep, BlockType.UNWALKABLE, SpriteType.NE_WALL));
             }
         }
+
+        // create some items
+        ItemCreator.createItem(this.getRandomValidBlock().getTilePosition(), ItemType.APPLE);
+
     }
 
     /**

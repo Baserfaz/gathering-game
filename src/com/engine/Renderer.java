@@ -6,10 +6,13 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.enumerations.GameState;
 import com.gameobjects.GameObject;
 import com.gameobjects.Actor;
+import com.gameobjects.Item;
 import com.interfaces.ICollidable;
 import com.ui.Colors;
 import org.w3c.dom.css.Rect;
@@ -103,16 +106,21 @@ public class Renderer {
 
         // draw hitboxes
         if(Game.drawHitboxes) {
+
+            List<GameObject> gos = Game.instance.getHandler().getObjects();
+
+            // blocks
             g.setColor(Game.hitboxColor);
-            for (GameObject go : Game.instance.getHandler().getObjects()) {
-                if (go instanceof ICollidable) {
-                    Rectangle hitbox = ((ICollidable)go).getHitbox();
-                    if(hitbox != null) {
-                        g.drawRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
-                    }
+            for (GameObject go : gos) {
+                if(go instanceof Actor || go instanceof Item) continue;
+
+                Rectangle hitbox = ((ICollidable)go).getHitbox();
+                if(hitbox != null) {
+                    g.drawRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
                 }
             }
 
+            // actors
             g.setColor(Color.BLUE);
             for(Actor a : Game.instance.getUnitManager().getUnitInstances()) {
                 Rectangle hitbox = ((ICollidable)a).getHitbox();
@@ -121,6 +129,16 @@ public class Renderer {
                 }
             }
 
+            // items
+            g.setColor(Color.CYAN);
+            for(GameObject go : gos) {
+                if(!(go instanceof Item)) continue;
+
+                Rectangle hitbox = ((ICollidable)go).getHitbox();
+                if(hitbox != null) {
+                    g.drawRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
+                }
+            }
         }
 
         if(Game.drawCollisionDistance) {

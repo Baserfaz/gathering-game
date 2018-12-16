@@ -341,6 +341,26 @@ public class SpriteCreator {
             pos.x = 3;
             pos.y = 5;
             break;
+        case APPLE:
+            pos.x = 0;
+            pos.y = 1;
+            break;
+        case LADDER:
+            pos.x = 5;
+            pos.y = 3;
+            break;
+        case STONE_1:
+            pos.x = 6;
+            pos.y = 3;
+            break;
+        case CHEST_CLOSED:
+            pos.x = 7;
+            pos.y = 3;
+            break;
+        case CHEST_OPEN:
+            pos.x = 8;
+            pos.y = 3;
+            break;
         default:
             System.out.println("Could not find a sprite of spritetype:" + type);
             break;
