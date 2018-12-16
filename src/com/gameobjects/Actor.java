@@ -91,11 +91,15 @@ public class Actor extends GameObject implements ICollidable {
                 .filter(a -> !a.equals(this))
                 .filter(a -> ((ICollidable) a).isActive() && a.isEnabled)
                 .filter(a -> ((ICollidable) a).getDistanceFrom(this.getHitbox()) < Game.CALCULATED_MAX_COLLISION_DISTANCE)
-                .filter(a -> ((ICollidable) a).isColliding(this))
+                .filter(a -> this.isColliding((ICollidable)a))
                 .collect(Collectors.toList());
 
         if(!gos.isEmpty()) {
-            gos.stream().forEach(g -> System.out.println(g.getInfo()));
+            gos.stream().forEach(a -> {
+                ICollidable ac = (ICollidable) a;
+                ac.onCollision(this);
+                this.onCollision(ac);
+            });
         }
     }
 
@@ -257,7 +261,14 @@ public class Actor extends GameObject implements ICollidable {
 
     @Override
     public void onCollision(ICollidable other) {
-
+        if(other instanceof Block) {
+            this.velocity_x = 0;
+            this.velocity_y = 0;
+            this.acceleration_x = 0;
+            this.acceleration_y = 0;
+        } else {
+            System.out.println("Collision with: " + other.toString());
+        }
     }
 
     @Override

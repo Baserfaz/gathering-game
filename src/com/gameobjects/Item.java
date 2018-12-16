@@ -25,7 +25,11 @@ public class Item extends GameObject implements ICollidable {
 
     @Override
     public void tick() {
-        
+        if(this.isEnabled && this.isVisible) {
+            this.isCollidable = true;
+        } else {
+            this.isCollidable = false;
+        }
 
     }
 
