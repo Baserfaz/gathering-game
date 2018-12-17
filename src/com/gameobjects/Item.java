@@ -2,7 +2,6 @@ package com.gameobjects;
 
 import java.awt.*;
 
-import com.engine.Game;
 import com.enumerations.ItemType;
 import com.enumerations.SpriteType;
 import com.interfaces.ICollidable;
@@ -15,22 +14,20 @@ public class Item extends GameObject implements ICollidable {
 
     public Item(Point tilePos, ItemType itemType, SpriteType spriteType) {
         super(tilePos, spriteType);
-
         this.itemType = itemType;
-
-        Point pos = this.getWorldPosition();
-        hitbox = new Rectangle(pos.x, pos.y,
-                Game.CALCULATED_SPRITE_SIZE, Game.CALCULATED_SPRITE_SIZE);
+        hitbox = this.calculateBoundingBox();
     }
 
     @Override
     public void tick() {
         if(this.isEnabled && this.isVisible) {
             this.isCollidable = true;
+
+            // TODO: update hitbox position
+
         } else {
             this.isCollidable = false;
         }
-
     }
 
     @Override

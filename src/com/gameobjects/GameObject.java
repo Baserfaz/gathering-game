@@ -42,7 +42,7 @@ public abstract class GameObject {
      * Doesn't care about full alpha pixels.
      * @return
      */
-    public Rectangle recalculateBoundingBox() {
+    public Rectangle calculateBoundingBox() {
 
         int[] pixels = defaultStaticSprite.getRGB(0, 0,
                         defaultStaticSprite.getWidth(), defaultStaticSprite.getHeight(),

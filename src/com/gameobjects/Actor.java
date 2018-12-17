@@ -94,6 +94,8 @@ public class Actor extends GameObject implements ICollidable {
                 .filter(a -> this.isColliding((ICollidable)a))
                 .collect(Collectors.toList());
 
+        // call onCollision for both gameobjects.
+        // TODO: this will call onCollision on this object multiple times.
         if(!gos.isEmpty()) {
             gos.stream().forEach(a -> {
                 ICollidable ac = (ICollidable) a;
@@ -267,7 +269,7 @@ public class Actor extends GameObject implements ICollidable {
             this.acceleration_x = 0;
             this.acceleration_y = 0;
         } else {
-            System.out.println("Collision with: " + other.toString());
+            System.out.println("Actor collision with: " + other.toString());
         }
     }
 
