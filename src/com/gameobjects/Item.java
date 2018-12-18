@@ -4,6 +4,7 @@ import java.awt.*;
 
 import com.enumerations.ItemType;
 import com.enumerations.SpriteType;
+import com.enumerations.UnitType;
 import com.interfaces.ICollidable;
 
 public class Item extends GameObject implements ICollidable {
@@ -23,7 +24,7 @@ public class Item extends GameObject implements ICollidable {
         if(this.isEnabled && this.isVisible) {
             this.isCollidable = true;
 
-            // TODO: update hitbox position
+            // TODO: update hitbox position if the item can move
 
         } else {
             this.isCollidable = false;
@@ -33,13 +34,24 @@ public class Item extends GameObject implements ICollidable {
     @Override
     public void render(Graphics g) {
         if(this.isVisible) {
-            g.drawImage(defaultStaticSprite, worldPosition.x, worldPosition.y, null);
+            g.drawImage(defaultStaticSprite,
+                    worldPosition.x, worldPosition.y, null);
         }
     }
 
     @Override
     public void onCollision(ICollidable other) {
+        if (other instanceof Actor) {
+            Actor actor = (Actor) other;
+            if(actor.getUnitType() == UnitType.PLAYER_UNIT) {
 
+                // if player collided with this item
+                // TODO switch cases for item types
+
+                System.out.println("Player collided with " + itemType);
+
+            }
+        }
     }
 
     @Override

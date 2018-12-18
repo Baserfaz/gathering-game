@@ -16,6 +16,9 @@ public class ItemCreator {
             case APPLE:
                 createdItem = new Item(tilePosition, itemType, SpriteType.APPLE);
                 break;
+            case EXIT:
+                createdItem = new Item(tilePosition, itemType, SpriteType.LADDER);
+                break;
             default:
                 System.out.println(
                         "ItemCreator.createItem: error, not valid itemType: " + itemType);

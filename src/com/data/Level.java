@@ -24,7 +24,18 @@ public class Level {
         this.height = height;
         this.width = width;
 
+        // create walls and floors.
         this.createInitialLevel();
+
+        // create exit
+        ItemCreator.createItem(this.getRandomValidBlock().getTilePosition(), ItemType.EXIT);
+
+        // create stones
+        // TODO
+
+        // create some items
+        ItemCreator.createItem(this.getRandomValidBlock().getTilePosition(), ItemType.APPLE);
+
     }
 
     private void createInitialLevel() {
@@ -151,10 +162,6 @@ public class Level {
                 blocks.add(new Block(bnep, BlockType.UNWALKABLE, SpriteType.NE_WALL));
             }
         }
-
-        // create some items
-        ItemCreator.createItem(this.getRandomValidBlock().getTilePosition(), ItemType.APPLE);
-
     }
 
     /**

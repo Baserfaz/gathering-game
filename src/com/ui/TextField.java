@@ -63,19 +63,22 @@ public class TextField extends InteractableGuiElement {
 
             // make borders glow when selected
             g2d.setColor(Colors.YELLOW);
-            g2d.drawRect(xx - borderMargin, yy - borderMargin, w + (borderMargin * 2), h + (borderMargin * 2));
+            g2d.drawRect(xx - borderMargin, yy - borderMargin,
+                    w + (borderMargin * 2), h + (borderMargin * 2));
 
         } else {
 
             g2d.setColor(Colors.GRAY);
-            g2d.drawRect(xx - borderMargin, yy - borderMargin, w + (borderMargin * 2), h + (borderMargin * 2));
+            g2d.drawRect(xx - borderMargin, yy - borderMargin,
+                    w + (borderMargin * 2), h + (borderMargin * 2));
 
         }
 
         // render text
         g2d.setFont(font);
         g2d.setColor(fontColor);
-        g2d.drawString(value, xx + textMargin, yy + textMargin + (this.fontMetrics.getHeight() / 2));
+        g2d.drawString(value, xx + textMargin,
+                yy + textMargin + (this.fontMetrics.getHeight() / 2));
 
         // set the old stroke
         g2d.setStroke(oldStroke);

@@ -25,12 +25,13 @@ public class Game extends Canvas implements Runnable {
     public static final String ENGINE_VERSION = "ALPHA AF";
     public static final String ENGINE_AUTHOR = "Heikki Heiskanen";
 
-    public static final int WIDTH = 1920;
-    public static final int HEIGHT = 1080;
+    public static final int WIDTH = 1280; //1920;
+    public static final int HEIGHT = 720; //1080;
 
     public static final String TITLE = "The Gathering Game";
     public static final String VERSION = "v. 0.001";
 
+    // camera width & height should be the same as game window.
     public static final int CAMERA_WIDTH = Game.WIDTH;
     public static final int CAMERA_HEIGHT = Game.HEIGHT;
 
@@ -108,7 +109,10 @@ public class Game extends Canvas implements Runnable {
 
         if (instance != null) return;
         Game.instance = this;
-        
+
+        // enable hardware acceleration -> use embedded gpu
+        System.setProperty("sun.java2d.opengl", "true");
+
         this.printEngineStart();
 
         System.out.println("-------- Loading Engine Resources --------");

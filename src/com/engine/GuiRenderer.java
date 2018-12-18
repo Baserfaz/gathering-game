@@ -25,7 +25,10 @@ public class GuiRenderer {
         
         this.df = new DecimalFormat();
         this.df.setMaximumFractionDigits(2);
-        
+
+        // when constructing the GuiRenderer,
+        // it will create and cache the different "static"
+        // gui-elements as well.
         this.createGuiElements();
     }
 
@@ -40,18 +43,20 @@ public class GuiRenderer {
 
     private void createIngameElements() {
 
-        HPanel panel = GuiFactory.createDefaultHorizontalPanel(null, Panel.PanelAlign.SOUTH, false, Colors.GRAY);
+        HPanel panel = GuiFactory.createDefaultHorizontalPanel(
+                null, Panel.PanelAlign.SOUTH, false, Colors.GRAY);
 
         for(int i = 0; i < 5; i++) {
             Button btn = new Button(
                     panel,
-                    100, 50,
+                    100, 25,
                     "btn" + i,
                     Colors.BLACK, Colors.WHITE,
                     16, null, null);
             panel.addElement(btn);
         }
-        panel.addElement(GuiFactory.createDefaultTextField(panel));
+
+        //panel.addElement(GuiFactory.createDefaultTextField(panel));
         panel.shrink();
 
         DraggablePanel dp = new DraggablePanel(150, 100);
@@ -76,7 +81,6 @@ public class GuiRenderer {
         panel.shrink();
 
         this.guiElementManager.addElementToPauseMenu(panel);
-        
     }
     
     private void createGameOverElements() {
@@ -134,7 +138,7 @@ public class GuiRenderer {
             Rectangle r = cam.getCameraBounds();
             
             int x = r.x + 20;
-            int y = r.y + 150;
+            int y = r.y + 40;
             
             Rectangle camRect = Game.instance.getCamera().getCameraBounds();
             
@@ -154,8 +158,11 @@ public class GuiRenderer {
                 builder.append("player world pos: [" + wpos.x + ", " + wpos.y + "]\n");
                 builder.append("player tile pos: [" + tilepos.x + ", " + tilepos.y + "]\n");
 
-                builder.append(String.format("Acceleration: %.2f, %.2f\n", player.getAcceleration_x(), player.getAcceleration_y()));
-                builder.append(String.format("Velocity: %.2f, %.2f\n", player.getVelocity_x(), player.getVelocity_y()));
+                builder.append(String.format("Acceleration: %.2f, %.2f\n",
+                        player.getAcceleration_x(), player.getAcceleration_y()));
+
+                builder.append(String.format("Velocity: %.2f, %.2f\n",
+                        player.getVelocity_x(), player.getVelocity_y()));
 
             }
             this.renderString(builder.toString(), x, y, Game.debugInfoColor, 24f, HorizontalAlign.RIGHT, g);

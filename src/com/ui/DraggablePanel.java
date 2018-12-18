@@ -38,6 +38,7 @@ public class DraggablePanel extends Panel {
             g.drawRect(pos.x - 1, pos.y - headerHeight - 1, getWidth() + 1, getHeight() + headerHeight + 1);
         }
 
+        // render all child elements
         for(GuiElement element : this.elements) {
             element.render(g);
         }

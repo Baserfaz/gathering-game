@@ -106,7 +106,6 @@ public class MouseInput implements MouseMotionListener, MouseListener {
         if(el instanceof InteractableGuiElement == false || el.isEnabled() == false) { return false; }
 
         // tie the mouse position to camera position
-
         Rectangle cameraBounds = Game.instance.getCamera().getCameraBounds();
         Point mousePoint = e.getPoint();
         mousePoint.x += cameraBounds.x;
@@ -128,7 +127,11 @@ public class MouseInput implements MouseMotionListener, MouseListener {
         return true;
     }
 
-    public void mouseDragged(MouseEvent e) { Game.instance.setMousePos(e.getPoint()); }
+    public void mouseDragged(MouseEvent e) {
+        Game.instance.setMousePos(e.getPoint());
+
+        // TODO: get panels, check if we are dragging draggable gui-element etc. etc.
+    }
 
     // not used
     public void mouseEntered(MouseEvent e) {}

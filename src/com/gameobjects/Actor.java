@@ -263,13 +263,16 @@ public class Actor extends GameObject implements ICollidable {
 
     @Override
     public void onCollision(ICollidable other) {
+
+        // handle actor collisions here
+
+        // collisions with blocks should always be
+        // tested for all types of actors.
         if(other instanceof Block) {
             this.velocity_x = 0;
             this.velocity_y = 0;
             this.acceleration_x = 0;
             this.acceleration_y = 0;
-        } else {
-            System.out.println("Actor collision with: " + other.toString());
         }
     }
 
