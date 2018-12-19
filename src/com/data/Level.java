@@ -31,7 +31,9 @@ public class Level {
         ItemCreator.createItem(this.getRandomValidBlock().getTilePosition(), ItemType.EXIT);
 
         // create stones
-        // TODO
+        for(int i = 0; i < Util.GetRandomInteger(1, 4); i++) {
+            ItemCreator.createItem(this.getRandomValidBlock().getTilePosition(), ItemType.STONE);
+        }
 
         // create some items
         ItemCreator.createItem(this.getRandomValidBlock().getTilePosition(), ItemType.APPLE);
@@ -181,6 +183,10 @@ public class Level {
 
     public boolean validateBlock(Block block) {
         if(block == null) return false;
+
+        // TODO: return false if the block is itself unwalkable or
+        // TODO: it has exit item or some other item that is collidable
+
         if(block.getBlocktype().equals(BlockType.UNWALKABLE)) return false;
         return true;
     }

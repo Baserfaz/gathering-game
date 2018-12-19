@@ -11,6 +11,7 @@ import com.data.Level;
 import com.engine.Game;
 import com.engine.KeyInput;
 import com.enumerations.Direction;
+import com.enumerations.ItemType;
 import com.enumerations.SpriteType;
 import com.enumerations.UnitType;
 import com.interfaces.ICollidable;
@@ -57,8 +58,8 @@ public class Actor extends GameObject implements ICollidable {
         // register this actor the the block we spawned on
         this.level.getBlock(tilePos).addActor(this);
 
-        // create hitbox
-        int size = Game.CALCULATED_SPRITE_SIZE;
+        // create hitbox, only the size matters here, position is updated on every frame
+        int size = Game.CALCULATED_SPRITE_SIZE / 2;
         this.hitbox = new Rectangle(this.worldPosition.x, this.worldPosition.y, size, size);
     }
 
@@ -79,8 +80,9 @@ public class Actor extends GameObject implements ICollidable {
     }
 
     private void updateHitboxPos() {
-        this.hitbox.x = this.worldPosition.x;
-        this.hitbox.y = this.worldPosition.y;
+        Point centerPosition = this.getCenterPosition();
+        this.hitbox.x = centerPosition.x - hitbox.width / 2;
+        this.hitbox.y = centerPosition.y - hitbox.height / 2;
     }
 
     private void calculateCollisions() {
@@ -134,8 +136,8 @@ public class Actor extends GameObject implements ICollidable {
         worldPosition.y += velocity_y;
 
         // handle acceleration and velocity after applying the forces to world position
-        this.updateAcceleration();
-        this.updateVelocity();
+        this.updateDeacceleration();
+        this.updateVelocityFriction();
 
         // cache
         lastAccelx = acceleration_x;
@@ -144,7 +146,7 @@ public class Actor extends GameObject implements ICollidable {
         lastVelocityy = velocity_y;
     }
 
-    private void updateAcceleration() {
+    private void updateDeacceleration() {
 
         // de-accelerate x
         if(acceleration_x > 0) { acceleration_x -= deaccelerationValue; }
@@ -164,7 +166,7 @@ public class Actor extends GameObject implements ICollidable {
         }
     }
 
-    private void updateVelocity() {
+    private void updateVelocityFriction() {
 
         // add friction to the velocity, so it decreases over time
         if(velocity_x > 0) { velocity_x -= friction; }
@@ -267,13 +269,15 @@ public class Actor extends GameObject implements ICollidable {
         // handle actor collisions here
 
         // collisions with blocks should always be
-        // tested for all types of actors.
-        if(other instanceof Block) {
+        // tested for all types of actors
+        if(other instanceof Block
+                || (other instanceof Item && ((Item) other).getItemType() == ItemType.STONE)) {
             this.velocity_x = 0;
             this.velocity_y = 0;
             this.acceleration_x = 0;
             this.acceleration_y = 0;
         }
+
     }
 
     @Override
