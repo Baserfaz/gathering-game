@@ -1,15 +1,15 @@
 package com.data;
 
 import java.awt.Point;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
+import com.engine.Game;
 import com.enumerations.BlockType;
 import com.enumerations.Direction;
 import com.enumerations.ItemType;
 import com.enumerations.SpriteType;
 import com.gameobjects.Block;
+import com.gameobjects.Item;
 import com.utilities.ItemCreator;
 import com.utilities.Util;
 
@@ -182,13 +182,27 @@ public class Level {
     }
 
     public boolean validateBlock(Block block) {
-        if(block == null) return false;
-
-        // TODO: return false if the block is itself unwalkable or
-        // TODO: it has exit item or some other item that is collidable
-
-        if(block.getBlocktype().equals(BlockType.UNWALKABLE)) return false;
+        if(block == null
+                || block.getBlocktype().equals(BlockType.UNWALKABLE)
+                || this.blockHasAnyItem(block)) {
+            return false;
+        }
         return true;
+    }
+
+    public boolean blockHasAnyItem(Block block) {
+        return Game.instance.getHandler().getObjects()
+                .stream()
+                .filter(a -> a instanceof Item)
+                .anyMatch(a -> a.getTilePosition() == block.getTilePosition());
+    }
+
+    public boolean blockHasItemOfTypes(Block block, ArrayList<ItemType> types) {
+        return Game.instance.getHandler().getObjects()
+                .stream()
+                .filter(a -> a instanceof Item)
+                .filter(a -> types.contains(((Item) a).getItemType()))
+                .anyMatch(a -> a.getTilePosition() == block.getTilePosition());
     }
 
     public Block getNeighbor(Block block, Direction dir) {

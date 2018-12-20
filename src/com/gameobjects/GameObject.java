@@ -114,4 +114,11 @@ public abstract class GameObject {
         this.isEnabled = false;
     }
 
+    public boolean isEnabled() {
+        return isEnabled;
+    }
+
+    public boolean isVisible() {
+        return isVisible;
+    }
 }
