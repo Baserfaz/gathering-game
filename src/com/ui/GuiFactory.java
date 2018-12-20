@@ -20,8 +20,8 @@ public class GuiFactory {
 
     private static final int DEFAULT_TEXTFIELD_MAXLEN = 15;
 
-    public static PlainText createDefaultPlainText(Panel panel, HorizontalAlign align, String text) {
-        return new PlainText(panel, align, text, 40, new Color(0, 0, 0,255));
+    public static PlainText createDefaultPlainText(Panel panel, HorizontalAlign align, String text, Color color) {
+        return new PlainText(panel, align, text, 40, color);
     }
 
     public static TextField createDefaultTextField(Panel panel) {
@@ -44,7 +44,7 @@ public class GuiFactory {
     }
 
     public static Button createDefaultPlayButton(Panel panel) {
-        return new Button(panel, DEFAULT_BUTTON_WIDTH, DEFAULT_BUTTON_HEIGHT,
+        return new Button(panel, 600, 50,
                 "Play", Color.black, Color.white, DEFAULT_FONTSIZE,
                 () -> Game.instance.startNewGame(), null);
     }
@@ -56,7 +56,7 @@ public class GuiFactory {
     }
 
     public static Button createDefaultExitButton(Panel panel) {
-        return new Button(panel, DEFAULT_BUTTON_WIDTH, DEFAULT_BUTTON_HEIGHT,
+        return new Button(panel, 600, 50,
                 "Exit", Color.black, Color.white, DEFAULT_FONTSIZE,
                 () -> System.exit(0), null);
     }

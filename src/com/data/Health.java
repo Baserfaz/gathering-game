@@ -8,7 +8,7 @@ public class Health {
     private GameObject object;
     
     private int currentHP;
-    private int maxHP = 3;
+    private int maxHP;
     private boolean isDead = false;
 
     public Health(int hp, GameObject obj) {

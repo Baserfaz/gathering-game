@@ -45,7 +45,7 @@ public class Game extends Canvas implements Runnable {
     public static final String CUSTOM_FONT_EXTENSION = ".ttf";
     public static final String CUSTOM_FONT_FOLDER = "coders_crux";
 
-    public static final int MAX_COLLISION_DISTANCE_MULT = 2;
+    public static final int MAX_COLLISION_DISTANCE_MULT = 3;
 
     public static final int SPRITE_GRID_SIZE = 16;
     public static final int SPRITE_SIZE_MULT = 4;

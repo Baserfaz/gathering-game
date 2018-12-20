@@ -4,8 +4,8 @@ import java.awt.*;
 
 public interface ICollidable {
 
-    default boolean isColliding(ICollidable a) {
-        return a.getHitbox().intersects(this.getHitbox());
+    default boolean isColliding(ICollidable other) {
+        return getHitbox().intersects(other.getHitbox());
     }
 
     /**

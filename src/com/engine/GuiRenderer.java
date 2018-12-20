@@ -10,6 +10,7 @@ import com.ui.*;
 import com.ui.Button;
 import com.ui.Panel;
 import com.utilities.SpriteCreator;
+import com.utilities.Util;
 
 public class GuiRenderer {
     
@@ -27,8 +28,8 @@ public class GuiRenderer {
         this.df.setMaximumFractionDigits(2);
 
         // when constructing the GuiRenderer,
-        // it will create and cache the different "static"
-        // gui-elements as well.
+        // it will create and cache the game state specific,
+        // "static" gui-elements as well.
         this.createGuiElements();
     }
 
@@ -47,22 +48,17 @@ public class GuiRenderer {
                 null, Panel.PanelAlign.SOUTH, false, Colors.GRAY);
 
         for(int i = 0; i < 5; i++) {
+            String btnName = "btn" + i;
             Button btn = new Button(
-                    panel,
-                    100, 25,
-                    "btn" + i,
-                    Colors.BLACK, Colors.WHITE,
-                    16, null, null);
+                    panel, 100, 25, btnName,
+                    Colors.BLACK, Colors.WHITE, 16,
+                    () -> System.out.println("clicked: " + btnName),
+                    null);
+
             panel.addElement(btn);
         }
-
-        //panel.addElement(GuiFactory.createDefaultTextField(panel));
         panel.shrink();
-
-        DraggablePanel dp = new DraggablePanel(150, 100);
-
         this.guiElementManager.addElementToIngame(panel);
-        this.guiElementManager.addElementToIngame(dp);
     }
 
     private void createPauseMenuElements() {
@@ -70,7 +66,8 @@ public class GuiRenderer {
         VPanel panel = GuiFactory.createDefaultCenteredPanel(null, false, Colors.GRAY);
         Button resumeButton = GuiFactory.createDefaultResumeButton(panel);
         Button exitButton = GuiFactory.createDefaultExitToMainMenuButton(panel);
-        PlainText pauseHeader = GuiFactory.createDefaultPlainText(panel, HorizontalAlign.CENTER, "Pause");
+        PlainText pauseHeader = GuiFactory.createDefaultPlainText(panel,
+                HorizontalAlign.CENTER, "Pause", Colors.WHITE);
         Separator separator = new Separator(panel, 10);
 
         panel.addElement(pauseHeader);
@@ -94,15 +91,24 @@ public class GuiRenderer {
     
     private void createMainmenuElements() {
 
-        VPanel panel = GuiFactory.createDefaultCenteredPanel(null, false, Colors.GRAY);
-        panel.addElement(GuiFactory.createDefaultPlainText(panel, HorizontalAlign.CENTER, "AWESOME GAME"));
+        VPanel panel = GuiFactory.createDefaultCenteredPanel(
+                null, false, Util.changeAlpha(Colors.BLACK, 200)
+        );
+
+        panel.addElement(new Separator(panel, 20));
+        panel.addElement(GuiFactory.createDefaultPlainText(panel,
+                HorizontalAlign.CENTER, "Awesome Dungeons", Colors.BLUE));
         panel.addElement(new Separator(panel, 10));
 
         panel.addElement(GuiFactory.createDefaultPlayButton(panel));
         panel.addElement(GuiFactory.createDefaultExitButton(panel));
 
-        panel.addElement(GuiFactory.createDefaultPlainText(panel, HorizontalAlign.LEFT, "Username"));
+        panel.addElement(GuiFactory.createDefaultPlainText(panel,
+                HorizontalAlign.LEFT, "Username", Colors.WHITE));
+
         panel.addElement(GuiFactory.createDefaultTextField(panel));
+
+        panel.shrink();
 
         this.guiElementManager.addElementToMainmenu(panel);
     }

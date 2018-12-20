@@ -3,6 +3,7 @@ package com.gameobjects;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -17,6 +18,7 @@ import com.enumerations.UnitType;
 import com.interfaces.ICollidable;
 import com.utilities.Mathf;
 import com.utilities.RenderUtils;
+import com.utilities.Util;
 
 public class Actor extends GameObject implements ICollidable {
 
@@ -96,14 +98,15 @@ public class Actor extends GameObject implements ICollidable {
                 .filter(a -> this.isColliding((ICollidable)a))
                 .collect(Collectors.toList());
 
-        // call onCollision for both gameobjects.
-        // TODO: this will call onCollision on this object multiple times.
+        // call onCollision for both game objects.
         if(!gos.isEmpty()) {
-            gos.stream().forEach(a -> {
-                ICollidable ac = (ICollidable) a;
-                ac.onCollision(this);
-                this.onCollision(ac);
-            });
+
+            // TODO: perhaps we want to loop through all collisions?
+
+            GameObject go = ((List<GameObject>) gos).get(0);
+            ICollidable ac = (ICollidable) go;
+            ac.onCollision(this);
+            this.onCollision(ac);
         }
     }
 
@@ -271,13 +274,16 @@ public class Actor extends GameObject implements ICollidable {
         // collisions with blocks should always be
         // tested for all types of actors
         if(other instanceof Block
-                || (other instanceof Item && ((Item) other).getItemType() == ItemType.STONE)) {
+                || (other instanceof Item
+                && ((Item) other).getItemType() == ItemType.STONE)) {
+
+            // TODO: problem in left & up collisions -> negative velocity
+
             this.velocity_x = 0;
             this.velocity_y = 0;
             this.acceleration_x = 0;
             this.acceleration_y = 0;
         }
-
     }
 
     @Override

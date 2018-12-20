@@ -105,26 +105,15 @@ public abstract class Panel extends GuiElement {
     }
 
     private void shrinkHorizontally() {
-//        GuiElement widestElement = null;
-//
-//        // calculate total element height
-//        for(GuiElement element : this.getElements()) {
-//
-//            // get widest element
-//            // if(widestElement == null) { widestElement = element; }
-//            // else { if(widestElement.w < element.w) { widestElement = element; } }
-//
-//            if(element instanceof Panel) {
-//                ((Panel) element).shrink();
-//            }
-//
-//            height += element.getHeight() + margin;
-//        }
-//
-//        // shrink the bottom of the panel to fit the content
-//        this.setHeight(height);
 
-        // this.setWidth(widestElement.w + margin); // TODO: breaks panel inside panel width
+        // shrinks the child elements to be maximum of panel width
+        for(GuiElement e : this.getElements()) {
+            if(e.w > this.w) {
+                int diff = e.w - this.w;
+                e.w = this.w;
+                e.x += diff / 2;
+            }
+        }
     }
 
     private void shrinkVertically() {
@@ -146,9 +135,9 @@ public abstract class Panel extends GuiElement {
 
         } else {
 
-            Integer highestItemHeight = null;
-
             // HPanel
+
+            Integer highestItemHeight = null;
             for (GuiElement element : this.getElements()) {
 
                 if(highestItemHeight == null) {

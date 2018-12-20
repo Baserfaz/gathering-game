@@ -91,26 +91,7 @@ public class Util {
         return a + b;
     }
 
-    public static Point calculateCameraPos(Point target) {
-
-        // returns a position of the target, which is centered 
-        // to the camera view.
-        
-        int spriteSize = Game.CALCULATED_SPRITE_SIZE;
-
-        int x = 0, y = 0;
-        Camera cam = Game.instance.getCamera();
-
-        if(cam == null) {
-            System.out.println("Util::calculateCameraPos: Camera is null!");
-            return null;
-        }
-
-        if(target != null) {
-            x = (-target.x - spriteSize / 2) + Game.CAMERA_WIDTH / 2;
-            y = (-target.y - spriteSize / 2) + Game.CAMERA_HEIGHT / 2;
-        }
-
-        return new Point(x, y);
+    public static Color changeAlpha(Color color, int alpha) {
+        return new Color(color.getRed(), color.getGreen(), color.getBlue(), alpha);
     }
 }
