@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.data.Health;
+import com.data.Inventory;
 import com.data.Level;
 import com.engine.Game;
 import com.engine.KeyInput;
@@ -29,13 +30,15 @@ public class Actor extends GameObject implements ICollidable {
     final double maxAcceleration = 2.0;
     final double maxVelocity = 5.0;
 
-    protected String name;
     protected Health HP;
+    protected Inventory inventory;
+
+    protected String name;
     protected UnitType unitType;
     protected Direction facingDirection = Direction.WEST;
     protected int attackDamage;
+
     protected KeyInput keyInput;
-    protected Level level;
 
     protected double velocity_x, velocity_y;
     protected double acceleration_x, acceleration_y;
@@ -54,15 +57,14 @@ public class Actor extends GameObject implements ICollidable {
         this.unitType = unitType;
         this.HP = new Health(hp, this);
 
-        this.keyInput = Game.instance.getKeyInput();
-        this.level = Game.instance.getLevel();
-
-        // register this actor the the block we spawned on
-        this.level.getBlock(tilePos).addActor(this);
-
         // create hitbox, only the size matters here, position is updated on every frame
         int size = Game.CALCULATED_SPRITE_SIZE / 2;
         this.hitbox = new Rectangle(this.worldPosition.x, this.worldPosition.y, size, size);
+
+        if(this.unitType == UnitType.PLAYER_UNIT) {
+            this.keyInput = Game.instance.getKeyInput();
+            this.inventory = new Inventory();
+        }
     }
 
     public void tick() {
@@ -98,14 +100,10 @@ public class Actor extends GameObject implements ICollidable {
                 .filter(a -> this.isColliding((ICollidable)a))
                 .collect(Collectors.toList());
 
-        // call onCollision for both game objects.
+        // only call collision for actor
         if(!gos.isEmpty()) {
-
-            // TODO: perhaps we want to loop through all collisions?
-
             GameObject go = ((List<GameObject>) gos).get(0);
             ICollidable ac = (ICollidable) go;
-            // ac.onCollision(this);
             this.onCollision(ac);
         }
     }
@@ -269,10 +267,7 @@ public class Actor extends GameObject implements ICollidable {
     @Override
     public void onCollision(ICollidable other) {
 
-        // handle actor collisions here
-
-        // collisions with blocks should always be
-        // tested for all types of actors
+        // ---- GENERAL COLLISIONS ----
         if(other instanceof Block
                 || (other instanceof Item
                 && ((Item) other).getItemType() == ItemType.STONE)) {
@@ -285,13 +280,15 @@ public class Actor extends GameObject implements ICollidable {
             this.acceleration_y = 0;
         }
 
-        // ------------------------------------
+        // ---- SPECIAL STUFF FOR PLAYER ----
+        if(this.unitType != UnitType.PLAYER_UNIT) return;
+
         if(other instanceof Chest) {
             Chest c = (Chest) other;
 
-            // TODO: if we have keys
-            if(c.isLocked()) {
+            if(c.isLocked() && this.inventory.hasKeys()) {
                 c.unlock();
+                this.inventory.useKey();
             }
 
             if(!c.isLocked() && !c.isOpen()) {
