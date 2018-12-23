@@ -103,12 +103,9 @@ public class Actor extends GameObject implements ICollidable {
                 .filter(a -> ((ICollidable) a).getDistanceFrom(this.getHitbox()) < Game.CALCULATED_MAX_COLLISION_DISTANCE)
                 .filter(a -> this.isColliding((ICollidable)a))
                 .collect(Collectors.toList());
-
-        // only call collision for actor
+        
         if(!gos.isEmpty()) {
-            GameObject go = ((List<GameObject>) gos).get(0);
-            ICollidable ac = (ICollidable) go;
-            this.onCollision(ac);
+            gos.stream().forEach(g -> this.onCollision((ICollidable) g));
         }
     }
 
