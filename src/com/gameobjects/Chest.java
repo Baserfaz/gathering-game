@@ -1,10 +1,10 @@
 package com.gameobjects;
 
 import com.engine.Game;
+import com.enumerations.Direction;
 import com.enumerations.ItemType;
 import com.enumerations.SpriteType;
-import com.enumerations.UnitType;
-import com.interfaces.ICollidable;
+import com.utilities.RenderUtils;
 
 import java.awt.*;
 
@@ -33,7 +33,11 @@ public class Chest extends Item {
     public void open() {
         if(isLocked || isOpen) return;
         this.isOpen = true;
+
         this.defaultStaticSprite = Game.instance.getSpriteStorage().getSprite(SpriteType.CHEST_OPEN);
+        if(this.lookDirection == Direction.EAST) {
+            this.defaultStaticSprite = RenderUtils.flipSpriteHorizontally(this.defaultStaticSprite);
+        }
 
         // TODO: create loots
 

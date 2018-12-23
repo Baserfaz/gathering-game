@@ -4,6 +4,7 @@ import com.enumerations.ItemType;
 import com.enumerations.SpriteType;
 import com.gameobjects.Chest;
 import com.gameobjects.Item;
+import com.gameobjects.StepPlate;
 
 import java.awt.*;
 
@@ -28,6 +29,9 @@ public class ItemCreator {
                 break;
             case CHEST_LOCKED:
                 createdItem = new Chest(tilePosition, true);
+                break;
+            case BUTTON:
+                createdItem = new StepPlate(tilePosition);
                 break;
             default:
                 System.out.println(

@@ -26,6 +26,7 @@ public class SpriteStorage {
     
     // ---- SETTERS & GETTERS ----
     public void addSprite(SpriteType type, BufferedImage img) { this.sprites.put(type, img); }
+
     public BufferedImage getSprite(SpriteType type) { 
         BufferedImage img = this.sprites.get(type);
         if(img == null) System.out.println("SpriteStorage::getSprite: no sprite found for spritetype: " + type);

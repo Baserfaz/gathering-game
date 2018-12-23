@@ -268,9 +268,8 @@ public class Actor extends GameObject implements ICollidable {
     public void onCollision(ICollidable other) {
 
         // ---- GENERAL COLLISIONS ----
-        if(other instanceof Block
-                || (other instanceof Item
-                && ((Item) other).getItemType() == ItemType.STONE)) {
+        if(other instanceof Block ||
+                (other instanceof Item && ((Item) other).getItemType() == ItemType.STONE)) {
 
             // TODO: problem in left & up collisions -> negative velocity
 
@@ -294,6 +293,10 @@ public class Actor extends GameObject implements ICollidable {
             if(!c.isLocked() && !c.isOpen()) {
                 c.open();
             }
+
+        } else if(other instanceof StepPlate) {
+            StepPlate stepPlate = (StepPlate) other;
+            stepPlate.activatePlate();
         }
     }
 

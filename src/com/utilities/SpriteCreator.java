@@ -365,6 +365,14 @@ public class SpriteCreator {
             pos.x = 9;
             pos.y = 3;
             break;
+        case BUTTON_DOWN:
+            pos.x = 6;
+            pos.y = 4;
+            break;
+        case BUTTON_UP:
+            pos.x = 5;
+            pos.y = 4;
+            break;
         default:
             System.out.println("Could not find a sprite of spritetype:" + type);
             break;
