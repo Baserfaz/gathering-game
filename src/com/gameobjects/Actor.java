@@ -105,7 +105,7 @@ public class Actor extends GameObject implements ICollidable {
 
             GameObject go = ((List<GameObject>) gos).get(0);
             ICollidable ac = (ICollidable) go;
-            ac.onCollision(this);
+            // ac.onCollision(this);
             this.onCollision(ac);
         }
     }
@@ -283,6 +283,20 @@ public class Actor extends GameObject implements ICollidable {
             this.velocity_y = 0;
             this.acceleration_x = 0;
             this.acceleration_y = 0;
+        }
+
+        // ------------------------------------
+        if(other instanceof Chest) {
+            Chest c = (Chest) other;
+
+            // TODO: if we have keys
+            if(c.isLocked()) {
+                c.unlock();
+            }
+
+            if(!c.isLocked() && !c.isOpen()) {
+                c.open();
+            }
         }
     }
 

@@ -27,7 +27,7 @@ public class Item extends GameObject implements ICollidable {
         if(r < 50) this.lookDirection = Direction.WEST;
         else this.lookDirection = Direction.EAST;
 
-        // set sprite
+        // set sprite, west is already set
         if(this.lookDirection == Direction.EAST) {
             this.defaultStaticSprite = RenderUtils.flipSpriteHorizontally(this.defaultStaticSprite);
         }
@@ -39,9 +39,6 @@ public class Item extends GameObject implements ICollidable {
     public void tick() {
         if(this.isEnabled && this.isVisible) {
             this.isCollidable = true;
-
-            // TODO: update hitbox position if the item can move
-
         } else {
             this.isCollidable = false;
         }
@@ -56,19 +53,7 @@ public class Item extends GameObject implements ICollidable {
     }
 
     @Override
-    public void onCollision(ICollidable other) {
-        if (other instanceof Actor) {
-            Actor actor = (Actor) other;
-            if(actor.getUnitType() == UnitType.PLAYER_UNIT) {
-
-                // if player collided with this item
-                // TODO switch cases for item types
-
-                System.out.println("Player collided with " + itemType);
-
-            }
-        }
-    }
+    public void onCollision(ICollidable other) {}
 
     public ItemType getItemType() {
         return itemType;

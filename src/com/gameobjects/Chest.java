@@ -3,6 +3,8 @@ package com.gameobjects;
 import com.engine.Game;
 import com.enumerations.ItemType;
 import com.enumerations.SpriteType;
+import com.enumerations.UnitType;
+import com.interfaces.ICollidable;
 
 import java.awt.*;
 
@@ -35,5 +37,13 @@ public class Chest extends Item {
 
         // TODO: create loots
 
+    }
+
+    public boolean isOpen() {
+        return isOpen;
+    }
+
+    public boolean isLocked() {
+        return isLocked;
     }
 }
