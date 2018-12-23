@@ -18,6 +18,8 @@ public class Chest extends Item {
         if(isLocked) {
             this.defaultStaticSprite = Game.instance.getSpriteStorage().getSprite(SpriteType.CHEST_LOCKED);
         }
+
+        this.hitbox = this.calculateBoundingBox();
     }
 
     public void unlock() {

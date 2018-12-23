@@ -26,6 +26,9 @@ public class ItemCreator {
             case CHEST:
                 createdItem = new Chest(tilePosition, false);
                 break;
+            case CHEST_LOCKED:
+                createdItem = new Chest(tilePosition, true);
+                break;
             default:
                 System.out.println(
                         "ItemCreator.createItem: error, not valid itemType: " + itemType);
