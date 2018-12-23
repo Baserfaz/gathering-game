@@ -2,6 +2,7 @@ package com.utilities;
 
 import com.enumerations.ItemType;
 import com.enumerations.SpriteType;
+import com.gameobjects.Chest;
 import com.gameobjects.Item;
 
 import java.awt.*;
@@ -21,6 +22,9 @@ public class ItemCreator {
                 break;
             case STONE:
                 createdItem = new Item(tilePosition, itemType, SpriteType.STONE_1);
+                break;
+            case CHEST:
+                createdItem = new Chest(tilePosition, false);
                 break;
             default:
                 System.out.println(

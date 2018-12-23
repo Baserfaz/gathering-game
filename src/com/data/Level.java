@@ -38,6 +38,7 @@ public class Level {
         // create some items
         ItemCreator.createItem(this.getRandomValidBlock().getTilePosition(), ItemType.APPLE);
 
+
     }
 
     private void createInitialLevel() {

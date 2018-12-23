@@ -361,6 +361,10 @@ public class SpriteCreator {
             pos.x = 8;
             pos.y = 3;
             break;
+        case CHEST_LOCKED:
+            pos.x = 9;
+            pos.y = 3;
+            break;
         default:
             System.out.println("Could not find a sprite of spritetype:" + type);
             break;

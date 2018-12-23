@@ -14,7 +14,8 @@ public abstract class Panel extends GuiElement {
     protected Panel parent;
     protected int margin;
     protected Color backgroundColor;
-    protected Color borderColor = new Color(90, 90, 90, 255);
+    protected Color borderColor;
+    protected int borderThickness;
     protected boolean drawBorders;
     protected boolean isTransparent;
     protected PanelAlign panelAlign;
@@ -24,8 +25,8 @@ public abstract class Panel extends GuiElement {
     protected List<GuiElement> elements = new ArrayList<>();
 
     public Panel(PanelAlign panelAlign, int width, int height,
-                 Panel parent, Color bgColor, boolean isTransparent,
-                 boolean borders, int margin) {
+                 Panel parent, Color bgColor, Color borderColor, boolean isTransparent,
+                 boolean borders, int borderThickness, int margin) {
         super(width, height);
 
         this.panelAlign = panelAlign;
@@ -34,6 +35,8 @@ public abstract class Panel extends GuiElement {
         this.isTransparent = isTransparent;
         this.drawBorders = borders;
         this.margin = margin;
+        this.borderColor = borderColor;
+        this.borderThickness = borderThickness;
     }
 
     public List<GuiElement> getElements() {
@@ -79,18 +82,23 @@ public abstract class Panel extends GuiElement {
     public void render(Graphics g) {
         if(!isVisible || this.elements.isEmpty()) return;
 
+        Graphics2D g2d = (Graphics2D) g;
+        Stroke defaultStroke = g2d.getStroke();
+
         Point pos = this.calculatePanelAlignmentPos();
 
         // draw rect
         if(!this.isTransparent) {
-            g.setColor(backgroundColor);
-            g.fillRect(pos.x, pos.y, w, h);
+            g2d.setColor(backgroundColor);
+            g2d.fillRect(pos.x, pos.y, w, h);
         }
 
-        // draw borders
         if (drawBorders) {
-            g.setColor(borderColor);
-            g.drawRect(pos.x - 1, pos.y - 1, w + 1, h + 1);
+            g2d.setStroke(new BasicStroke(borderThickness));
+            g2d.setColor(borderColor);
+            g2d.drawRect(pos.x - borderThickness, pos.y - borderThickness,
+                    w + borderThickness * 2, h + borderThickness * 2);
+            g2d.setStroke(defaultStroke);
         }
 
         // render all elements inside this panel

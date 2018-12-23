@@ -6,7 +6,6 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.enumerations.GameState;
@@ -15,7 +14,6 @@ import com.gameobjects.Actor;
 import com.gameobjects.Item;
 import com.interfaces.ICollidable;
 import com.ui.Colors;
-import org.w3c.dom.css.Rect;
 
 public class Renderer {
 
@@ -37,7 +35,7 @@ public class Renderer {
         this.setRenderingHints(g2d);
         
         if(gamestate == GameState.INGAME) this.renderIngame(g);
-        else if(gamestate== GameState.MAINMENU) this.renderMenu(g);
+        else if(gamestate== GameState.MAINMENU) this.renderMainMenu(g);
         else if(gamestate == GameState.LOADING) this.renderLoading(g);
         else if(gamestate == GameState.PAUSEMENU) this.renderPauseMenu(g);
         else if(gamestate == GameState.GAME_OVER) this.renderGameOver(g);
@@ -68,8 +66,8 @@ public class Renderer {
         this.guirenderer.renderLoading(g);        
     }
     
-    private void renderMenu(Graphics g) {
-        this.fillScreen(g, Color.white);
+    private void renderMainMenu(Graphics g) {
+        this.fillScreen(g, Colors.WHITE);
         this.guirenderer.renderMenu(g);
     }
     

@@ -58,6 +58,10 @@ public class Item extends GameObject implements ICollidable {
         return itemType;
     }
 
+    public void setItemType(ItemType itemType) {
+        this.itemType = itemType;
+    }
+
     @Override
     public boolean isActive() {
         return this.isCollidable;

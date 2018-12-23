@@ -34,13 +34,13 @@ public class GuiFactory {
     public static HPanel createDefaultHorizontalPanel(Panel parent, Panel.PanelAlign panelAlign,
                                                       boolean isTransparent, Color bgcolor) {
 
-        return new HPanel(panelAlign, Game.WIDTH + 10, 50, parent, bgcolor,
+        return new HPanel(panelAlign, Game.WIDTH + 10, 50, parent, bgcolor, Colors.GRAY,
                 isTransparent, false, 15, true);
     }
 
     public static VPanel createDefaultCenteredPanel(Panel parent, boolean isTransparent, Color bgcolor) {
         return new VPanel(Panel.PanelAlign.MIDDLE, DEFAULT_PANEL_WIDTH, DEFAULT_PANEL_HEIGHT, parent,
-                bgcolor, isTransparent, false, 15, HorizontalAlign.CENTER);
+                bgcolor, Colors.DARK_BLUE, isTransparent, true, 15, HorizontalAlign.CENTER);
     }
 
     public static Button createDefaultPlayButton(Panel panel) {
