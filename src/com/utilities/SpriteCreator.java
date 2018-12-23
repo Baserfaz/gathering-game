@@ -373,6 +373,10 @@ public class SpriteCreator {
             pos.x = 5;
             pos.y = 4;
             break;
+        case GOLD:
+            pos.x = 7;
+            pos.y = 4;
+            break;
         default:
             System.out.println("Could not find a sprite of spritetype:" + type);
             break;

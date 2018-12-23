@@ -1,6 +1,5 @@
 package com.utilities;
 
-import com.engine.Camera;
 import com.engine.Game;
 import com.enumerations.Direction;
 import com.enumerations.GameState;
@@ -11,7 +10,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
-import java.awt.Point;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,10 +39,10 @@ public class Util {
 
     // ------------------------ RANDOMIZATION -------------------------
 
-    public static Direction GetRandomCardinalDirection() { return Direction.values()[Util.GetRandomInteger(0, 4)]; }
-    public static Direction GetRandomOrdinalDirection() { return Direction.values()[Util.GetRandomInteger(4, 8)]; }
-    public static int GetRandomInteger() { return ThreadLocalRandom.current().nextInt(0, 101); }
-    public static int GetRandomInteger(int min, int max) { return ThreadLocalRandom.current().nextInt(min, max); }
+    public static Direction getRandomCardinalDirection() { return Direction.values()[Util.getRandomInteger(0, 4)]; }
+    public static Direction getRandomOrdinalDirection() { return Direction.values()[Util.getRandomInteger(4, 8)]; }
+    public static int getRandomInteger() { return ThreadLocalRandom.current().nextInt(0, 101); }
+    public static int getRandomInteger(int min, int max) { return ThreadLocalRandom.current().nextInt(min, max); }
 
     // ------------------------ MATH ----------------------------------
 

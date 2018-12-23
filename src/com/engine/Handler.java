@@ -6,14 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.enumerations.UnitType;
-import com.gameobjects.Actor;
-import com.gameobjects.Block;
-import com.gameobjects.GameObject;
-import com.gameobjects.Item;
+import com.gameobjects.*;
 
 public class Handler {
 
     private List<GameObject> objects = new ArrayList<>();
+    private List<GameObject> lastFrameObjectsInView = new ArrayList<>();
 
     public void tickGameObjects() {
         for(int i = 0; i < objects.size(); i++) {
@@ -28,6 +26,7 @@ public class Handler {
         List<Block> solidBlocks = new ArrayList<>();
         List<Actor> actors = new ArrayList<>();
         List<Item> items = new ArrayList<>();
+        List<Gold> valuables = new ArrayList<>();
         Actor player = null;
         
         Camera cam = Game.instance.getCamera();
@@ -48,13 +47,33 @@ public class Handler {
         List<GameObject> objInView = new ArrayList<>();
         for(int i = 0; i < this.objects.size(); i++) {
             GameObject go = this.objects.get(i);
-            if(go == null) continue;
+
+            // we dont want to touch to-be-deleted game objects
+            if(go == null || go.isDeleted()) continue;
+
             if(camView.contains(go.getWorldPosition())) {
+
+                // if the object was not enabled in the last frame
+                // then we need to activate it.
+                if(!lastFrameObjectsInView.contains(go)) {
+                    go.activate();
+
+                    // TODO: there is a problem where the items that are out of
+                    // TODO: the view of the camera are activated again when camera
+                    // TODO: sees them again.
+
+                }
+
                 objInView.add(go);
-                go.activate();
-            } else { go.deactivate(); }
+
+            } else {
+                go.deactivate();
+            }
         }
-        
+
+        // cache last frame's objects in view
+        lastFrameObjectsInView = objInView;
+
         // ---------------------- RENDER ---------------------------------
 
         for(int i = 0; i < objInView.size(); i++) {
@@ -70,8 +89,16 @@ public class Handler {
                 Block block = (Block) current;
                 solidBlocks.add(block);
             } else if(current instanceof Item) {
-                Item item = (Item) current;
-                items.add(item);
+
+                // check what kind of item is it
+
+                if(current instanceof Gold) {
+                    Gold gold = (Gold) current;
+                    valuables.add(gold);
+                } else {
+                    Item item = (Item) current;
+                    items.add(item);
+                }
             }
         }
         
@@ -79,6 +106,7 @@ public class Handler {
         for(Block block : solidBlocks) block.render(g);
         for(Actor actor : actors) actor.render(g);
         for(Item item : items) item.render(g);
+        for(Item valuable : valuables) valuable.render(g);
 
         if(player != null) player.render(g);
     }

@@ -2,9 +2,7 @@ package com.utilities;
 
 import com.enumerations.ItemType;
 import com.enumerations.SpriteType;
-import com.gameobjects.Chest;
-import com.gameobjects.Item;
-import com.gameobjects.StepPlate;
+import com.gameobjects.*;
 
 import java.awt.*;
 
@@ -16,7 +14,7 @@ public class ItemCreator {
 
         switch (itemType) {
             case APPLE:
-                createdItem = new Item(tilePosition, itemType, SpriteType.APPLE);
+                createdItem = new Consumable(tilePosition, itemType, SpriteType.APPLE, 1);
                 break;
             case EXIT:
                 createdItem = new Item(tilePosition, itemType, SpriteType.LADDER);
@@ -33,13 +31,14 @@ public class ItemCreator {
             case BUTTON:
                 createdItem = new StepPlate(tilePosition);
                 break;
+            case GOLD:
+                createdItem = new Gold(tilePosition, 1);
+                break;
             default:
                 System.out.println(
                         "ItemCreator.createItem: error, not valid itemType: " + itemType);
                 break;
         }
-
         return createdItem;
     }
-
 }

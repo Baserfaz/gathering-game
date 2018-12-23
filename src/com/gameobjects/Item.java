@@ -1,12 +1,10 @@
 package com.gameobjects;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
 import com.enumerations.Direction;
 import com.enumerations.ItemType;
 import com.enumerations.SpriteType;
-import com.enumerations.UnitType;
 import com.interfaces.ICollidable;
 import com.utilities.RenderUtils;
 import com.utilities.Util;
@@ -23,7 +21,7 @@ public class Item extends GameObject implements ICollidable {
         this.itemType = itemType;
 
         // randomize look direction of the item
-        int r = Util.GetRandomInteger(0, 100);
+        int r = Util.getRandomInteger(0, 100);
         if(r < 50) this.lookDirection = Direction.WEST;
         else this.lookDirection = Direction.EAST;
 
@@ -33,16 +31,12 @@ public class Item extends GameObject implements ICollidable {
         }
 
         this.hitbox = this.calculateBoundingBox();
+
+        this.enableCollisions();
     }
 
     @Override
-    public void tick() {
-        if(this.isEnabled && this.isVisible) {
-            this.isCollidable = true;
-        } else {
-            this.isCollidable = false;
-        }
-    }
+    public void tick() {}
 
     @Override
     public void render(Graphics g) {

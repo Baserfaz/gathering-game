@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 
 import com.data.Health;
 import com.data.Inventory;
-import com.data.Level;
 import com.engine.Game;
 import com.engine.KeyInput;
 import com.enumerations.Direction;
@@ -19,18 +18,23 @@ import com.enumerations.UnitType;
 import com.interfaces.ICollidable;
 import com.utilities.Mathf;
 import com.utilities.RenderUtils;
-import com.utilities.Util;
 
 public class Actor extends GameObject implements ICollidable {
 
-    final double friction = 0.25;               // how fast velocity decreases over time
-    final double deaccelerationValue = 0.30;    // how fast acceleration decreases
-    final double accelerationValue = 0.15;      // how fast acceleration happens
+    // how fast velocity decreases over time
+    // max friction is accelerationValue + deaccelerationValue
+    final double friction = 0.44;
 
-    final double maxAcceleration = 2.0;
+    // how fast acceleration decreases
+    final double deaccelerationValue = 0.30;
+
+    // how fast acceleration happens
+    final double accelerationValue = 0.15;
+
+    final double maxAcceleration = 1.0;
     final double maxVelocity = 5.0;
 
-    protected Health HP;
+    protected Health health;
     protected Inventory inventory;
 
     protected String name;
@@ -55,7 +59,7 @@ public class Actor extends GameObject implements ICollidable {
         this.name = name;
         this.attackDamage = damage;
         this.unitType = unitType;
-        this.HP = new Health(hp, this);
+        this.health = new Health(hp, this);
 
         // create hitbox, only the size matters here, position is updated on every frame
         int size = Game.CALCULATED_SPRITE_SIZE / 2;
@@ -95,7 +99,7 @@ public class Actor extends GameObject implements ICollidable {
                 .stream()
                 .filter(a -> (a instanceof ICollidable))
                 .filter(a -> !a.equals(this))
-                .filter(a -> ((ICollidable) a).isActive() && a.isEnabled)
+                .filter(a -> ((ICollidable) a).isActive())
                 .filter(a -> ((ICollidable) a).getDistanceFrom(this.getHitbox()) < Game.CALCULATED_MAX_COLLISION_DISTANCE)
                 .filter(a -> this.isColliding((ICollidable)a))
                 .collect(Collectors.toList());
@@ -273,8 +277,8 @@ public class Actor extends GameObject implements ICollidable {
 
             // TODO: problem in left & up collisions -> negative velocity
 
-            this.velocity_x = 0;
-            this.velocity_y = 0;
+            this.velocity_x = -velocity_x;
+            this.velocity_y = -velocity_y;
             this.acceleration_x = 0;
             this.acceleration_y = 0;
         }
@@ -284,19 +288,22 @@ public class Actor extends GameObject implements ICollidable {
 
         if(other instanceof Chest) {
             Chest c = (Chest) other;
-
             if(c.isLocked() && this.inventory.hasKeys()) {
                 c.unlock();
                 this.inventory.useKey();
             }
-
             if(!c.isLocked() && !c.isOpen()) {
                 c.open();
             }
-
         } else if(other instanceof StepPlate) {
             StepPlate stepPlate = (StepPlate) other;
             stepPlate.activatePlate();
+        } else if(other instanceof Gold) {
+            Gold gold = (Gold) other;
+            gold.pickup(this);
+        } else if(other instanceof Consumable) {
+            Consumable consumable = (Consumable) other;
+            consumable.consume(this);
         }
     }
 
@@ -318,5 +325,9 @@ public class Actor extends GameObject implements ICollidable {
     @Override
     public Rectangle getHitbox() {
         return this.hitbox;
+    }
+
+    public Health getHealth() {
+        return this.health;
     }
 }

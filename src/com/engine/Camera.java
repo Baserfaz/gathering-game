@@ -2,7 +2,6 @@ package com.engine;
 
 import com.enumerations.GameState;
 import com.gameobjects.Actor;
-import com.utilities.Mathf;
 
 import java.awt.Point;
 import java.awt.Rectangle;

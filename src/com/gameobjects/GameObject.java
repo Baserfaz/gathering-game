@@ -15,6 +15,8 @@ public abstract class GameObject {
     protected boolean isEnabled = false;
     protected boolean isVisible = false;
 
+    protected boolean isDeleted = false;
+
     public GameObject(Point tilePosition, SpriteType type) {
 
         this.tilePosition = tilePosition;
@@ -112,6 +114,14 @@ public abstract class GameObject {
     public void deactivate() {
         this.isVisible = false;
         this.isEnabled = false;
+    }
+
+    public void setDeleted(boolean b) {
+        this.isDeleted = b;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
     }
 
     public boolean isEnabled() {

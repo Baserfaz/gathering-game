@@ -4,6 +4,7 @@ import com.engine.Game;
 import com.enumerations.Direction;
 import com.enumerations.ItemType;
 import com.enumerations.SpriteType;
+import com.utilities.ItemCreator;
 import com.utilities.RenderUtils;
 
 import java.awt.*;
@@ -39,8 +40,8 @@ public class Chest extends Item {
             this.defaultStaticSprite = RenderUtils.flipSpriteHorizontally(this.defaultStaticSprite);
         }
 
-        // TODO: create loots
-
+        // TODO: create loot here & randomize
+        ItemCreator.createItem(this.tilePosition, ItemType.GOLD);
     }
 
     public boolean isOpen() {

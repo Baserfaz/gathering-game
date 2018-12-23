@@ -31,15 +31,19 @@ public class Level {
         ItemCreator.createItem(this.getRandomValidBlock().getTilePosition(), ItemType.EXIT);
 
         // create stones
-        for(int i = 0; i < Util.GetRandomInteger(1, 4); i++) {
+/*        for(int i = 0; i < Util.getRandomInteger(1, 4); i++) {
             ItemCreator.createItem(this.getRandomValidBlock().getTilePosition(), ItemType.STONE);
-        }
+        }*/
 
         // create some items
         ItemCreator.createItem(this.getRandomValidBlock().getTilePosition(), ItemType.APPLE);
         ItemCreator.createItem(this.getRandomValidBlock().getTilePosition(), ItemType.CHEST);
         ItemCreator.createItem(this.getRandomValidBlock().getTilePosition(), ItemType.CHEST_LOCKED);
         ItemCreator.createItem(this.getRandomValidBlock().getTilePosition(), ItemType.BUTTON);
+
+        for(int i = 0; i < 5; i++) {
+            ItemCreator.createItem(this.getRandomValidBlock().getTilePosition(), ItemType.GOLD);
+        }
     }
 
     private void createInitialLevel() {
@@ -291,11 +295,11 @@ public class Level {
     }
     
     public Block getRandomBlock(List<Block> bs) {
-        return bs.get(Util.GetRandomInteger(0, bs.size() - 1));
+        return bs.get(Util.getRandomInteger(0, bs.size() - 1));
     }
     
     public Block getRandomBlock() {
-        return this.blocks.get(Util.GetRandomInteger(0, blocks.size() - 1));
+        return this.blocks.get(Util.getRandomInteger(0, blocks.size() - 1));
     }
     
     public List<Block> getBlocks() {
