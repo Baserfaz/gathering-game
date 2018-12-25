@@ -377,6 +377,10 @@ public class SpriteCreator {
             pos.x = 7;
             pos.y = 4;
             break;
+        case GUI_HEALTH:
+            pos.x = 8;
+            pos.y = 4;
+            break;
         default:
             System.out.println("Could not find a sprite of spritetype:" + type);
             break;

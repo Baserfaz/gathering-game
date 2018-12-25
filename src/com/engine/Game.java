@@ -144,15 +144,15 @@ public class Game extends Canvas implements Runnable {
         this.guiElementManager = new GuiElementManager();
         this.soundManager = new SoundManager();
 
+        // load all sprites and animations to memory
+        this.spriteStorage = new SpriteStorage();
+        this.spriteStorage.loadSprites();
+
         this.guiRenderer = new GuiRenderer();
         this.unitManager = new UnitManager();
 
         this.camera = new Camera();
         this.renderer = new Renderer();
-
-        // load all sprites and animations to memory
-        this.spriteStorage = new SpriteStorage();
-        this.spriteStorage.loadSprites();
 
         this.gamestate = GameState.MAINMENU;
         this.lastGameState = this.gamestate;

@@ -89,7 +89,7 @@ public class KeyInput extends KeyAdapter {
     private void handleKeysInUI(KeyEvent e) {
 
         // get the panels in current UI state
-        List<Panel> panels = Util.getPanelsInGamestate(Game.instance.getGamestate());
+        List<Panel> panels = Util.getPanelsInCurrentGamestate();
         if(panels.isEmpty()) return;
 
         for(Panel panel : panels) { if(this.handlePanelElements(panel, e)) break; }

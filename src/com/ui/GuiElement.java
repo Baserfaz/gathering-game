@@ -6,7 +6,7 @@ import java.awt.Rectangle;
 public abstract class GuiElement {
 
     protected int x, y, w, h;
-    protected boolean isMuted = false, isHovering = false, isEnabled = true, isVisible = true;
+    protected boolean isHovering = false, isEnabled = true, isVisible = true;
 
     public GuiElement(Panel parent) {
         this.x = parent.x;
@@ -47,6 +47,5 @@ public abstract class GuiElement {
     public void setWidth(int width) { this.w = width; }
     public int getHeight() { return h; }
     public void setHeight(int height) { this.h = height; }
-    public boolean isMuted() { return this.isMuted; }
 
 }

@@ -3,8 +3,10 @@ package com.engine;
 import java.awt.*;
 import java.text.DecimalFormat;
 
+import com.data.SpriteStorage;
 import com.enumerations.HorizontalAlign;
 import com.enumerations.GameState;
+import com.enumerations.SpriteType;
 import com.gameobjects.Actor;
 import com.ui.*;
 import com.ui.Button;
@@ -46,12 +48,17 @@ public class GuiRenderer {
 
         HPanel panel = GuiFactory.createDefaultHorizontalPanel(
                 null, Panel.PanelAlign.NORTH,
-                false, Colors.GRAY);
+                false, Colors.YELLOW);
 
-        // TODO ?
+        SpriteStorage ss = Game.instance.getSpriteStorage();
+
+        for(int i = 0; i < 3; i++) {
+            GuiImage img = new GuiImage(panel, ss.getSprite(SpriteType.GUI_HEALTH));
+            panel.addElement(img);
+        }
 
         panel.shrink();
-        this.guiElementManager.addElementToIngame(panel);
+        this.guiElementManager.addElementToMap(GameState.INGAME, panel);
     }
 
     private void createPauseMenuElements() {
@@ -70,14 +77,14 @@ public class GuiRenderer {
 
         panel.shrink();
 
-        this.guiElementManager.addElementToPauseMenu(panel);
+        this.guiElementManager.addElementToMap(GameState.PAUSEMENU, panel);
     }
     
     private void createGameOverElements() {
         VPanel panel = GuiFactory.createDefaultCenteredPanel(null, false, Colors.GRAY);
         Button exitButton = GuiFactory.createDefaultExitButton(panel);
         panel.addElement(exitButton);
-        this.guiElementManager.addElementToGameOver(panel);
+        this.guiElementManager.addElementToMap(GameState.GAME_OVER, panel);
     }
     
     private void createLoadingElements() {}
@@ -103,7 +110,7 @@ public class GuiRenderer {
 
         panel.shrink();
 
-        this.guiElementManager.addElementToMainmenu(panel);
+        this.guiElementManager.addElementToMap(GameState.MAINMENU, panel);
     }
     
     // ----- RENDERING -----
@@ -124,6 +131,12 @@ public class GuiRenderer {
     }
     
     public void renderIngame(Graphics g) {
+
+        // ---- create dynamic gui-elements ----
+
+
+
+        // ----
         this.guiElementManager.render(g, GameState.INGAME);
         
         // render debugging information

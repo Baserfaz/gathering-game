@@ -25,8 +25,7 @@ public class MouseInput implements MouseMotionListener, MouseListener {
         if(e.getButton() != MouseEvent.BUTTON1) return;
 
         Point mousePos = Game.instance.getMousePos();
-        GameState state = Game.instance.getGamestate();
-        List<Panel> panels = Util.getPanelsInGamestate(state);
+        List<Panel> panels = Util.getPanelsInCurrentGamestate();
         
         if(panels.isEmpty() || mousePos == null) return;
         
@@ -64,7 +63,7 @@ public class MouseInput implements MouseMotionListener, MouseListener {
         if(el.isEnabled() == false || el instanceof InteractableGuiElement == false) return false;
         InteractableGuiElement iel = (InteractableGuiElement) el;
 
-        if(Game.isMuted == false && panel.isMuted() == false && el.isMuted() == false) {
+        if(Game.isMuted == false) {
             Game.instance.getSoundManager().playSound(SoundEffect.SELECT);
         }
 
@@ -77,8 +76,8 @@ public class MouseInput implements MouseMotionListener, MouseListener {
         Game.instance.setMousePos(e.getPoint());
         
         if(Game.instance.getGuiElementManager() == null) return;
-        List<Panel> panels = Util.getPanelsInGamestate(Game.instance.getGamestate());
-        if(panels.isEmpty()) return;
+        List<Panel> panels = Util.getPanelsInCurrentGamestate();
+        if(panels == null || panels.isEmpty()) return;
 
         this.hoveredOnSomething = false;
 
@@ -97,12 +96,12 @@ public class MouseInput implements MouseMotionListener, MouseListener {
         // panels elements
         for(GuiElement el : panel.getElements()) {
             if(el instanceof Panel) { this.handleHoverOnPanelElements((Panel) el, e); }
-            if(this.handleHoverOnElement(panel, el, e)) return true;
+            if(this.handleHoverOnElement(el, e)) return true;
         }
         return false;
     }
 
-    private boolean handleHoverOnElement(Panel panel, GuiElement el, MouseEvent e) {
+    private boolean handleHoverOnElement(GuiElement el, MouseEvent e) {
         if(el instanceof InteractableGuiElement == false || el.isEnabled() == false) { return false; }
 
         // tie the mouse position to camera position
@@ -117,7 +116,7 @@ public class MouseInput implements MouseMotionListener, MouseListener {
         InteractableGuiElement iel = (InteractableGuiElement) el;
         this.hoveredOnSomething = true;
 
-        if(this.lastElementHovered != el && Game.isMuted == false && panel.isMuted() == false && el.isMuted() == false) {
+        if(this.lastElementHovered != el && Game.isMuted == false) {
             Game.instance.getSoundManager().playSound(SoundEffect.HOVER);
         }
 

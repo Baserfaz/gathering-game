@@ -6,20 +6,20 @@ import java.awt.image.BufferedImage;
 public class GuiImage extends GuiElement {
 
     private BufferedImage img;
-    
-    public GuiImage(int x, int y, BufferedImage img) {
-        super(x, y, img.getWidth(), img.getHeight());
+    private Panel parent;
+
+    public GuiImage(Panel parent, BufferedImage img) {
+        super(parent.x, parent.y, img.getWidth(), img.getHeight());
         this.img = img;
-        this.isMuted = true;
+        this.parent = parent;
     }
 
     public void render(Graphics g) {
-        if(this.isVisible) g.drawImage(this.img, this.x, this.y, null);
+        if(!this.isVisible) return;
+        int xx = this.x + this.parent.xrelcam;
+        int yy = this.y + this.parent.yrelcam;
+        g.drawImage(this.img, xx , yy, null);
     }
 
     public void tick() {}
-
-    // ----- GETTERS & SETTERS -----
-    public BufferedImage getImg() { return img; }
-    public void setImg(BufferedImage img) { this.img = img; }
 }

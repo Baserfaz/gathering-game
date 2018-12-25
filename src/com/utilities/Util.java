@@ -24,17 +24,8 @@ public class Util {
         return false;
     }
 
-    public static List<Panel> getPanelsInGamestate(GameState state) {
-        List<Panel> elements = new ArrayList<>();
-
-        if(state == GameState.MAINMENU) {
-            elements = Game.instance.getGuiElementManager().getMainmenuPanels();
-        } else if(state == GameState.INGAME) {
-            elements = Game.instance.getGuiElementManager().getIngamePanels();
-        } else if(state == GameState.PAUSEMENU) {
-            elements = Game.instance.getGuiElementManager().getPausemenuPanels();
-        }
-        return elements;
+    public static List<Panel> getPanelsInCurrentGamestate() {
+        return Game.instance.getGuiElementManager().getPanels(Game.instance.getGamestate());
     }
 
     // ------------------------ RANDOMIZATION -------------------------
