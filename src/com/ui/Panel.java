@@ -108,6 +108,7 @@ public abstract class Panel extends GuiElement {
     }
 
     public void shrink() {
+        if(this.elements.isEmpty()) return;
         this.shrinkVertically();
         this.shrinkHorizontally();
     }

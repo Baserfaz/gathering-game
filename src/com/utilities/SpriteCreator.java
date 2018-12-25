@@ -184,7 +184,7 @@ public class SpriteCreator {
     public BufferedImage CreateSprite(SpriteType type) {	
 
         int spriteSize = Game.SPRITE_GRID_SIZE;
-        int spriteSizeMult = Game.SPRITE_SIZE_MULT;
+        int spriteSizeMult = type.getSizeMultiplier();
         
         BufferedImage sprite = new BufferedImage(spriteSize, spriteSize, BufferedImage.TYPE_INT_ARGB);
         int[] spritePixelData = new int[sprite.getWidth() * sprite.getHeight()];

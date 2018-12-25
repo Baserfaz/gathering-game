@@ -49,6 +49,7 @@ public class Game extends Canvas implements Runnable {
 
     public static final int SPRITE_GRID_SIZE = 16;
     public static final int SPRITE_SIZE_MULT = 4;
+    public static final int SPRITE_UI_SIZE_MULT = 2;
 
     public static final int TEXT_LINEHEIGHT = 2;
 
@@ -99,6 +100,7 @@ public class Game extends Canvas implements Runnable {
     private KeyInput keyInput;
 
     public static int CALCULATED_SPRITE_SIZE;
+    public static int CALCULATED_SPRITE_UI_SIZE;
     public static int CALCULATED_MAX_COLLISION_DISTANCE;
 
     public static void main(String args[]) {
@@ -119,6 +121,7 @@ public class Game extends Canvas implements Runnable {
 
         // pre-calculate stuff that is otherwise calculated everywhere
         CALCULATED_SPRITE_SIZE = SPRITE_GRID_SIZE * SPRITE_SIZE_MULT;
+        CALCULATED_SPRITE_UI_SIZE = SPRITE_GRID_SIZE * SPRITE_UI_SIZE_MULT;
         CALCULATED_MAX_COLLISION_DISTANCE = CALCULATED_SPRITE_SIZE * MAX_COLLISION_DISTANCE_MULT;
 
         // create object handler

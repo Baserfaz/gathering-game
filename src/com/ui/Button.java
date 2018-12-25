@@ -27,7 +27,8 @@ public class Button extends InteractableGuiElement {
     public void render(Graphics g) {
         if(this.isVisible()) {
 
-            Rectangle r = new Rectangle(this.x + this.parent.xrelcam, this.y + this.parent.yrelcam, this.w, this.h);
+            Rectangle r = new Rectangle(this.x + this.parent.xrelcam,
+                    this.y + this.parent.yrelcam, this.w, this.h);
 
             if (this.isHovering) g.setColor(this.bgColor.darker());
             else g.setColor(this.bgColor);

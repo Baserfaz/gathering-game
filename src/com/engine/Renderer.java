@@ -130,7 +130,7 @@ public class Renderer {
             // items
             g.setColor(Color.CYAN);
             for(GameObject go : gos) {
-                if(!(go instanceof Item)) continue;
+                if(!(go instanceof Item) || go.isDeleted()) continue;
 
                 Rectangle hitbox = ((ICollidable)go).getHitbox();
                 if(hitbox != null) {

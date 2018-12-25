@@ -45,18 +45,11 @@ public class GuiRenderer {
     private void createIngameElements() {
 
         HPanel panel = GuiFactory.createDefaultHorizontalPanel(
-                null, Panel.PanelAlign.SOUTH, false, Colors.GRAY);
+                null, Panel.PanelAlign.NORTH,
+                false, Colors.GRAY);
 
-        for(int i = 0; i < 5; i++) {
-            String btnName = "btn" + i;
-            Button btn = new Button(
-                    panel, 100, 25, btnName,
-                    Colors.BLACK, Colors.WHITE, 16,
-                    () -> System.out.println("clicked: " + btnName),
-                    null);
+        // TODO ?
 
-            panel.addElement(btn);
-        }
         panel.shrink();
         this.guiElementManager.addElementToIngame(panel);
     }
