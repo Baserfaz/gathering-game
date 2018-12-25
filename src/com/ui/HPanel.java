@@ -6,10 +6,10 @@ public class HPanel extends Panel {
 
     private boolean elementsEqualSize;
 
-    public HPanel(PanelAlign panelAlign, int width, int height,
+    public HPanel(PanelAlign panelAlign, PanelType panelType, int width, int height,
                   Panel parent, Color bgColor, Color borderColor, boolean isTransparent,
                   boolean borders, int margin, boolean elementsEqualSize) {
-        super(panelAlign, width, height, parent, bgColor, borderColor, isTransparent, borders, 2, margin);
+        super(panelAlign, panelType, width, height, parent, bgColor, borderColor, isTransparent, borders, 2, margin);
 
         this.elementsEqualSize = elementsEqualSize;
         this.backgroundColor = bgColor;

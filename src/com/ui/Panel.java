@@ -10,6 +10,7 @@ import java.util.List;
 public abstract class Panel extends GuiElement {
 
     public enum PanelAlign { NORTH, MIDDLE, SOUTH, WEST, EAST }
+    public enum PanelType { HEALTH, COINS, RUNTIME, PAUSE, GAMEOVER, MAINMENU }
 
     protected Panel parent;
     protected int margin;
@@ -18,17 +19,20 @@ public abstract class Panel extends GuiElement {
     protected int borderThickness;
     protected boolean drawBorders;
     protected boolean isTransparent;
+
+    protected PanelType panelType;
     protected PanelAlign panelAlign;
 
     protected int xrelcam = 0, yrelcam = 0;
 
     protected List<GuiElement> elements = new ArrayList<>();
 
-    public Panel(PanelAlign panelAlign, int width, int height,
+    public Panel(PanelAlign panelAlign, PanelType panelType, int width, int height,
                  Panel parent, Color bgColor, Color borderColor, boolean isTransparent,
                  boolean borders, int borderThickness, int margin) {
         super(width, height);
 
+        this.panelType = panelType;
         this.panelAlign = panelAlign;
         this.parent = parent;
         this.backgroundColor = bgColor;
@@ -193,6 +197,7 @@ public abstract class Panel extends GuiElement {
     public PanelAlign getPanelAlign() {
         return panelAlign;
     }
+    public PanelType getPanelType() { return panelType; }
 
     public void setPanelAlign(PanelAlign panelAlign) {
         this.panelAlign = panelAlign;

@@ -9,7 +9,7 @@ import com.enumerations.GameState;
 
 public class GuiElementManager {
 
-    private HashMap<GameState, List<Panel>> gameStateToPanelMap;
+    private HashMap<GameState, ArrayList<Panel>> gameStateToPanelMap;
 
     public GuiElementManager() {
         this.gameStateToPanelMap = new HashMap<>();
@@ -43,6 +43,6 @@ public class GuiElementManager {
         }
     }
 
-    public List<Panel> getPanels(GameState state) { return this.gameStateToPanelMap.get(state); }
+    public ArrayList<Panel> getPanels(GameState state) { return this.gameStateToPanelMap.get(state); }
     public void addElementToMap(GameState state, Panel panel) { this.gameStateToPanelMap.get(state).add(panel); }
 }

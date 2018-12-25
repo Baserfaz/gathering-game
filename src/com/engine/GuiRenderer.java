@@ -2,11 +2,10 @@ package com.engine;
 
 import java.awt.*;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 
-import com.data.SpriteStorage;
 import com.enumerations.HorizontalAlign;
 import com.enumerations.GameState;
-import com.enumerations.SpriteType;
 import com.gameobjects.Actor;
 import com.ui.*;
 import com.ui.Button;
@@ -29,14 +28,12 @@ public class GuiRenderer {
         this.df = new DecimalFormat();
         this.df.setMaximumFractionDigits(2);
 
-        // when constructing the GuiRenderer,
-        // it will create and cache the game state specific,
-        // "static" gui-elements as well.
-        this.createGuiElements();
+        // such as menus etc.
+        this.createStaticGuiElements();
     }
 
     // ---- CREATION ----
-    private void createGuiElements() {
+    private void createStaticGuiElements() {
         this.createMainmenuElements();
         this.createLoadingElements();
         this.createPauseMenuElements();
@@ -46,24 +43,18 @@ public class GuiRenderer {
 
     private void createIngameElements() {
 
-        HPanel panel = GuiFactory.createDefaultHorizontalPanel(
-                null, Panel.PanelAlign.NORTH,
-                false, Colors.YELLOW);
-
-        SpriteStorage ss = Game.instance.getSpriteStorage();
-
-        for(int i = 0; i < 3; i++) {
-            GuiImage img = new GuiImage(panel, ss.getSprite(SpriteType.GUI_HEALTH));
-            panel.addElement(img);
-        }
-
-        panel.shrink();
-        this.guiElementManager.addElementToMap(GameState.INGAME, panel);
+        // health panel
+        this.guiElementManager.addElementToMap(GameState.INGAME,
+                GuiFactory.createDefaultHorizontalPanel(
+                        null, Panel.PanelAlign.NORTH, Panel.PanelType.HEALTH,
+                        true, Colors.YELLOW));
     }
 
     private void createPauseMenuElements() {
 
-        VPanel panel = GuiFactory.createDefaultCenteredPanel(null, false, Colors.GRAY);
+        VPanel panel = GuiFactory.createDefaultCenteredPanel(null, false,
+                Colors.GRAY, Panel.PanelType.PAUSE);
+
         Button resumeButton = GuiFactory.createDefaultResumeButton(panel);
         Button exitButton = GuiFactory.createDefaultExitToMainMenuButton(panel);
         PlainText pauseHeader = GuiFactory.createDefaultPlainText(panel,
@@ -81,7 +72,8 @@ public class GuiRenderer {
     }
     
     private void createGameOverElements() {
-        VPanel panel = GuiFactory.createDefaultCenteredPanel(null, false, Colors.GRAY);
+        VPanel panel = GuiFactory.createDefaultCenteredPanel(null, false,
+                Colors.GRAY, Panel.PanelType.GAMEOVER);
         Button exitButton = GuiFactory.createDefaultExitButton(panel);
         panel.addElement(exitButton);
         this.guiElementManager.addElementToMap(GameState.GAME_OVER, panel);
@@ -92,8 +84,9 @@ public class GuiRenderer {
     private void createMainmenuElements() {
 
         VPanel panel = GuiFactory.createDefaultCenteredPanel(
-                null, false, Util.changeAlpha(Colors.BLACK, 200)
-        );
+                null, false,
+                Util.changeAlpha(Colors.BLACK, 200),
+                Panel.PanelType.MAINMENU);
 
         panel.addElement(new Separator(panel, 20));
         panel.addElement(GuiFactory.createDefaultPlainText(panel,
@@ -133,8 +126,7 @@ public class GuiRenderer {
     public void renderIngame(Graphics g) {
 
         // ---- create dynamic gui-elements ----
-
-
+        this.createHealthGui();
 
         // ----
         this.guiElementManager.render(g, GameState.INGAME);
@@ -142,7 +134,30 @@ public class GuiRenderer {
         // render debugging information
         this.renderDebugInfo(g);
     }
-    
+
+    private void createHealthGui() {
+        Actor player = Game.instance.getUnitManager().getPlayer();
+        if(player == null) return;
+
+        ArrayList<Panel> panels = this.guiElementManager.getPanels(GameState.INGAME);
+
+        // TODO: perhaps wrap the panels in a hashmap and give the panel a tag e.g. "HEALTH"
+        Panel panel = panels.get(0);
+
+        // only update the panel when hp changes
+        if(panel.getElements().size() != player.getHealth().getCurrentHP()) {
+
+            // first remove last images
+            panel.getElements().clear();
+
+            for (int i = 0; i < player.getHealth().getCurrentHP(); i++) {
+                panel.addElement(GuiFactory.createHealthGuiImage(panel));
+            }
+        }
+
+        panel.shrink();
+    }
+
     private void renderDebugInfo(Graphics g) {
         if(Game.drawDebugInfo) {
 

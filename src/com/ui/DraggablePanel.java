@@ -12,8 +12,9 @@ public class DraggablePanel extends Panel {
     private boolean isDragging = false;
 
     public DraggablePanel(int width, int height, boolean hasBorder, Color borderColor) {
-        super(PanelAlign.MIDDLE, width, height,
-                null, Colors.WHITE, borderColor, false, hasBorder, 2, 0);
+        super(PanelAlign.MIDDLE, PanelType.RUNTIME, width, height,
+                null, Colors.WHITE, borderColor,
+                false, hasBorder, 2, 0);
     }
 
     @Override

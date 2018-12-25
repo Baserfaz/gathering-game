@@ -8,12 +8,12 @@ public class VPanel extends Panel {
 
     private HorizontalAlign itemHorAlign;
 
-    public VPanel(PanelAlign panelAlign, int w, int h, Panel parent,
+    public VPanel(PanelAlign panelAlign, PanelType panelType, int w, int h, Panel parent,
                   Color bgColor, Color borderColor,
                   boolean isTransparent, boolean borders, int margin,
                   HorizontalAlign itemHorAlign) {
 
-        super(panelAlign, w, h, parent, bgColor, borderColor, isTransparent, borders, 2, margin);
+        super(panelAlign, panelType, w, h, parent, bgColor, borderColor, isTransparent, borders, 2, margin);
         this.itemHorAlign = itemHorAlign;
     }
 

@@ -3,8 +3,10 @@ package com.ui;
 import com.engine.Game;
 import com.enumerations.GameState;
 import com.enumerations.HorizontalAlign;
+import com.enumerations.SpriteType;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class GuiFactory {
 
@@ -20,6 +22,11 @@ public class GuiFactory {
 
     private static final int DEFAULT_TEXTFIELD_MAXLEN = 15;
 
+    public static GuiImage createHealthGuiImage(Panel panel) {
+        return new GuiImage(panel,
+                Game.instance.getSpriteStorage().getSprite(SpriteType.GUI_HEALTH));
+    }
+
     public static PlainText createDefaultPlainText(Panel panel, HorizontalAlign align, String text, Color color) {
         return new PlainText(panel, align, text, 40, color);
     }
@@ -32,14 +39,16 @@ public class GuiFactory {
     }
 
     public static HPanel createDefaultHorizontalPanel(Panel parent, Panel.PanelAlign panelAlign,
-                                                      boolean isTransparent, Color bgcolor) {
+                                                      Panel.PanelType panelType, boolean isTransparent,
+                                                      Color bgcolor) {
 
-        return new HPanel(panelAlign, Game.WIDTH + 10, 50, parent, bgcolor, Colors.GRAY,
+        return new HPanel(panelAlign, panelType,Game.WIDTH + 10, 50, parent, bgcolor, Colors.GRAY,
                 isTransparent, false, 15, true);
     }
 
-    public static VPanel createDefaultCenteredPanel(Panel parent, boolean isTransparent, Color bgcolor) {
-        return new VPanel(Panel.PanelAlign.MIDDLE, DEFAULT_PANEL_WIDTH, DEFAULT_PANEL_HEIGHT, parent,
+    public static VPanel createDefaultCenteredPanel(Panel parent, boolean isTransparent, Color bgcolor,
+                                                    Panel.PanelType panelType) {
+        return new VPanel(Panel.PanelAlign.MIDDLE, panelType, DEFAULT_PANEL_WIDTH, DEFAULT_PANEL_HEIGHT, parent,
                 bgcolor, Colors.DARK_BLUE, isTransparent, true, 15, HorizontalAlign.CENTER);
     }
 
