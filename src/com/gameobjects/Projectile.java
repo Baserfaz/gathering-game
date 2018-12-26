@@ -1,5 +1,6 @@
 package com.gameobjects;
 
+import com.enumerations.DamageType;
 import com.enumerations.Direction;
 import com.enumerations.SpriteType;
 import com.interfaces.ICollidable;
@@ -8,10 +9,6 @@ import com.utilities.RenderUtils;
 import java.awt.*;
 
 public class Projectile extends GameObject implements ICollidable {
-
-    public enum DamageType {
-        PHYSICAL, FROST, FIRE, POISON, LIGHTNING
-    }
 
     private Direction lookDirection;
     private Rectangle hitbox;
@@ -68,6 +65,9 @@ public class Projectile extends GameObject implements ICollidable {
     }
 
     private void move() {
+
+        // TODO: use velocity and acceleration instead
+
         switch (this.lookDirection) {
             case SOUTH:
                 this.worldPosition.y += this.travelSpeed;

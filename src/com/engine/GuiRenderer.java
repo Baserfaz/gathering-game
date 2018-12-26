@@ -181,10 +181,7 @@ public class GuiRenderer {
                 Actor player = Game.instance.getUnitManager().getPlayer();
 
                 Point wpos = player.getWorldPosition();
-                Point tilepos = player.getTilePosition();
                 builder.append("player world pos: [" + wpos.x + ", " + wpos.y + "]\n");
-                builder.append("player tile pos: [" + tilepos.x + ", " + tilepos.y + "]\n");
-
                 builder.append(String.format("Acceleration: %.2f, %.2f\n",
                         player.getAcceleration_x(), player.getAcceleration_y()));
 
