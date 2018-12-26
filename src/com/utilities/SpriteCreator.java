@@ -377,6 +377,14 @@ public class SpriteCreator {
             pos.x = 7;
             pos.y = 4;
             break;
+        case PROJECTILE_PLAYER_1:
+            pos.x = 3;
+            pos.y = 1;
+            break;
+        case PROJECTILE_PLAYER_2:
+            pos.x = 4;
+            pos.y = 1;
+            break;
         case GUI_HEALTH:
             pos.x = 8;
             pos.y = 4;

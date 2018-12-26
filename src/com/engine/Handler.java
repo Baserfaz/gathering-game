@@ -24,9 +24,10 @@ public class Handler {
         
         // references
         List<Block> solidBlocks = new ArrayList<>();
-        List<Actor> actors = new ArrayList<>();
+        List<Actor> enemies = new ArrayList<>();
         List<Item> items = new ArrayList<>();
         List<Gold> valuables = new ArrayList<>();
+        List<Projectile> projectiles = new ArrayList<>();
         Actor player = null;
         
         Camera cam = Game.instance.getCamera();
@@ -83,32 +84,27 @@ public class Handler {
                 if(((Actor) current).getUnitType().equals(UnitType.PLAYER_UNIT)) {
                     player = (Actor) current;
                 } else {
-                    actors.add((Actor) current);
+                    enemies.add((Actor) current);
                 }
             } else if(current instanceof Block) {
-                Block block = (Block) current;
-                solidBlocks.add(block);
+                solidBlocks.add((Block) current);
             } else if(current instanceof Item) {
-
-                // check what kind of item is it
-
-                if(current instanceof Gold) {
-                    Gold gold = (Gold) current;
-                    valuables.add(gold);
-                } else {
-                    Item item = (Item) current;
-                    items.add(item);
-                }
+                if(current instanceof Gold) valuables.add((Gold) current);
+                else items.add((Item) current);
+            } else if(current instanceof Projectile) {
+                projectiles.add((Projectile) current);
             }
         }
         
         // render queue: back to front
         for(Block block : solidBlocks) block.render(g);
-        for(Actor actor : actors) actor.render(g);
         for(Item item : items) item.render(g);
         for(Item valuable : valuables) valuable.render(g);
 
+        for(Actor actor : enemies) actor.render(g);
         if(player != null) player.render(g);
+
+        for(Projectile p : projectiles) p.render(g);
     }
 
     // ---- GETTERS & SETTERS ----

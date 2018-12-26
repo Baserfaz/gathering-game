@@ -17,17 +17,17 @@ public abstract class GameObject {
 
     protected boolean isDeleted = false;
 
-    public GameObject(Point tilePosition, SpriteType type) {
+    public GameObject(Point point, SpriteType type, boolean usesTilePosition) {
 
-        this.tilePosition = tilePosition;
-
-        // calculate world position
-        int size = Game.CALCULATED_SPRITE_SIZE;
-        int margin = 0;
-
-        this.worldPosition = new Point(
-                tilePosition.x * size + tilePosition.x * margin,
-                tilePosition.y * size + tilePosition.y * margin);
+        if(usesTilePosition) {
+            this.tilePosition = point;
+            this.worldPosition = new Point(
+                    point.x * Game.CALCULATED_SPRITE_SIZE + point.x,
+                    point.y * Game.CALCULATED_SPRITE_SIZE + point.y);
+        } else {
+            this.worldPosition = point;
+            this.tilePosition = null; // TODO ?
+        }
         
         // create sprites
         this.defaultStaticSprite = Game.instance.getSpriteStorage().getSprite(type);

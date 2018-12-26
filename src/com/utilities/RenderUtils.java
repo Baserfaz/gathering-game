@@ -266,34 +266,4 @@ public class RenderUtils {
         g.drawImage(img, pos.x, pos.y, sprite.getWidth(), sprite.getHeight(), null);
     }
 
-    // render without rotation
-    public static void RenderSprite(BufferedImage sprite, Point pos, Graphics g) { 
-        g.drawImage(sprite, pos.x, pos.y, sprite.getWidth(), sprite.getHeight(), null);
-    }
-
-    public static Rectangle renderRect(Rectangle rect, 
-            boolean isFilled, boolean hasBorder, 
-            Color borderColor, Color fillColor, Graphics g2d) {
-        
-        // positions
-        int y = rect.y;
-        int x = rect.x;
-        int width = rect.width;
-        int height = rect.height;
-
-        if(hasBorder) {
-            // set color for the border
-            g2d.setColor(borderColor);
-    
-            // render rectangle and fill it
-            g2d.drawRect(x, y, width, height);
-        }
-        
-        if(isFilled) { 
-            g2d.setColor(fillColor);
-            g2d.fillRect(x, y, width, height); 
-        }
-        return new Rectangle(x, y, width, height);
-    }
-
 }

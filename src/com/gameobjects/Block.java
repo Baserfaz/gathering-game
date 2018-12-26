@@ -20,7 +20,7 @@ public class Block extends GameObject implements ICollidable {
     private Rectangle hitbox;
 
     public Block(Point tilePos, BlockType blockType, SpriteType type) {
-        super(tilePos, type);
+        super(tilePos, type, true);
         this.blockType = blockType;
         this.items = new ArrayList<>();
         this.actors = new ArrayList<>();

@@ -3,7 +3,6 @@ package com.gameobjects;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -23,16 +22,21 @@ public class Actor extends GameObject implements ICollidable {
 
     // how fast velocity decreases over time
     // max friction is accelerationValue + deaccelerationValue
-    final double friction = 0.44;
+    private double friction = 0.44;
 
     // how fast acceleration decreases
-    final double deaccelerationValue = 0.30;
+    private double deaccelerationValue = 0.30;
 
     // how fast acceleration happens
-    final double accelerationValue = 0.15;
+    private double accelerationValue = 0.15;
 
-    final double maxAcceleration = 1.0;
-    final double maxVelocity = 5.0;
+    private double maxAcceleration = 1.0;
+    private double maxVelocity = 5.0;
+
+    // in milliseconds -> 1000ms = 1s
+    private double timeBetweenAttacks = 500.0;
+
+    // -------------------
 
     protected Health health;
     protected Inventory inventory;
@@ -52,9 +56,14 @@ public class Actor extends GameObject implements ICollidable {
     private boolean isCollisionsEnabled = true;
     private Rectangle hitbox;
 
+    private long lastFrameTime = 0l;
+    private long attackTimer = 0l;
+
+    private boolean canAttack = false;
+
     public Actor(String name, Point tilePos, UnitType unitType,
                  SpriteType spriteType, int hp, int damage) {
-        super(tilePos, spriteType);
+        super(tilePos, spriteType, true);
 
         this.name = name;
         this.attackDamage = damage;
@@ -76,6 +85,7 @@ public class Actor extends GameObject implements ICollidable {
         this.move();
         this.calculateCollisions();
         this.updateHitboxPos();
+        this.updateAttackTimer();
     }
     
     public void render(Graphics g) {
@@ -84,6 +94,23 @@ public class Actor extends GameObject implements ICollidable {
             if(this.facingDirection == Direction.WEST) { g.drawImage(img, this.worldPosition.x, this.worldPosition.y, null); }
             else if(this.facingDirection == Direction.EAST) { RenderUtils.renderSpriteFlippedHorizontally(img, this.worldPosition, g); }
             else { g.drawImage(img, this.worldPosition.x, this.worldPosition.y, null); }
+        }
+    }
+
+    private void updateAttackTimer() {
+
+        // always update lastFrameTime
+        long now = System.nanoTime();
+        long deltaTime = now - lastFrameTime;
+        lastFrameTime = now;
+
+        if(canAttack) return;
+
+        // deltaTime is in nanoseconds
+        if(attackTimer < timeBetweenAttacks) {
+            attackTimer += deltaTime * 0.000001; // some weird amount of time??
+        } else {
+            this.onAttackTimerReset();
         }
     }
 
@@ -189,6 +216,11 @@ public class Actor extends GameObject implements ICollidable {
         }
     }
 
+    private void onAttackTimerReset() {
+        canAttack = true;
+        attackTimer = 0l;
+    }
+
     public void onDeath() {
         this.deactivate();
     }
@@ -225,23 +257,43 @@ public class Actor extends GameObject implements ICollidable {
         }
 
         if (buttons.containsValue(KeyInput.Command.ACTION)) {
-
+            // TODO: drop bomb etc. ??
         }
 
         if(buttons.containsValue(KeyInput.Command.ATTACK_DOWN)) {
-
+            if(canAttack) {
+                Point p = (Point) this.getWorldPosition().clone();
+                p.y += this.hitbox.height;
+                new Projectile(p, Direction.SOUTH, SpriteType.PROJECTILE_PLAYER_1);
+                this.canAttack = false;
+            }
         }
 
         if(buttons.containsValue(KeyInput.Command.ATTACK_UP)) {
-
+            if(canAttack) {
+                Point p = (Point) this.getWorldPosition().clone();
+                p.y -= this.hitbox.height;
+                new Projectile(p, Direction.NORTH, SpriteType.PROJECTILE_PLAYER_1);
+                this.canAttack = false;
+            }
         }
 
         if(buttons.containsValue(KeyInput.Command.ATTACK_LEFT)) {
-
+            if(canAttack) {
+                Point p = (Point) this.getWorldPosition().clone();
+                p.x -= this.hitbox.width;
+                new Projectile(p, Direction.WEST, SpriteType.PROJECTILE_PLAYER_1);
+                this.canAttack = false;
+            }
         }
 
         if(buttons.containsValue(KeyInput.Command.ATTACK_RIGHT)) {
-
+            if(canAttack) {
+                Point p = (Point) this.getWorldPosition().clone();
+                p.x += this.hitbox.width;
+                new Projectile(p, Direction.EAST, SpriteType.PROJECTILE_PLAYER_1);
+                this.canAttack = false;
+            }
         }
     }
 

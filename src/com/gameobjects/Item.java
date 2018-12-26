@@ -17,7 +17,7 @@ public class Item extends GameObject implements ICollidable {
     protected Direction lookDirection;
 
     public Item(Point tilePos, ItemType itemType, SpriteType spriteType) {
-        super(tilePos, spriteType);
+        super(tilePos, spriteType, true);
         this.itemType = itemType;
 
         // randomize look direction of the item
