@@ -389,6 +389,14 @@ public class SpriteCreator {
             pos.x = 8;
             pos.y = 4;
             break;
+        case SPIKE_DOWN:
+            pos.x = 5;
+            pos.y = 5;
+            break;
+        case SPIKE_UP:
+            pos.x = 6;
+            pos.y = 5;
+            break;
         default:
             System.out.println("Could not find a sprite of spritetype:" + type);
             break;
@@ -396,9 +404,4 @@ public class SpriteCreator {
 
         return pos;
     }
-
-    public String GetPath() { return this.path; }
-    public int[] GetPixelArray() { return this.pixels; }
-    public int GetWidth() { return this.width; }
-    public int GetHeight() { return this.height; }
 }

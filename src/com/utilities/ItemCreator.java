@@ -1,5 +1,6 @@
 package com.utilities;
 
+import com.enumerations.DamageType;
 import com.enumerations.ItemType;
 import com.enumerations.SpriteType;
 import com.gameobjects.*;
@@ -33,6 +34,9 @@ public class ItemCreator {
                 break;
             case GOLD:
                 createdItem = new Gold(tilePosition, 1);
+                break;
+            case SPIKE_TRAP:
+                createdItem = new SpikeTrap(tilePosition, 1, DamageType.PHYSICAL);
                 break;
             default:
                 System.out.println(

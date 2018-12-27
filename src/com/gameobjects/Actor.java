@@ -208,6 +208,13 @@ public abstract class Actor extends GameObject implements ICollidable {
             this.velocity_y = -velocity_y;
             this.acceleration_x = 0;
             this.acceleration_y = 0;
+        } else if(other instanceof SpikeTrap) {
+
+            // activate trap and take damage
+            // TODO: trap damage type calculations
+            SpikeTrap trap = (SpikeTrap) other;
+            if(!trap.isTrapActivated()) { trap.activateTrap(); }
+            this.getHealth().takeDamage(trap.getTrapDamage());
         }
     }
 

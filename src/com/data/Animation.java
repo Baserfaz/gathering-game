@@ -19,18 +19,16 @@ public class Animation {
     }
 
     public BufferedImage getFrame(int index) {
-        if(index < 0 || index > this.frames.size()) return null;
+        if(this.frames.isEmpty() || index < 0 || index > this.frames.size()) return null;
         return this.frames.get(index);
     }
 
     public String getName() {
         return name;
     }
-
     public ArrayList<BufferedImage> getFrames() {
         return frames;
     }
-
     public void addFrame(BufferedImage frame) {
         this.frames.add(frame);
     }

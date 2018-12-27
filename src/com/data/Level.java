@@ -40,10 +40,12 @@ public class Level {
         ItemCreator.createItem(this.getRandomValidBlock().getTilePosition(), ItemType.CHEST);
         ItemCreator.createItem(this.getRandomValidBlock().getTilePosition(), ItemType.CHEST_LOCKED);
         ItemCreator.createItem(this.getRandomValidBlock().getTilePosition(), ItemType.BUTTON);
-
         for(int i = 0; i < 5; i++) {
             ItemCreator.createItem(this.getRandomValidBlock().getTilePosition(), ItemType.GOLD);
         }
+
+        // create trap
+        ItemCreator.createItem(this.getRandomValidBlock().getTilePosition(), ItemType.SPIKE_TRAP);
     }
 
     private void createInitialLevel() {

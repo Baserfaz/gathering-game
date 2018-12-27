@@ -2,5 +2,6 @@ package com.enumerations;
 
 public enum ItemType {
     APPLE, EXIT, STONE, CHEST,
-    CHEST_LOCKED, BUTTON, GOLD
+    CHEST_LOCKED, BUTTON, GOLD,
+    SPIKE_TRAP
 }
