@@ -33,9 +33,20 @@ public interface ICollidable {
         return result;
     }
 
+    default void updateHitbox(Point center) {
+        Rectangle hitbox = this.getHitbox();
+        if(hitbox == null || center == null) return;
+
+        hitbox.x = center.x - hitbox.width / 2;
+        hitbox.y = center.y - hitbox.height / 2;
+
+        this.setHitbox(hitbox);
+    }
+
     void onCollision(ICollidable other);
     boolean isActive();
     void disableCollisions();
     void enableCollisions();
     Rectangle getHitbox();
+    void setHitbox(Rectangle rectangle);
 }

@@ -297,7 +297,6 @@ public class Game extends Canvas implements Runnable {
         Game.instance.setGamestate(GameState.INGAME);
 
         System.out.println("-------- LOGS --------");
-
     }
 
     private void printEngineStart() {
@@ -306,101 +305,76 @@ public class Game extends Canvas implements Runnable {
         System.out.println("Author " + Game.ENGINE_AUTHOR);
     }
 
-    // ----- GETTERS & SETTERS ------
     public Window getWindow() {
         return this.window;
     }
-
     public Font getCustomFont() {
         return customFont;
     }
-
     public void setCustomFont(Font customFont) {
         this.customFont = customFont;
     }
-
     public Camera getCamera() {
         return camera;
     }
-
     public void setCamera(Camera camera) {
         this.camera = camera;
     }
-
     public SpriteCreator getSpriteCreator() {
         return spriteCreator;
     }
-
     public void setSpriteCreator(SpriteCreator spriteCreator) {
         this.spriteCreator = spriteCreator;
     }
-
     public Handler getHandler() {
         return handler;
     }
-
     public void setHandler(Handler handler) {
         this.handler = handler;
     }
-
     public UnitManager getUnitManager() {
         return this.unitManager;
     }
-
     public void setUnitManager(UnitManager unitManager) {
         this.unitManager = unitManager;
     }
-
     public Level getLevel() {
         return this.level;
     }
-
     public void setWorld(Level level) {
         this.level = level;
     }
-
     public GameState getGamestate() {
         return this.gamestate;
     }
-
     public void setGamestate(GameState gamestate) {
         this.gamestate = gamestate;
     }
-
     public GuiRenderer getGuiRenderer() {
         return this.guiRenderer;
     }
-
     public void setGuiRenderer(GuiRenderer guiRenderer) {
         this.guiRenderer = guiRenderer;
     }
-
     public Point getMousePos() { return this.mousePos; }
-
     public void setMousePos(Point mousePos) {
         this.mousePos = mousePos;
     }
-
     public GuiElementManager getGuiElementManager() {
         return guiElementManager;
     }
-
     public SoundManager getSoundManager() {
         return soundManager;
     }
-
     public void setSoundManager(SoundManager soundManager) {
         this.soundManager = soundManager;
     }
-
     public KeyInput getKeyInput() {
         return this.keyInput;
     }
-
     public SpriteStorage getSpriteStorage() {
         return spriteStorage;
     }
-
     public void setSpriteStorage(SpriteStorage spriteStorage) {
         this.spriteStorage = spriteStorage;
     }

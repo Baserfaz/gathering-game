@@ -23,19 +23,10 @@ public class UnitManager {
         if(level != null && level.getBlocks().isEmpty() == false) { 
             Block spawn = level.getRandomValidBlock();
             this.player = new Player("Player", spawn.getTilePosition(), 3, 1);
+            this.unitInstances.add(player);
         }
     }
 
-    public void removeUnit(Actor go) {
-        for(Actor actor : unitInstances) {
-            if(actor.equals(go)) {
-                unitInstances.remove(go);
-                break;
-            }
-        }
-    }
-    
-    // ---- GETTERS & SETTERS ----
     public List<Actor> getUnitInstances() { return unitInstances; }
     public Actor getPlayer() { return this.player; }
 }

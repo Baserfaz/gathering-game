@@ -39,20 +39,11 @@ public class Item extends GameObject implements ICollidable {
     public void tick() {}
 
     @Override
-    public void render(Graphics g) {
-        if(this.isVisible) {
-            g.drawImage(this.defaultStaticSprite,
-                    worldPosition.x, worldPosition.y, null);
-        }
-    }
-
-    @Override
     public void onCollision(ICollidable other) {}
 
     public ItemType getItemType() {
         return itemType;
     }
-
     public void setItemType(ItemType itemType) {
         this.itemType = itemType;
     }
@@ -75,5 +66,10 @@ public class Item extends GameObject implements ICollidable {
     @Override
     public Rectangle getHitbox() {
         return this.hitbox;
+    }
+
+    @Override
+    public void setHitbox(Rectangle rectangle) {
+        this.hitbox = rectangle;
     }
 }

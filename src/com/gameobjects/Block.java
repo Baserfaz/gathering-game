@@ -35,37 +35,16 @@ public class Block extends GameObject implements ICollidable {
 
     public void tick() {}
     
-    public void render(Graphics g) {
-        if(this.isVisible) {
-            g.drawImage(defaultStaticSprite, worldPosition.x, worldPosition.y, null);
-        }
-    }
-    
     public void changeBlock(BlockType bt, SpriteType st) {
         this.blockType = bt;
         this.defaultStaticSprite = Game.instance.getSpriteStorage().getSprite(st);
     }
 
-    public List<Actor> getActors() {
-        return actors;
-    }
-
-    public void setActors(List<Actor> actors) {
-        this.actors = actors;
-    }
-
-    public void addActor(Actor a) { this.actors.add(a); }
-    public void removeActor(Actor a) { this.actors.remove(a); }
-
-    public List<Item> getItems() { return this.items; }
-    public void addItem(Item item) { this.items.add(item); }
     public BlockType getBlocktype() { return blockType; }
     public void setBlocktype(BlockType blocktype) { this.blockType = blocktype; }
 
     @Override
-    public void onCollision(ICollidable other) {
-
-    }
+    public void onCollision(ICollidable other) { }
 
     @Override
     public boolean isActive() {
@@ -85,6 +64,11 @@ public class Block extends GameObject implements ICollidable {
     @Override
     public Rectangle getHitbox() {
         return this.hitbox;
+    }
+
+    @Override
+    public void setHitbox(Rectangle rectangle) {
+        this.hitbox = rectangle;
     }
 }
 

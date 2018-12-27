@@ -37,7 +37,14 @@ public abstract class GameObject {
     }
 
     public abstract void tick();
-    public abstract void render(Graphics g);
+
+    // basic rendering for all game objects
+    public void render(Graphics g) {
+        if(this.isVisible) {
+            g.drawImage(this.defaultStaticSprite,
+                    worldPosition.x, worldPosition.y, null);
+        }
+    }
 
     /**
      * Calculates the hitbox size based on the given sprite.

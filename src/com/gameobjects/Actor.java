@@ -73,10 +73,11 @@ public abstract class Actor extends GameObject implements ICollidable {
     public void tick() {
         this.move();
         this.calculateCollisions();
-        this.updateHitboxPos();
+        this.updateHitbox(this.getCenterPosition());
         this.updateAttackTimer();
     }
-    
+
+    @Override
     public void render(Graphics g) {
         if(this.isVisible) {
             BufferedImage img = this.defaultStaticSprite;
@@ -101,12 +102,6 @@ public abstract class Actor extends GameObject implements ICollidable {
         } else {
             this.onAttackTimerReset();
         }
-    }
-
-    private void updateHitboxPos() {
-        Point centerPosition = this.getCenterPosition();
-        this.hitbox.x = centerPosition.x - hitbox.width / 2;
-        this.hitbox.y = centerPosition.y - hitbox.height / 2;
     }
 
     private void calculateCollisions() {
@@ -264,6 +259,11 @@ public abstract class Actor extends GameObject implements ICollidable {
     @Override
     public Rectangle getHitbox() {
         return this.hitbox;
+    }
+
+    @Override
+    public void setHitbox(Rectangle rectangle) {
+        this.hitbox = rectangle;
     }
 
     public Health getHealth() {

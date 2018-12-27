@@ -93,14 +93,6 @@ public class Projectile extends GameObject implements ICollidable {
         this.isDeleted = true;
     }
 
-    @Override
-    public void render(Graphics g) {
-        if(this.isVisible) {
-            g.drawImage(this.defaultStaticSprite,
-                    this.worldPosition.x, this.worldPosition.y, null);
-        }
-    }
-
     private double getDistanceTravelled() {
         double xx = Math.pow(worldPosition.x - startPoint.x, 2);
         double yy = Math.pow(worldPosition.y - startPoint.y, 2);
@@ -134,5 +126,10 @@ public class Projectile extends GameObject implements ICollidable {
     @Override
     public Rectangle getHitbox() {
         return this.hitbox;
+    }
+
+    @Override
+    public void setHitbox(Rectangle rectangle) {
+        this.hitbox = rectangle;
     }
 }

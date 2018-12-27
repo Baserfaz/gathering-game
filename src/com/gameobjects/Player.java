@@ -123,4 +123,8 @@ public class Player extends Actor {
             consumable.consume(this);
         }
     }
+
+    public Inventory getInventory() {
+        return inventory;
+    }
 }

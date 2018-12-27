@@ -14,8 +14,8 @@ public class Gold extends Item {
         this.amount = amount;
     }
 
-    public void pickup(Actor target) {
-        target.inventory.addGold(amount);
+    public void pickup(Player target) {
+        target.getInventory().addGold(amount);
         this.deactivate();
         this.disableCollisions();
         this.setDeleted(true);
