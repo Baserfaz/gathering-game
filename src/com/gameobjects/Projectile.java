@@ -14,17 +14,19 @@ public class Projectile extends GameObject implements ICollidable {
     private Rectangle hitbox;
     private boolean isCollidable;
     private Point startPoint;
+    private Actor owner;
 
     private int damageAmount = 1;
     private double travelSpeed = 10.0;
     private double travelDistance = 200.0;
     private DamageType damageType = DamageType.PHYSICAL;
 
-    public Projectile(Point worldStartPosition, Direction direction, SpriteType type) {
+    public Projectile(Point worldStartPosition, Direction direction, SpriteType type, Actor owner) {
         super(worldStartPosition, type, false);
 
         this.lookDirection = direction;
         this.startPoint = (Point) worldStartPosition.clone();
+        this.owner = owner;
 
         // rotate sprite: by default the sprite should be facing WEST
         switch (lookDirection) {
@@ -55,6 +57,7 @@ public class Projectile extends GameObject implements ICollidable {
 
             this.move();
             this.updateHitbox();
+            this.calculateCollisions();
         }
     }
 
@@ -105,7 +108,22 @@ public class Projectile extends GameObject implements ICollidable {
 
     @Override
     public void onCollision(ICollidable other) {
-        this.onTravelEnd();
+        if(other instanceof Block) {
+
+            // hit wall
+            this.onTravelEnd();
+
+        } else if(other instanceof Actor && !other.equals(owner) ) {
+
+            // hit an actor
+            // -> calculate damage
+            // TODO: damage type... resistances...
+
+            Actor actor = (Actor) other;
+            actor.getHealth().takeDamage(this.damageAmount);
+
+            this.onTravelEnd();
+        }
     }
 
     @Override

@@ -67,7 +67,7 @@ public class Player extends Actor {
             if(canAttack) {
                 Point p = (Point) this.getWorldPosition().clone();
                 p.y += this.hitbox.height;
-                new Projectile(p, Direction.SOUTH, SpriteType.PROJECTILE_PLAYER_1);
+                new Projectile(p, Direction.SOUTH, SpriteType.PROJECTILE_PLAYER_1, this);
                 this.canAttack = false;
             }
         }
@@ -76,7 +76,7 @@ public class Player extends Actor {
             if(canAttack) {
                 Point p = (Point) this.getWorldPosition().clone();
                 p.y -= this.hitbox.height;
-                new Projectile(p, Direction.NORTH, SpriteType.PROJECTILE_PLAYER_1);
+                new Projectile(p, Direction.NORTH, SpriteType.PROJECTILE_PLAYER_1, this);
                 this.canAttack = false;
             }
         }
@@ -85,7 +85,7 @@ public class Player extends Actor {
             if(canAttack) {
                 Point p = (Point) this.getWorldPosition().clone();
                 p.x -= this.hitbox.width;
-                new Projectile(p, Direction.WEST, SpriteType.PROJECTILE_PLAYER_1);
+                new Projectile(p, Direction.WEST, SpriteType.PROJECTILE_PLAYER_1, this);
                 this.canAttack = false;
             }
         }
@@ -94,7 +94,7 @@ public class Player extends Actor {
             if(canAttack) {
                 Point p = (Point) this.getWorldPosition().clone();
                 p.x += this.hitbox.width;
-                new Projectile(p, Direction.EAST, SpriteType.PROJECTILE_PLAYER_1);
+                new Projectile(p, Direction.EAST, SpriteType.PROJECTILE_PLAYER_1, this);
                 this.canAttack = false;
             }
         }

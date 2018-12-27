@@ -1,6 +1,11 @@
 package com.interfaces;
 
+import com.engine.Game;
+import com.gameobjects.GameObject;
+
 import java.awt.*;
+import java.util.Collection;
+import java.util.stream.Collectors;
 
 public interface ICollidable {
 
@@ -41,6 +46,21 @@ public interface ICollidable {
         hitbox.y = center.y - hitbox.height / 2;
 
         this.setHitbox(hitbox);
+    }
+
+    default void calculateCollisions() {
+        Collection<GameObject> gos = Game.instance.getHandler().getObjects()
+                .stream()
+                .filter(a -> (a instanceof ICollidable))
+                .filter(a -> !a.equals(this))
+                .filter(a -> ((ICollidable) a).isActive())
+                .filter(a -> ((ICollidable) a).getDistanceFrom(this.getHitbox()) < Game.CALCULATED_MAX_COLLISION_DISTANCE)
+                .filter(a -> this.isColliding((ICollidable)a))
+                .collect(Collectors.toList());
+
+        if(!gos.isEmpty()) {
+            gos.stream().forEach(g -> this.onCollision((ICollidable) g));
+        }
     }
 
     void onCollision(ICollidable other);

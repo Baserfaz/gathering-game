@@ -39,7 +39,6 @@ public abstract class Actor extends GameObject implements ICollidable {
     // -------------------
 
     protected Health health;
-    protected Inventory inventory;
 
     protected String name;
     protected Direction facingDirection = Direction.WEST;
@@ -104,22 +103,6 @@ public abstract class Actor extends GameObject implements ICollidable {
         }
     }
 
-    private void calculateCollisions() {
-
-        Collection<GameObject> gos = Game.instance.getHandler().getObjects()
-                .stream()
-                .filter(a -> (a instanceof ICollidable))
-                .filter(a -> !a.equals(this))
-                .filter(a -> ((ICollidable) a).isActive())
-                .filter(a -> ((ICollidable) a).getDistanceFrom(this.getHitbox()) < Game.CALCULATED_MAX_COLLISION_DISTANCE)
-                .filter(a -> this.isColliding((ICollidable)a))
-                .collect(Collectors.toList());
-
-        if(!gos.isEmpty()) {
-            gos.stream().forEach(g -> this.onCollision((ICollidable) g));
-        }
-    }
-
     private void move() {
 
         // clamp the maximum acceleration to some values
@@ -148,24 +131,10 @@ public abstract class Actor extends GameObject implements ICollidable {
         worldPosition.x += velocity_x;
         worldPosition.y += velocity_y;
 
-        // handle acceleration and velocity after applying the forces to world position
-        this.updateDeacceleration();
-        this.updateVelocityFriction();
-
-        // cache
-        lastAccelx = acceleration_x;
-        lastAccely = acceleration_y;
-        lastVelocityx = velocity_x;
-        lastVelocityy = velocity_y;
-    }
-
-    private void updateDeacceleration() {
-
-        // de-accelerate x
+        // ---- handle acceleration and velocity after applying the forces to world position
         if(acceleration_x > 0) { acceleration_x -= deaccelerationValue; }
         else if(acceleration_x < 0) { acceleration_x += deaccelerationValue; }
 
-        // de-accelerate y
         if(acceleration_y > 0) { acceleration_y -= deaccelerationValue; }
         else if(acceleration_y < 0) { acceleration_y += deaccelerationValue; }
 
@@ -177,11 +146,8 @@ public abstract class Actor extends GameObject implements ICollidable {
         if (lastAccely > 0 && acceleration_y <= 0 || lastAccely < 0 && acceleration_y >= 0) {
             acceleration_y = 0;
         }
-    }
 
-    private void updateVelocityFriction() {
-
-        // add friction to the velocity, so it decreases over time
+        //  ---- add friction to the velocity, so it decreases over time
         if(velocity_x > 0) { velocity_x -= friction; }
         else if(velocity_x < 0) { velocity_x += friction; }
 
@@ -198,6 +164,12 @@ public abstract class Actor extends GameObject implements ICollidable {
             velocity_y = 0;
             acceleration_y = 0;
         }
+
+        // ---- cache
+        lastAccelx = acceleration_x;
+        lastAccely = acceleration_y;
+        lastVelocityx = velocity_x;
+        lastVelocityy = velocity_y;
     }
 
     private void onAttackTimerReset() {
@@ -227,8 +199,6 @@ public abstract class Actor extends GameObject implements ICollidable {
 
     @Override
     public void onCollision(ICollidable other) {
-
-        // ---- GENERAL COLLISIONS ----
         if(other instanceof Block ||
                 (other instanceof Item && ((Item) other).getItemType() == ItemType.STONE)) {
 
