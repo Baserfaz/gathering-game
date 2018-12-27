@@ -1,6 +1,5 @@
 package com.utilities;
 
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,66 +8,24 @@ import com.data.Level;
 import com.enumerations.SpriteType;
 import com.gameobjects.Block;
 import com.gameobjects.Actor;
+import com.gameobjects.Player;
 
 public class UnitManager {
 
     private List<Actor> unitInstances;
-    private Actor player;
+    private Player player;
     
     public UnitManager() {
-        unitInstances = new ArrayList<Actor>();
+        unitInstances = new ArrayList<>();
     }
 
     public void createPlayerUnit(Level level) {
         if(level != null && level.getBlocks().isEmpty() == false) { 
             Block spawn = level.getRandomValidBlock();
-            this.player = this.createUnitInstance("Player", spawn, UnitType.PLAYER_UNIT, 3, 1);
+            this.player = new Player("Player", spawn.getTilePosition(), 3, 1);
         }
     }
-    
-    private Actor createUnitInstance(String name, Point wpos, UnitType unitType, int hp, int dmg) {
-        
-        Actor unit = null;
-        
-        switch(unitType) {
-        case PLAYER_UNIT:
-            unit = new Actor(name, wpos, unitType, SpriteType.PLAYER, hp, dmg);
-            break;
 
-        default:
-            System.out.println("ActorManager::createEnemyInstance: unsupported enemy type: " + unitType);
-            break;
-        }
-        
-        if(unit != null) {
-            this.unitInstances.add(unit);
-        }
-        
-        return unit;
-        
-    }
-    
-    private Actor createUnitInstance(String name, Block block, UnitType unitType, int health, int damage) {
-        
-        Actor unit = null;
-        
-        switch(unitType) {
-        case PLAYER_UNIT:
-            unit = new Actor(name, block.getTilePosition(), unitType, SpriteType.PLAYER, health, damage);
-            break;
-
-        default:
-            System.out.println("ActorManager::createEnemyInstance: unsupported enemy type: " + unitType);
-            break;
-        }
-        
-        if(unit != null) {
-            this.unitInstances.add(unit);
-        }
-        
-        return unit;
-    }
-    
     public void removeUnit(Actor go) {
         for(Actor actor : unitInstances) {
             if(actor.equals(go)) {

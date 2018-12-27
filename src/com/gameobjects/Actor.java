@@ -18,23 +18,23 @@ import com.interfaces.ICollidable;
 import com.utilities.Mathf;
 import com.utilities.RenderUtils;
 
-public class Actor extends GameObject implements ICollidable {
+public abstract class Actor extends GameObject implements ICollidable {
 
     // how fast velocity decreases over time
     // max friction is accelerationValue + deaccelerationValue
-    private double friction = 0.44;
+    protected double friction = 0.44;
 
     // how fast acceleration decreases
-    private double deaccelerationValue = 0.30;
+    protected double deaccelerationValue = 0.30;
 
     // how fast acceleration happens
-    private double accelerationValue = 0.15;
+    protected double accelerationValue = 0.15;
 
-    private double maxAcceleration = 1.0;
-    private double maxVelocity = 5.0;
+    protected double maxAcceleration = 1.0;
+    protected double maxVelocity = 5.0;
 
     // in milliseconds -> 1000ms = 1s
-    private double timeBetweenAttacks = 500.0;
+    protected double timeBetweenAttacks = 500.0;
 
     // -------------------
 
@@ -42,11 +42,8 @@ public class Actor extends GameObject implements ICollidable {
     protected Inventory inventory;
 
     protected String name;
-    protected UnitType unitType;
     protected Direction facingDirection = Direction.WEST;
     protected int attackDamage;
-
-    protected KeyInput keyInput;
 
     protected double velocity_x, velocity_y;
     protected double acceleration_x, acceleration_y;
@@ -54,34 +51,26 @@ public class Actor extends GameObject implements ICollidable {
     private double lastAccelx, lastAccely, lastVelocityx, lastVelocityy;
 
     private boolean isCollisionsEnabled = true;
-    private Rectangle hitbox;
+    protected Rectangle hitbox;
 
-    private long lastFrameTime = 0l;
-    private long attackTimer = 0l;
+    protected long lastFrameTime = 0l;
+    protected long attackTimer = 0l;
 
-    private boolean canAttack = false;
+    protected boolean canAttack = false;
 
-    public Actor(String name, Point tilePos, UnitType unitType,
-                 SpriteType spriteType, int hp, int damage) {
+    public Actor(String name, Point tilePos, SpriteType spriteType, int hp, int damage) {
         super(tilePos, spriteType, true);
 
         this.name = name;
         this.attackDamage = damage;
-        this.unitType = unitType;
         this.health = new Health(hp, this);
 
         // create hitbox, only the size matters here, position is updated on every frame
         int size = Game.CALCULATED_SPRITE_SIZE / 2;
         this.hitbox = new Rectangle(this.worldPosition.x, this.worldPosition.y, size, size);
-
-        if(this.unitType == UnitType.PLAYER_UNIT) {
-            this.keyInput = Game.instance.getKeyInput();
-            this.inventory = new Inventory();
-        }
     }
 
     public void tick() {
-        if(this.unitType == UnitType.PLAYER_UNIT) { this.handleButtons(); }
         this.move();
         this.calculateCollisions();
         this.updateHitboxPos();
@@ -225,82 +214,6 @@ public class Actor extends GameObject implements ICollidable {
         this.deactivate();
     }
 
-    private void handleButtons() {
-
-        // current buttons that are held down
-        Map<Integer, KeyInput.Command> buttons = this.keyInput.getButtons();
-
-        if (buttons.containsValue(KeyInput.Command.MOVE_DOWN)) {
-            if(acceleration_y < maxAcceleration) {
-                acceleration_y += (deaccelerationValue + accelerationValue);
-            }
-        }
-
-        if (buttons.containsValue(KeyInput.Command.MOVE_UP)) {
-            if(Math.abs(acceleration_y) < maxAcceleration) {
-                acceleration_y -= (deaccelerationValue + accelerationValue);
-            }
-        }
-
-        if (buttons.containsValue(KeyInput.Command.MOVE_RIGHT)) {
-            facingDirection = Direction.EAST;
-            if(acceleration_x < maxAcceleration) {
-                acceleration_x += (deaccelerationValue + accelerationValue);
-            }
-        }
-
-        if (buttons.containsValue(KeyInput.Command.MOVE_LEFT)) {
-            facingDirection = Direction.WEST;
-            if(Math.abs(acceleration_x) < maxAcceleration) {
-                acceleration_x -= (deaccelerationValue + accelerationValue);
-            }
-        }
-
-        if (buttons.containsValue(KeyInput.Command.ACTION)) {
-            // TODO: drop bomb etc. ??
-        }
-
-        if(buttons.containsValue(KeyInput.Command.ATTACK_DOWN)) {
-            if(canAttack) {
-                Point p = (Point) this.getWorldPosition().clone();
-                p.y += this.hitbox.height;
-                new Projectile(p, Direction.SOUTH, SpriteType.PROJECTILE_PLAYER_1);
-                this.canAttack = false;
-            }
-        }
-
-        if(buttons.containsValue(KeyInput.Command.ATTACK_UP)) {
-            if(canAttack) {
-                Point p = (Point) this.getWorldPosition().clone();
-                p.y -= this.hitbox.height;
-                new Projectile(p, Direction.NORTH, SpriteType.PROJECTILE_PLAYER_1);
-                this.canAttack = false;
-            }
-        }
-
-        if(buttons.containsValue(KeyInput.Command.ATTACK_LEFT)) {
-            if(canAttack) {
-                Point p = (Point) this.getWorldPosition().clone();
-                p.x -= this.hitbox.width;
-                new Projectile(p, Direction.WEST, SpriteType.PROJECTILE_PLAYER_1);
-                this.canAttack = false;
-            }
-        }
-
-        if(buttons.containsValue(KeyInput.Command.ATTACK_RIGHT)) {
-            if(canAttack) {
-                Point p = (Point) this.getWorldPosition().clone();
-                p.x += this.hitbox.width;
-                new Projectile(p, Direction.EAST, SpriteType.PROJECTILE_PLAYER_1);
-                this.canAttack = false;
-            }
-        }
-    }
-
-    public UnitType getUnitType() {
-        return unitType;
-    }
-
     public double getVelocity_x() {
         return velocity_x;
     }
@@ -330,29 +243,6 @@ public class Actor extends GameObject implements ICollidable {
             this.velocity_y = -velocity_y;
             this.acceleration_x = 0;
             this.acceleration_y = 0;
-        }
-
-        // ---- SPECIAL STUFF FOR PLAYER ----
-        if(this.unitType != UnitType.PLAYER_UNIT) return;
-
-        if(other instanceof Chest) {
-            Chest c = (Chest) other;
-            if(c.isLocked() && this.inventory.hasKeys()) {
-                c.unlock();
-                this.inventory.useKey();
-            }
-            if(!c.isLocked() && !c.isOpen()) {
-                c.open();
-            }
-        } else if(other instanceof StepPlate) {
-            StepPlate stepPlate = (StepPlate) other;
-            stepPlate.activatePlate();
-        } else if(other instanceof Gold) {
-            Gold gold = (Gold) other;
-            gold.pickup(this);
-        } else if(other instanceof Consumable) {
-            Consumable consumable = (Consumable) other;
-            consumable.consume(this);
         }
     }
 

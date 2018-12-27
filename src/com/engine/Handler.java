@@ -79,13 +79,11 @@ public class Handler {
 
         for(int i = 0; i < objInView.size(); i++) {
             GameObject current = objInView.get(i);
-            
-            if(current instanceof Actor) {
-                if(((Actor) current).getUnitType().equals(UnitType.PLAYER_UNIT)) {
-                    player = (Actor) current;
-                } else {
-                    enemies.add((Actor) current);
-                }
+
+            // TODO: enemies.add((Actor) current);
+
+            if(current instanceof Player) {
+                player = (Actor) current;
             } else if(current instanceof Block) {
                 solidBlocks.add((Block) current);
             } else if(current instanceof Item) {
