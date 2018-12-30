@@ -14,6 +14,7 @@ public class SpikeTrap extends Item {
     private DamageType damageType;
 
     private boolean activated = false;
+    private boolean isAutomatic;
 
     private int rechargeTime = 1500;
     private long rechargeTimer = 0l;
@@ -22,10 +23,11 @@ public class SpikeTrap extends Item {
     // cache the original sprite
     private BufferedImage defaultImage;
 
-    public SpikeTrap(Point tilePos, int damage, DamageType damageType) {
+    public SpikeTrap(Point tilePos, int damage, DamageType damageType, boolean isAutomatic) {
         super(tilePos, ItemType.SPIKE_TRAP, SpriteType.SPIKE_DOWN);
         this.defaultImage = defaultStaticSprite;
 
+        this.isAutomatic = isAutomatic;
         this.damageType = damageType;
         this.trapDamage = damage;
     }
@@ -38,13 +40,28 @@ public class SpikeTrap extends Item {
             long deltaTime = now - lastTime;
             lastTime = now;
 
-            if(!this.activated) return;
+            if(this.activated) {
 
-            if(rechargeTimer < rechargeTime) {
-                this.rechargeTimer += deltaTime * 0.000001;
+                // -> trap is up
+                if (rechargeTimer < rechargeTime) {
+                    this.rechargeTimer += deltaTime * 0.000001;
+                } else {
+                    this.deactivateTrap();
+                    this.rechargeTimer = 0l;
+                }
+
             } else {
-                this.deactivateTrap();
-                this.rechargeTimer = 0l;
+
+                // -> trap is down
+                if(isAutomatic) {
+
+                    if (rechargeTimer < rechargeTime) {
+                        this.rechargeTimer += deltaTime * 0.000001;
+                    } else {
+                        this.activateTrap();
+                        this.rechargeTimer = 0l;
+                    }
+                }
             }
         }
     }
@@ -69,5 +86,9 @@ public class SpikeTrap extends Item {
 
     public DamageType getDamageType() {
         return damageType;
+    }
+
+    public boolean isAutomatic() {
+        return isAutomatic;
     }
 }

@@ -2,18 +2,12 @@ package com.gameobjects;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.Collection;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import com.data.Health;
-import com.data.Inventory;
 import com.engine.Game;
-import com.engine.KeyInput;
 import com.enumerations.Direction;
 import com.enumerations.ItemType;
 import com.enumerations.SpriteType;
-import com.enumerations.UnitType;
 import com.interfaces.ICollidable;
 import com.utilities.Mathf;
 import com.utilities.RenderUtils;
@@ -35,6 +29,7 @@ public abstract class Actor extends GameObject implements ICollidable {
 
     // in milliseconds -> 1000ms = 1s
     protected double timeBetweenAttacks = 500.0;
+    protected double invulnerabilityDuration = 500.0;
 
     // -------------------
 
@@ -54,8 +49,10 @@ public abstract class Actor extends GameObject implements ICollidable {
 
     protected long lastFrameTime = 0l;
     protected long attackTimer = 0l;
+    protected long invulnerabilityTimer = 0l;
 
     protected boolean canAttack = false;
+    protected boolean isInvulnerable = false;
 
     public Actor(String name, Point tilePos, SpriteType spriteType, int hp, int damage) {
         super(tilePos, spriteType, true);
@@ -73,33 +70,42 @@ public abstract class Actor extends GameObject implements ICollidable {
         this.move();
         this.calculateCollisions();
         this.updateHitbox(this.getCenterPosition());
-        this.updateAttackTimer();
+        this.updateTimers();
     }
 
     @Override
     public void render(Graphics g) {
         if(this.isVisible) {
             BufferedImage img = this.defaultStaticSprite;
-            if(this.facingDirection == Direction.WEST) { g.drawImage(img, this.worldPosition.x, this.worldPosition.y, null); }
-            else if(this.facingDirection == Direction.EAST) { RenderUtils.renderSpriteFlippedHorizontally(img, this.worldPosition, g); }
-            else { g.drawImage(img, this.worldPosition.x, this.worldPosition.y, null); }
+            if(this.facingDirection == Direction.EAST) { img = RenderUtils.flipSpriteHorizontally(img); }
+            if(isInvulnerable) { img = RenderUtils.tintWithColor(img, Color.red); }
+            g.drawImage(img, this.worldPosition.x, this.worldPosition.y, null);
         }
     }
 
-    private void updateAttackTimer() {
+    private void updateTimers() {
 
-        // always update lastFrameTime
+        // calculate time between ticks in ns
         long now = System.nanoTime();
-        long deltaTime = now - lastFrameTime;
+        double deltaTime = (now - lastFrameTime) * 0.000001;
         lastFrameTime = now;
 
-        if(canAttack) return;
+        // update attack timer
+        if(!canAttack) {
+            if (attackTimer < timeBetweenAttacks) {
+                attackTimer += deltaTime;
+            } else {
+                this.onAttackTimerReset();
+            }
+        }
 
-        // deltaTime is in nanoseconds
-        if(attackTimer < timeBetweenAttacks) {
-            attackTimer += deltaTime * 0.000001; // some weird amount of time??
-        } else {
-            this.onAttackTimerReset();
+        // update invulnerability timer
+        if(isInvulnerable) {
+            if (invulnerabilityTimer < invulnerabilityDuration) {
+                invulnerabilityTimer += deltaTime;
+            } else {
+                this.onInvulnerabilityTimerReset();
+            }
         }
     }
 
@@ -177,6 +183,15 @@ public abstract class Actor extends GameObject implements ICollidable {
         attackTimer = 0l;
     }
 
+    private void onInvulnerabilityTimerReset() {
+        this.isInvulnerable = false;
+        invulnerabilityTimer = 0l;
+    }
+
+    public void onDamageTaken() {
+        this.isInvulnerable = true;
+    }
+
     public void onDeath() {
         this.deactivate();
     }
@@ -208,12 +223,10 @@ public abstract class Actor extends GameObject implements ICollidable {
             this.velocity_y = -velocity_y;
             this.acceleration_x = 0;
             this.acceleration_y = 0;
-        } else if(other instanceof SpikeTrap) {
 
-            // activate trap and take damage
-            // TODO: trap damage type calculations
+        } else if(other instanceof SpikeTrap) {
             SpikeTrap trap = (SpikeTrap) other;
-            if(!trap.isTrapActivated()) { trap.activateTrap(); }
+            if (!trap.isAutomatic() && !trap.isTrapActivated()) { trap.activateTrap(); }
             this.getHealth().takeDamage(trap.getTrapDamage());
         }
     }
@@ -245,5 +258,9 @@ public abstract class Actor extends GameObject implements ICollidable {
 
     public Health getHealth() {
         return this.health;
+    }
+
+    public boolean isInvulnerable() {
+        return isInvulnerable;
     }
 }

@@ -36,7 +36,7 @@ public class ItemCreator {
                 createdItem = new Gold(tilePosition, 1);
                 break;
             case SPIKE_TRAP:
-                createdItem = new SpikeTrap(tilePosition, 1, DamageType.PHYSICAL);
+                createdItem = new SpikeTrap(tilePosition, 1, DamageType.PHYSICAL, true);
                 break;
             default:
                 System.out.println(
