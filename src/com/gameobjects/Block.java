@@ -32,8 +32,6 @@ public class Block extends GameObject implements ICollidable {
         int size = Game.CALCULATED_SPRITE_SIZE;
         this.hitbox = new Rectangle(this.worldPosition.x, this.worldPosition.y, size, size);
     }
-
-    public void tick() {}
     
     public void changeBlock(BlockType bt, SpriteType st) {
         this.blockType = bt;

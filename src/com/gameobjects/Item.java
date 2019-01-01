@@ -36,9 +36,6 @@ public class Item extends GameObject implements ICollidable {
     }
 
     @Override
-    public void tick() {}
-
-    @Override
     public void onCollision(ICollidable other) {}
 
     public ItemType getItemType() {

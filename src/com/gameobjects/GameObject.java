@@ -26,7 +26,7 @@ public abstract class GameObject {
                     point.y * Game.CALCULATED_SPRITE_SIZE + point.y);
         } else {
             this.worldPosition = point;
-            this.tilePosition = null; // TODO ?
+            this.tilePosition = null;
         }
         
         // create sprites
@@ -36,14 +36,12 @@ public abstract class GameObject {
         Game.instance.getHandler().AddObject(this);
     }
 
-    public abstract void tick();
+    public void tick() {}
 
     // basic rendering for all game objects
     public void render(Graphics g) {
-        if(this.isVisible) {
-            g.drawImage(this.defaultStaticSprite,
-                    worldPosition.x, worldPosition.y, null);
-        }
+        g.drawImage(this.defaultStaticSprite,
+                worldPosition.x, worldPosition.y, null);
     }
 
     /**

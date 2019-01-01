@@ -33,37 +33,36 @@ public class SpikeTrap extends Item {
     }
 
     public void tick() {
-        if(this.isEnabled) {
 
-            // get delta time between ticks
-            long now = System.nanoTime();
-            long deltaTime = now - lastTime;
-            lastTime = now;
+        // get delta time between ticks
+        long now = System.nanoTime();
+        long deltaTime = now - lastTime;
+        lastTime = now;
 
-            if(this.activated) {
+        if(this.activated) {
 
-                // -> trap is up
+            // -> trap is up
+            if (rechargeTimer < rechargeTime) {
+                this.rechargeTimer += deltaTime * 0.000001;
+            } else {
+                this.deactivateTrap();
+                this.rechargeTimer = 0l;
+            }
+
+        } else {
+
+            // -> trap is down
+            if(isAutomatic) {
+
                 if (rechargeTimer < rechargeTime) {
                     this.rechargeTimer += deltaTime * 0.000001;
                 } else {
-                    this.deactivateTrap();
+                    this.activateTrap();
                     this.rechargeTimer = 0l;
-                }
-
-            } else {
-
-                // -> trap is down
-                if(isAutomatic) {
-
-                    if (rechargeTimer < rechargeTime) {
-                        this.rechargeTimer += deltaTime * 0.000001;
-                    } else {
-                        this.activateTrap();
-                        this.rechargeTimer = 0l;
-                    }
                 }
             }
         }
+
     }
 
     public void activateTrap() {

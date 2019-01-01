@@ -16,20 +16,20 @@ public abstract class Actor extends GameObject implements ICollidable {
 
     // how fast velocity decreases over time
     // max friction is accelerationValue + deaccelerationValue
-    protected double friction = 0.44;
+    private double friction = 0.44;
 
     // how fast acceleration decreases
-    protected double deaccelerationValue = 0.30;
+    private double deaccelerationValue = 0.30;
 
     // how fast acceleration happens
-    protected double accelerationValue = 0.15;
+    private double accelerationValue = 0.15;
 
-    protected double maxAcceleration = 1.0;
-    protected double maxVelocity = 5.0;
+    private double maxAcceleration = 1.0;
+    private double maxVelocity = 5.0;
 
     // in milliseconds -> 1000ms = 1s
-    protected double timeBetweenAttacks = 500.0;
-    protected double invulnerabilityDuration = 500.0;
+    private double timeBetweenAttacks = 500.0;
+    private double invulnerabilityDuration = 500.0;
 
     // -------------------
 
@@ -39,17 +39,17 @@ public abstract class Actor extends GameObject implements ICollidable {
     protected Direction facingDirection = Direction.WEST;
     protected int attackDamage;
 
-    protected double velocity_x, velocity_y;
-    protected double acceleration_x, acceleration_y;
+    private double velocity_x, velocity_y;
+    private double acceleration_x, acceleration_y;
 
     private double lastAccelx, lastAccely, lastVelocityx, lastVelocityy;
 
     private boolean isCollisionsEnabled = true;
     protected Rectangle hitbox;
 
-    protected long lastFrameTime = 0l;
-    protected long attackTimer = 0l;
-    protected long invulnerabilityTimer = 0l;
+    private long lastFrameTime = 0l;
+    private long attackTimer = 0l;
+    private long invulnerabilityTimer = 0l;
 
     protected boolean canAttack = false;
     protected boolean isInvulnerable = false;
@@ -75,12 +75,10 @@ public abstract class Actor extends GameObject implements ICollidable {
 
     @Override
     public void render(Graphics g) {
-        if(this.isVisible) {
-            BufferedImage img = this.defaultStaticSprite;
-            if(this.facingDirection == Direction.EAST) { img = RenderUtils.flipSpriteHorizontally(img); }
-            if(isInvulnerable) { img = RenderUtils.tintWithColor(img, Color.red); }
-            g.drawImage(img, this.worldPosition.x, this.worldPosition.y, null);
-        }
+        BufferedImage img = this.defaultStaticSprite;
+        if(this.facingDirection == Direction.EAST) { img = RenderUtils.flipSpriteHorizontally(img); }
+        if(isInvulnerable) { img = RenderUtils.tintWithColor(img, Color.red); }
+        g.drawImage(img, this.worldPosition.x, this.worldPosition.y, null);
     }
 
     private void updateTimers() {
@@ -227,7 +225,7 @@ public abstract class Actor extends GameObject implements ICollidable {
         } else if(other instanceof SpikeTrap) {
             SpikeTrap trap = (SpikeTrap) other;
             if (!trap.isAutomatic() && !trap.isTrapActivated()) { trap.activateTrap(); }
-            this.getHealth().takeDamage(trap.getTrapDamage());
+            if(trap.isTrapActivated()) this.getHealth().takeDamage(trap.getTrapDamage());
         }
     }
 
@@ -262,5 +260,37 @@ public abstract class Actor extends GameObject implements ICollidable {
 
     public boolean isInvulnerable() {
         return isInvulnerable;
+    }
+
+    public void setAcceleration_x(double acceleration_x) {
+        this.acceleration_x = acceleration_x;
+    }
+
+    public void addAcceleration_x(double a) {
+        this.acceleration_x += a;
+    }
+
+    public void addAcceleration_y(double a) {
+        this.acceleration_y += a;
+    }
+
+    public void setAcceleration_y(double acceleration_y) {
+        this.acceleration_y = acceleration_y;
+    }
+
+    public double getMaxAcceleration() {
+        return maxAcceleration;
+    }
+
+    public double getMaxVelocity() {
+        return maxVelocity;
+    }
+
+    public double getDeaccelerationValue() {
+        return deaccelerationValue;
+    }
+
+    public double getAccelerationValue() {
+        return accelerationValue;
     }
 }

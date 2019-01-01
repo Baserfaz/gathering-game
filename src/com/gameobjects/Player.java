@@ -33,29 +33,34 @@ public class Player extends Actor {
         // current buttons that are held down
         Map<Integer, KeyInput.Command> buttons = this.keyInput.getButtons();
 
+        double maxAcceleration = getMaxAcceleration();
+        double ay = getAcceleration_y();
+        double ax = getAcceleration_x();
+        double totalAcc = getAccelerationValue() + getDeaccelerationValue();
+
         if (buttons.containsValue(KeyInput.Command.MOVE_DOWN)) {
-            if(acceleration_y < maxAcceleration) {
-                acceleration_y += (deaccelerationValue + accelerationValue);
+            if(ay < maxAcceleration) {
+                addAcceleration_y(totalAcc);
             }
         }
 
         if (buttons.containsValue(KeyInput.Command.MOVE_UP)) {
-            if(Math.abs(acceleration_y) < maxAcceleration) {
-                acceleration_y -= (deaccelerationValue + accelerationValue);
+            if(Math.abs(ay) < maxAcceleration) {
+                addAcceleration_y(-totalAcc);
             }
         }
 
         if (buttons.containsValue(KeyInput.Command.MOVE_RIGHT)) {
             facingDirection = Direction.EAST;
-            if(acceleration_x < maxAcceleration) {
-                acceleration_x += (deaccelerationValue + accelerationValue);
+            if(ax < maxAcceleration) {
+                addAcceleration_x(totalAcc);
             }
         }
 
         if (buttons.containsValue(KeyInput.Command.MOVE_LEFT)) {
             facingDirection = Direction.WEST;
-            if(Math.abs(acceleration_x) < maxAcceleration) {
-                acceleration_x -= (deaccelerationValue + accelerationValue);
+            if(Math.abs(ax) < maxAcceleration) {
+                addAcceleration_x(-totalAcc);
             }
         }
 
