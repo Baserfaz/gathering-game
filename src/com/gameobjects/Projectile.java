@@ -1,5 +1,6 @@
 package com.gameobjects;
 
+import com.data.Animation;
 import com.enumerations.DamageType;
 import com.enumerations.Direction;
 import com.enumerations.SpriteType;
@@ -7,8 +8,16 @@ import com.interfaces.ICollidable;
 import com.utilities.RenderUtils;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 public class Projectile extends GameObject implements ICollidable {
+
+    private Animation onDestroyAnim;
+    private int frameIndex = 0;  // what frame is it currently
+    private int frameTime = 100; // how long one frame is shown (in ms)
+    private long frameTimer = 0l;
+    private long lastTime = 0l;
 
     private Direction lookDirection;
     private Rectangle hitbox;
@@ -21,12 +30,17 @@ public class Projectile extends GameObject implements ICollidable {
     private double travelDistance = 200.0;
     private DamageType damageType = DamageType.PHYSICAL;
 
+    private boolean isOnTravelEnd = false;
+
     public Projectile(Point worldStartPosition, Direction direction, SpriteType type, Actor owner) {
         super(worldStartPosition, type, false);
 
         this.lookDirection = direction;
         this.startPoint = (Point) worldStartPosition.clone();
         this.owner = owner;
+
+        // TODO: get animation frames
+        this.onDestroyAnim = new Animation("Destroyed", new ArrayList<>());
 
         // rotate sprite: by default the sprite should be facing WEST
         switch (lookDirection) {
@@ -49,9 +63,14 @@ public class Projectile extends GameObject implements ICollidable {
     public void tick() {
         if(this.isEnabled) {
 
+            if(isOnTravelEnd) {
+                this.onTravelEnd();
+                return;
+            }
+
             double distance = this.getDistanceTravelled();
             if(distance >= this.travelDistance) {
-                this.onTravelEnd();
+                isOnTravelEnd = true;
                 return;
             }
 
@@ -91,6 +110,42 @@ public class Projectile extends GameObject implements ICollidable {
     }
 
     private void onTravelEnd() {
+
+        // This function is run every tick if the travelEnd flag is true.
+        // Meaning we can run animation logic here.
+        if(onDestroyAnim != null
+                && onDestroyAnim.getFrameCount() > 0
+                && this.frameIndex < onDestroyAnim.getFrameCount()) {
+
+            // timing
+            long now = System.nanoTime();
+            long deltaTime = now - lastTime;
+            lastTime = now;
+
+            if(this.frameTimer >= this.frameTime) {
+
+                BufferedImage img = onDestroyAnim.getFrame(this.frameIndex);
+                switch (this.lookDirection) {
+                    case NORTH:
+                        img = RenderUtils.rotateImageClockwise(img, 1);
+                        break;
+                    case SOUTH:
+                        img = RenderUtils.rotateImageClockwise(img, 3);
+                        break;
+                    case EAST:
+                        img = RenderUtils.flipSpriteHorizontally(img);
+                        break;
+                }
+
+                this.defaultStaticSprite = img;
+                this.frameIndex += 1;
+            } else {
+                this.frameTimer += deltaTime;
+            }
+
+            return;
+        }
+
         this.deactivate();
         this.disableCollisions();
         this.isDeleted = true;
@@ -111,7 +166,7 @@ public class Projectile extends GameObject implements ICollidable {
         if(other instanceof Block) {
 
             // hit wall
-            this.onTravelEnd();
+            isOnTravelEnd = true;
 
         } else if(other instanceof Actor && !other.equals(owner) ) {
 
@@ -122,7 +177,7 @@ public class Projectile extends GameObject implements ICollidable {
             Actor actor = (Actor) other;
             actor.getHealth().takeDamage(this.damageAmount);
 
-            this.onTravelEnd();
+            isOnTravelEnd = true;
         }
     }
 

@@ -23,6 +23,7 @@ public class Animation {
         return this.frames.get(index);
     }
 
+    public int getFrameCount() { return this.frames.size(); }
     public String getName() {
         return name;
     }
