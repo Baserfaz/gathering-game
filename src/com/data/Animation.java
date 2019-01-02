@@ -1,21 +1,21 @@
 package com.data;
 
+import com.enumerations.AnimationType;
+
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Collection;
 
 public class Animation {
 
-    public String name;
+    private String name;
+    private AnimationType animationType;
     private ArrayList<BufferedImage> frames;
 
-    public Animation() {
-        this.name = "Unnamed animation";
-        this.frames = new ArrayList<>();
-    }
-
-    public Animation(String name, ArrayList<BufferedImage> frames) {
+    public Animation(String name, AnimationType type) {
         this.name = name;
-        this.frames = frames;
+        this.frames = new ArrayList<>();
+        this.animationType = type;
     }
 
     public BufferedImage getFrame(int index) {
@@ -33,4 +33,5 @@ public class Animation {
     public void addFrame(BufferedImage frame) {
         this.frames.add(frame);
     }
+    public void addFrames(Collection<BufferedImage> frames) { this.frames.addAll(frames); }
 }

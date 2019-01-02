@@ -1,10 +1,12 @@
 package com.gameobjects;
 
 import com.data.Animation;
+import com.enumerations.AnimationType;
 import com.enumerations.DamageType;
 import com.enumerations.Direction;
 import com.enumerations.SpriteType;
 import com.interfaces.ICollidable;
+import com.utilities.AnimationFactory;
 import com.utilities.RenderUtils;
 
 import java.awt.*;
@@ -40,7 +42,8 @@ public class Projectile extends GameObject implements ICollidable {
         this.owner = owner;
 
         // TODO: get animation frames
-        this.onDestroyAnim = new Animation("Destroyed", new ArrayList<>());
+        this.onDestroyAnim = AnimationFactory.createAnimation(
+                "Projectile Destroyed", AnimationType.PROJECTILE_DESTROY);
 
         // rotate sprite: by default the sprite should be facing WEST
         switch (lookDirection) {
