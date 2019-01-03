@@ -15,9 +15,11 @@ import java.awt.image.BufferedImage;
 
 public class Projectile extends GameObject implements ICollidable {
 
+    private final int shadowTintDepth = 4;
+
     private Animation onDestroyAnim;
     private int frameIndex = 0;  // what frame is it currently
-    private int frameTime = 100; // how long one frame is shown (in ms)
+    private int frameTime = 20; // how long one frame is shown
     private long frameTimer = 0l;
     private long lastTime = 0l;
 
@@ -59,7 +61,7 @@ public class Projectile extends GameObject implements ICollidable {
                 break;
         }
 
-        this.shadow = RenderUtils.tint(this.defaultStaticSprite, true, 4);
+        this.shadow = RenderUtils.tint(this.defaultStaticSprite, true, shadowTintDepth);
 
         this.hitbox = this.calculateBoundingBox();
         this.isCollidable = true;
@@ -136,34 +138,44 @@ public class Projectile extends GameObject implements ICollidable {
         // Meaning we can run animation logic here.
         if(onDestroyAnim != null
                 && onDestroyAnim.getFrameCount() > 0
-                && this.frameIndex < onDestroyAnim.getFrameCount()) {
+                && frameIndex <= onDestroyAnim.getFrameCount()) {
 
             // timing
             long now = System.nanoTime();
-            long deltaTime = now - lastTime;
+            double deltaTime = (now - lastTime) * 0.000001;
             lastTime = now;
 
-            if(this.frameTimer >= this.frameTime) {
+            // do the animation
+            if(frameTimer >= frameTime) {
 
-                BufferedImage img = onDestroyAnim.getFrame(this.frameIndex);
-                switch (this.lookDirection) {
-                    case NORTH:
-                        img = RenderUtils.rotateImageClockwise(img, 1);
-                        break;
-                    case SOUTH:
-                        img = RenderUtils.rotateImageClockwise(img, 3);
-                        break;
-                    case EAST:
-                        img = RenderUtils.flipSpriteHorizontally(img);
-                        break;
+                BufferedImage img = onDestroyAnim.getFrame(frameIndex);
+
+                if(img != null) {
+                    switch (this.lookDirection) {
+                        case NORTH:
+                            img = RenderUtils.rotateImageClockwise(img, 1);
+                            break;
+                        case SOUTH:
+                            img = RenderUtils.rotateImageClockwise(img, 3);
+                            break;
+                        case EAST:
+                            img = RenderUtils.flipSpriteHorizontally(img);
+                            break;
+                    }
+
+                    defaultStaticSprite = img;
+                    shadow = RenderUtils.tint(img, true, shadowTintDepth);
                 }
 
-                this.defaultStaticSprite = img;
-                this.frameIndex += 1;
+                frameIndex += 1;
+                frameTimer = 0;
+
             } else {
-                this.frameTimer += deltaTime;
+                frameTimer += deltaTime;
             }
 
+            // this return means we are exiting the function before calling deactivate,
+            // only after the animation is over we are not returning.
             return;
         }
 

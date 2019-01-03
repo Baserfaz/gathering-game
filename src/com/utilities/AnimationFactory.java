@@ -18,7 +18,7 @@ public class AnimationFactory {
                             new ArrayList<>(Arrays.asList(
                                     Game.instance
                                     .getSpriteCreator()
-                                    .createMultipleSprites(4, 1, 2)
+                                    .createMultipleSprites(4, 1, 3)
                             ))
                     );
                 break;
