@@ -8,12 +8,10 @@ import java.util.Collection;
 
 public class Animation {
 
-    private String name;
     private AnimationType animationType;
     private ArrayList<BufferedImage> frames;
 
-    public Animation(String name, AnimationType type) {
-        this.name = name;
+    public Animation(AnimationType type) {
         this.frames = new ArrayList<>();
         this.animationType = type;
     }
@@ -24,9 +22,6 @@ public class Animation {
     }
 
     public int getFrameCount() { return this.frames.size(); }
-    public String getName() {
-        return name;
-    }
     public ArrayList<BufferedImage> getFrames() {
         return frames;
     }
@@ -34,4 +29,7 @@ public class Animation {
         this.frames.add(frame);
     }
     public void addFrames(Collection<BufferedImage> frames) { this.frames.addAll(frames); }
+    public AnimationType getAnimationType() {
+        return this.animationType;
+    }
 }

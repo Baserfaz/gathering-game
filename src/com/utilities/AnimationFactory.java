@@ -3,20 +3,24 @@ package com.utilities;
 import com.data.Animation;
 import com.engine.Game;
 import com.enumerations.AnimationType;
-import com.enumerations.SpriteType;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class AnimationFactory {
 
-    public static Animation createAnimation(String name, AnimationType type) {
-        Animation animation = new Animation(name, type);
+    public static Animation createAnimation(AnimationType type) {
+        Animation animation = new Animation(type);
 
         switch (type) {
-            case PROJECTILE_DESTROY:
-                    animation.addFrame(
-                            Game.instance.getSpriteStorage().getSprite(
-                                    SpriteType.PROJECTILE_PLAYER_2));
+            case PLAYER_PROJECTILE_DESTROY:
+                    animation.addFrames(
+                            new ArrayList<>(Arrays.asList(
+                                    Game.instance
+                                    .getSpriteCreator()
+                                    .createMultipleSprites(4, 1, 2)
+                            ))
+                    );
                 break;
         }
 
@@ -26,7 +30,7 @@ public class AnimationFactory {
     public static ArrayList<Animation> createAllAnimations() {
         ArrayList<Animation> animations = new ArrayList<>();
         for(AnimationType type : AnimationType.values()) {
-            animations.add(createAnimation("", type));
+            animations.add(createAnimation(type));
         }
         return animations;
     }

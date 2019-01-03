@@ -39,7 +39,7 @@ public class RenderUtils {
     
                     // second parameter is if there is alpha channel.
                     Color color = new Color(tintedImage.getRGB(x, y), true);
-                    Color tintedColor = null;
+                    Color tintedColor;
     
                     // make the pixel's color darker.
                     if(darker) tintedColor = color.darker();
@@ -121,8 +121,10 @@ public class RenderUtils {
 
 
                 // don't highlight the corner pixels
-                if((x == 0 && y == 0) || (x == tintedImage.getWidth() - 1 && y == 0) ||
-                        (x == 0 && y == tintedImage.getHeight() - 1) || (x == tintedImage.getWidth() - 1 && y == tintedImage.getHeight() - 1)) {
+                if((x == 0 && y == 0)
+                        || (x == tintedImage.getWidth() - 1 && y == 0)
+                        || (x == 0 && y == tintedImage.getHeight() - 1)
+                        || (x == tintedImage.getWidth() - 1 && y == tintedImage.getHeight() - 1)) {
 
                     // use default pixel color.
                     r = pixelColor.getRed();

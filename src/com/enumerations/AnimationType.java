@@ -1,5 +1,5 @@
 package com.enumerations;
 
 public enum AnimationType {
-    PROJECTILE_DESTROY
+    PLAYER_PROJECTILE_DESTROY
 }

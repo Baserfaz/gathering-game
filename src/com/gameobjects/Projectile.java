@@ -1,6 +1,7 @@
 package com.gameobjects;
 
 import com.data.Animation;
+import com.engine.Game;
 import com.enumerations.AnimationType;
 import com.enumerations.DamageType;
 import com.enumerations.Direction;
@@ -11,7 +12,6 @@ import com.utilities.RenderUtils;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 
 public class Projectile extends GameObject implements ICollidable {
 
@@ -34,6 +34,8 @@ public class Projectile extends GameObject implements ICollidable {
 
     private boolean isOnTravelEnd = false;
 
+    private BufferedImage shadow;
+
     public Projectile(Point worldStartPosition, Direction direction, SpriteType type, Actor owner) {
         super(worldStartPosition, type, false);
 
@@ -41,9 +43,8 @@ public class Projectile extends GameObject implements ICollidable {
         this.startPoint = (Point) worldStartPosition.clone();
         this.owner = owner;
 
-        // TODO: get animation frames
-        this.onDestroyAnim = AnimationFactory.createAnimation(
-                "Projectile Destroyed", AnimationType.PROJECTILE_DESTROY);
+        this.onDestroyAnim =
+                Game.instance.getSpriteStorage().getAnimation(AnimationType.PLAYER_PROJECTILE_DESTROY);
 
         // rotate sprite: by default the sprite should be facing WEST
         switch (lookDirection) {
@@ -58,8 +59,25 @@ public class Projectile extends GameObject implements ICollidable {
                 break;
         }
 
+        this.shadow = RenderUtils.tint(this.defaultStaticSprite, true, 4);
+
         this.hitbox = this.calculateBoundingBox();
         this.isCollidable = true;
+    }
+
+    @Override
+    public void render(Graphics g) {
+
+        // draw shadow first, a bit further down
+        g.drawImage(this.shadow,
+                worldPosition.x,
+                worldPosition.y + Game.CALCULATED_SPRITE_SIZE / 2,
+                null);
+
+        // draw projectile on top of the shadow
+        g.drawImage(this.defaultStaticSprite,
+                worldPosition.x, worldPosition.y, null);
+
     }
 
     @Override
