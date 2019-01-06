@@ -9,6 +9,7 @@ import java.awt.image.BufferStrategy;
 
 import com.data.Level;
 import com.data.SpriteStorage;
+import com.enumerations.EnemyType;
 import com.enumerations.GameState;
 import com.ui.GuiElementManager;
 import com.utilities.SpriteCreator;
@@ -294,6 +295,11 @@ public class Game extends Canvas implements Runnable {
         this.level = new Level(10, 10);
 
         this.unitManager.createPlayerUnit(this.level);
+
+        // create some enemies
+        for(int i = 0; i < 5; i++) {
+            this.unitManager.createEnemyUnit(this.level, EnemyType.SLIME_NORMAL);
+        }
 
         Game.instance.setGamestate(GameState.INGAME);
 

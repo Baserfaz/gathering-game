@@ -201,11 +201,7 @@ public class Projectile extends GameObject implements ICollidable {
             // hit wall
             isOnTravelEnd = true;
 
-        } else if(other instanceof Actor && !other.equals(owner) ) {
-
-            // hit an actor
-            // -> calculate damage
-            // TODO: damage type... resistances...
+        } else if(other instanceof Enemy) {
 
             Actor actor = (Actor) other;
             actor.getHealth().takeDamage(this.damageAmount);

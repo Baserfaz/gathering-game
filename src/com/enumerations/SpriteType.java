@@ -25,9 +25,10 @@ public enum SpriteType {
     BUTTON_DOWN,
     GOLD,
     PROJECTILE_PLAYER_1,
-    PROJECTILE_PLAYER_2,
     SPIKE_DOWN,
     SPIKE_UP,
+    BLOOD_01,
+    SLIME_NORMAL,
     GUI_HEALTH(true);
 
     private boolean guiElement;

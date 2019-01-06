@@ -192,6 +192,7 @@ public abstract class Actor extends GameObject implements ICollidable {
 
     public void onDeath() {
         this.deactivate();
+        this.isDeleted = true;
     }
 
     public double getVelocity_x() {
@@ -224,7 +225,7 @@ public abstract class Actor extends GameObject implements ICollidable {
 
         } else if(other instanceof SpikeTrap) {
             SpikeTrap trap = (SpikeTrap) other;
-            if (!trap.isAutomatic() && !trap.isTrapActivated()) { trap.activateTrap(); }
+            if(!trap.isAutomatic() && !trap.isTrapActivated()) { trap.activateTrap(); }
             if(trap.isTrapActivated()) this.getHealth().takeDamage(trap.getTrapDamage());
         }
     }

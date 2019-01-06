@@ -381,10 +381,6 @@ public class SpriteCreator {
             pos.x = 3;
             pos.y = 1;
             break;
-        case PROJECTILE_PLAYER_2:
-            pos.x = 4;
-            pos.y = 1;
-            break;
         case GUI_HEALTH:
             pos.x = 8;
             pos.y = 4;
@@ -396,6 +392,14 @@ public class SpriteCreator {
         case SPIKE_UP:
             pos.x = 6;
             pos.y = 5;
+            break;
+        case BLOOD_01:
+            pos.x = 7;
+            pos.y = 5;
+            break;
+        case SLIME_NORMAL:
+            pos.x = 1;
+            pos.y = 0;
             break;
         default:
             System.out.println("Could not find a sprite of spritetype:" + type);

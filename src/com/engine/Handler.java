@@ -95,6 +95,8 @@ public class Handler {
         for(GameObject current : objInView) {
             if(current instanceof Player) {
                 player = (Actor) current;
+            } else if(current instanceof Enemy) {
+                enemies.add((Enemy)current);
             } else if(current instanceof Block) {
                 solidBlocks.add((Block) current);
             } else if(current instanceof Item) {

@@ -19,11 +19,8 @@ public class Health {
     
     private void die() {
         this.isDead = true;
-        
         if(this.object instanceof Actor) {
             ((Actor)this.object).onDeath();
-        } else {
-            System.out.println("Health::die: not supported for type: " + this.object.getClass().getTypeName());
         }
     }
     
@@ -32,8 +29,10 @@ public class Health {
 
         if(object instanceof Actor) {
             Actor actor = (Actor)object;
-            if(!actor.isInvulnerable()) { this.currentHP -= amount; }
-            actor.onDamageTaken();
+            if(!actor.isInvulnerable()) {
+                this.currentHP -= amount;
+                actor.onDamageTaken();
+            }
         } else {
             this.currentHP -= amount;
         }
