@@ -46,5 +46,5 @@ public class UnitManager {
     }
 
     public List<Actor> getUnitInstances() { return unitInstances; }
-    public Actor getPlayer() { return this.player; }
+    public Player getPlayer() { return this.player; }
 }

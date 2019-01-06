@@ -4,15 +4,15 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 import com.data.Health;
-import com.engine.Game;
 import com.enumerations.Direction;
 import com.enumerations.ItemType;
 import com.enumerations.SpriteType;
 import com.interfaces.ICollidable;
-import com.utilities.Mathf;
+import com.interfaces.IPhysicsObject;
+import com.sun.javafx.geom.Vec2d;
 import com.utilities.RenderUtils;
 
-public abstract class Actor extends GameObject implements ICollidable {
+public abstract class Actor extends GameObject implements ICollidable, IPhysicsObject {
 
     // how fast velocity decreases over time
     // max friction is accelerationValue + deaccelerationValue
@@ -27,11 +27,13 @@ public abstract class Actor extends GameObject implements ICollidable {
     private double maxAcceleration = 1.0;
     private double maxVelocity = 5.0;
 
+    // ----
+
     // in milliseconds -> 1000ms = 1s
     private double timeBetweenAttacks = 500.0;
     private double invulnerabilityDuration = 500.0;
 
-    // -------------------
+    // ----
 
     protected Health health;
 
@@ -61,14 +63,17 @@ public abstract class Actor extends GameObject implements ICollidable {
         this.attackDamage = damage;
         this.health = new Health(hp, this);
 
-        // create hitbox, only the size matters here, position is updated on every frame
-        int size = Game.CALCULATED_SPRITE_SIZE / 2;
-        this.hitbox = new Rectangle(this.worldPosition.x, this.worldPosition.y, size, size);
+        // if a subclass has not defined hitbox, use this as default.
+        if(hitbox == null) {
+            hitbox = this.calculateBoundingBox();
+        }
     }
 
     public void tick() {
         this.move();
         this.calculateCollisions();
+
+        // moves the hitbox to the center of the sprite, not always desirable
         this.updateHitbox(this.getCenterPosition());
         this.updateTimers();
     }
@@ -107,75 +112,6 @@ public abstract class Actor extends GameObject implements ICollidable {
         }
     }
 
-    private void move() {
-
-        // clamp the maximum acceleration to some values
-        double axx = Mathf.clamp(-maxAcceleration, maxAcceleration, acceleration_x);
-        double ayy = Mathf.clamp(-maxAcceleration, maxAcceleration, acceleration_y);
-
-        // handle velocity in x-axis
-        double absVelx = Math.abs(velocity_x);
-        if(absVelx < maxVelocity) {
-            velocity_x += axx;
-        } else if(absVelx > maxVelocity) {
-            if(velocity_x > 0) { velocity_x = maxVelocity; }
-            else if(velocity_x < 0) { velocity_x = -maxVelocity; }
-        }
-
-        // handle velocity in y-axis
-        double absVely = Math.abs(velocity_y);
-        if(absVely < maxVelocity) {
-            velocity_y += ayy;
-        } else if(absVely > maxVelocity) {
-            if(velocity_y > 0) { velocity_y = maxVelocity; }
-            else if(velocity_y < 0) { velocity_y = -maxVelocity; }
-        }
-
-        // actually move the character using velocity
-        worldPosition.x += velocity_x;
-        worldPosition.y += velocity_y;
-
-        // ---- handle acceleration and velocity after applying the forces to world position
-        if(acceleration_x > 0) { acceleration_x -= deaccelerationValue; }
-        else if(acceleration_x < 0) { acceleration_x += deaccelerationValue; }
-
-        if(acceleration_y > 0) { acceleration_y -= deaccelerationValue; }
-        else if(acceleration_y < 0) { acceleration_y += deaccelerationValue; }
-
-        // when changing polarity -> stop
-        if (lastAccelx > 0 && acceleration_x <= 0 || lastAccelx < 0 && acceleration_x >= 0) {
-            acceleration_x = 0;
-        }
-
-        if (lastAccely > 0 && acceleration_y <= 0 || lastAccely < 0 && acceleration_y >= 0) {
-            acceleration_y = 0;
-        }
-
-        //  ---- add friction to the velocity, so it decreases over time
-        if(velocity_x > 0) { velocity_x -= friction; }
-        else if(velocity_x < 0) { velocity_x += friction; }
-
-        if(velocity_y > 0) { velocity_y -= friction; }
-        else if(velocity_y < 0) { velocity_y += friction; }
-
-        // when changing polarity -> stop
-        if (lastVelocityx > 0 && velocity_x <= 0 || lastVelocityx < 0 && velocity_x >= 0) {
-            velocity_x = 0;
-            acceleration_x = 0;
-        }
-
-        if (lastVelocityy > 0 && velocity_y <= 0 || lastVelocityy < 0 && velocity_y >= 0) {
-            velocity_y = 0;
-            acceleration_y = 0;
-        }
-
-        // ---- cache
-        lastAccelx = acceleration_x;
-        lastAccely = acceleration_y;
-        lastVelocityx = velocity_x;
-        lastVelocityy = velocity_y;
-    }
-
     private void onAttackTimerReset() {
         canAttack = true;
         attackTimer = 0l;
@@ -195,33 +131,16 @@ public abstract class Actor extends GameObject implements ICollidable {
         this.isDeleted = true;
     }
 
-    public double getVelocity_x() {
-        return velocity_x;
-    }
-
-    public double getVelocity_y() {
-        return velocity_y;
-    }
-
-    public double getAcceleration_x() {
-        return acceleration_x;
-    }
-
-    public double getAcceleration_y() {
-        return acceleration_y;
-    }
-
     @Override
     public void onCollision(ICollidable other) {
-        if(other instanceof Block ||
-                (other instanceof Item && ((Item) other).getItemType() == ItemType.STONE)) {
+        if(other instanceof Block
+                || (other instanceof Item && ((Item) other).getItemType() == ItemType.STONE)
+                || other instanceof Actor) {
 
-            // TODO: problem in left & up collisions -> negative velocity
-
-            this.velocity_x = -velocity_x;
-            this.velocity_y = -velocity_y;
-            this.acceleration_x = 0;
-            this.acceleration_y = 0;
+            velocity_x = -velocity_x;
+            velocity_y = -velocity_y;
+            acceleration_x = 0;
+            acceleration_y = 0;
 
         } else if(other instanceof SpikeTrap) {
             SpikeTrap trap = (SpikeTrap) other;
@@ -263,30 +182,37 @@ public abstract class Actor extends GameObject implements ICollidable {
         return isInvulnerable;
     }
 
-    public void setAcceleration_x(double acceleration_x) {
+    @Override
+    public void setAccelerationX(double acceleration_x) {
         this.acceleration_x = acceleration_x;
     }
 
-    public void addAcceleration_x(double a) {
+    @Override
+    public void addAccelerationX(double a) {
         this.acceleration_x += a;
     }
 
-    public void addAcceleration_y(double a) {
-        this.acceleration_y += a;
-    }
-
-    public void setAcceleration_y(double acceleration_y) {
+    @Override
+    public void setAccelerationY(double acceleration_y) {
         this.acceleration_y = acceleration_y;
     }
 
+    @Override
+    public void addAccelerationY(double a) {
+        this.acceleration_y += a;
+    }
+
+    @Override
     public double getMaxAcceleration() {
         return maxAcceleration;
     }
 
+    @Override
     public double getMaxVelocity() {
         return maxVelocity;
     }
 
+    @Override
     public double getDeaccelerationValue() {
         return deaccelerationValue;
     }
@@ -294,4 +220,68 @@ public abstract class Actor extends GameObject implements ICollidable {
     public double getAccelerationValue() {
         return accelerationValue;
     }
+
+    @Override
+    public double getFriction() {
+        return friction;
+    }
+
+    @Override
+    public Vec2d getAcceleration() {
+        return new Vec2d(acceleration_x, acceleration_y);
+    }
+
+    @Override
+    public Vec2d getVelocity() {
+        return new Vec2d(velocity_x, velocity_y);
+    }
+
+    @Override
+    public Vec2d getCachedVelocity() {
+        return new Vec2d(lastVelocityx, lastVelocityy);
+    }
+
+    @Override
+    public Vec2d getCachedAcceleration() {
+        return new Vec2d(lastAccelx, lastAccely);
+    }
+
+    @Override
+    public void setCachedVelocity(Vec2d a) {
+        this.lastVelocityx = a.x;
+        this.lastVelocityy = a.y;
+    }
+
+    @Override
+    public void setCachedAcceleration(Vec2d a) {
+        this.lastAccelx = a.x;
+        this.lastAccely = a.y;
+    }
+
+    @Override
+    public void setVelocityX(double a) {
+        this.velocity_x = a;
+    }
+
+    @Override
+    public void setVelocityY(double a) {
+        this.velocity_y = a;
+    }
+
+    @Override
+    public void addVelocityX(double a) {
+        this.velocity_x += a;
+    }
+
+    @Override
+    public void addVelocityY(double a) {
+        this.velocity_y += a;
+    }
+
+    @Override
+    public void addWorldPosition(Vec2d a) {
+        this.worldPosition.x += a.x;
+        this.worldPosition.y += a.y;
+    }
+
 }

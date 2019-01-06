@@ -4,7 +4,7 @@ import com.engine.Game;
 import com.gameobjects.GameObject;
 
 import java.awt.*;
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 public interface ICollidable {
@@ -49,17 +49,17 @@ public interface ICollidable {
     }
 
     default void calculateCollisions() {
-        Collection<GameObject> gos = Game.instance.getHandler().getObjects()
-                .stream()
-                .filter(a -> (a instanceof ICollidable))
-                .filter(a -> !a.equals(this))
-                .filter(a -> ((ICollidable) a).isActive())
-                .filter(a -> ((ICollidable) a).getDistanceFrom(this.getHitbox()) < Game.CALCULATED_MAX_COLLISION_DISTANCE)
-                .filter(a -> this.isColliding((ICollidable)a))
-                .collect(Collectors.toList());
+        ArrayList<GameObject> gos = new ArrayList<>(
+                Game.instance.getHandler().getObjects().stream()
+                        .filter(a -> (a instanceof ICollidable))
+                        .filter(a -> !a.equals(this))
+                        .filter(a -> ((ICollidable) a).isActive())
+                        .filter(a -> ((ICollidable) a).getDistanceFrom(this.getHitbox()) < Game.CALCULATED_MAX_COLLISION_DISTANCE)
+                        .filter(a -> this.isColliding((ICollidable)a))
+                        .collect(Collectors.toList()));
 
         if(!gos.isEmpty()) {
-            gos.stream().forEach(g -> this.onCollision((ICollidable) g));
+            gos.forEach(g -> this.onCollision((ICollidable) g));
         }
     }
 

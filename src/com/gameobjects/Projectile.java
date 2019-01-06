@@ -7,15 +7,23 @@ import com.enumerations.DamageType;
 import com.enumerations.Direction;
 import com.enumerations.SpriteType;
 import com.interfaces.ICollidable;
+import com.interfaces.IPhysicsObject;
+import com.sun.javafx.geom.Vec2d;
 import com.utilities.AnimationFactory;
 import com.utilities.RenderUtils;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class Projectile extends GameObject implements ICollidable {
+public class Projectile extends GameObject implements ICollidable, IPhysicsObject {
 
     private final int shadowTintDepth = 4;
+
+    // create objects here.. looks ugly in constructor
+    private Vec2d acceleration = new Vec2d();
+    private Vec2d velocity = new Vec2d();
+    private Vec2d cachedAcceleration = new Vec2d();
+    private Vec2d cachedVelocity = new Vec2d();
 
     private Animation onDestroyAnim;
     private int frameIndex = 0;  // what frame is it currently
@@ -45,10 +53,16 @@ public class Projectile extends GameObject implements ICollidable {
         this.startPoint = (Point) worldStartPosition.clone();
         this.owner = owner;
 
-        this.onDestroyAnim =
-                Game.instance.getSpriteStorage().getAnimation(AnimationType.PLAYER_PROJECTILE_DESTROY);
+        this.onDestroyAnim = Game.instance.getSpriteStorage().getAnimation(AnimationType.PLAYER_PROJECTILE_DESTROY);
 
-        // rotate sprite: by default the sprite should be facing WEST
+        setSpriteRotation();
+        this.shadow = RenderUtils.tint(this.defaultStaticSprite, true, shadowTintDepth);
+
+        this.hitbox = this.calculateBoundingBox();
+        this.isCollidable = true;
+    }
+
+    private void setSpriteRotation() {
         switch (lookDirection) {
             case EAST:
                 this.defaultStaticSprite = RenderUtils.flipSpriteHorizontally(this.defaultStaticSprite);
@@ -60,11 +74,6 @@ public class Projectile extends GameObject implements ICollidable {
                 this.defaultStaticSprite = RenderUtils.rotateImageClockwise(this.defaultStaticSprite, 3);
                 break;
         }
-
-        this.shadow = RenderUtils.tint(this.defaultStaticSprite, true, shadowTintDepth);
-
-        this.hitbox = this.calculateBoundingBox();
-        this.isCollidable = true;
     }
 
     @Override
@@ -86,6 +95,8 @@ public class Projectile extends GameObject implements ICollidable {
     public void tick() {
         if(this.isEnabled) {
 
+            // if this projectile has travelled far enough
+
             if(isOnTravelEnd) {
                 this.onTravelEnd();
                 return;
@@ -96,6 +107,8 @@ public class Projectile extends GameObject implements ICollidable {
                 isOnTravelEnd = true;
                 return;
             }
+
+            // ---
 
             this.move();
             this.updateHitbox();
@@ -109,27 +122,30 @@ public class Projectile extends GameObject implements ICollidable {
         this.hitbox.y = centerPosition.y - hitbox.height / 2;
     }
 
-    private void move() {
+    @Override
+    public void move() {
 
-        // TODO: use velocity and acceleration instead
+        // TODO: in constructor set the velocity to some random amount and dont touch acceleration.
 
-        switch (this.lookDirection) {
-            case SOUTH:
-                this.worldPosition.y += this.travelSpeed;
-                break;
-            case NORTH:
-                this.worldPosition.y -= this.travelSpeed;
-                break;
-            case WEST:
-                this.worldPosition.x -= this.travelSpeed;
-                break;
-            case EAST:
-                this.worldPosition.x += this.travelSpeed;
-                break;
-            default:
-                System.out.println("Projectile.tick: Error: not supported look direction: " + this.lookDirection);
-                break;
-        }
+//        switch (this.lookDirection) {
+//            case SOUTH:
+//                acceleration.y += travelSpeed;
+//                break;
+//            case NORTH:
+//                acceleration.y -= travelSpeed;
+//                break;
+//            case WEST:
+//                acceleration.x -= travelSpeed;
+//                break;
+//            case EAST:
+//                acceleration.x += travelSpeed;
+//                break;
+//            default:
+//                System.out.println("Projectile.tick: Error: not supported look direction: " + this.lookDirection);
+//                break;
+//        }
+
+        IPhysicsObject.super.move();
     }
 
     private void onTravelEnd() {
@@ -194,6 +210,8 @@ public class Projectile extends GameObject implements ICollidable {
         return this.damageAmount;
     }
 
+    // ----
+
     @Override
     public void onCollision(ICollidable other) {
         if(other instanceof Block) {
@@ -233,5 +251,103 @@ public class Projectile extends GameObject implements ICollidable {
     @Override
     public void setHitbox(Rectangle rectangle) {
         this.hitbox = rectangle;
+    }
+
+    // ----
+
+    @Override
+    public double getMaxAcceleration() {
+        return 10d;
+    }
+
+    @Override
+    public double getMaxVelocity() {
+        return 10d;
+    }
+
+    @Override
+    public double getDeaccelerationValue() {
+        return 0.1d;
+    }
+
+    @Override
+    public Vec2d getAcceleration() {
+        return acceleration;
+    }
+
+    @Override
+    public Vec2d getVelocity() {
+        return velocity;
+    }
+
+    @Override
+    public double getFriction() {
+        return 0.5d;
+    }
+
+    @Override
+    public Vec2d getCachedAcceleration() {
+        return cachedAcceleration;
+    }
+
+    @Override
+    public Vec2d getCachedVelocity() {
+        return cachedVelocity;
+    }
+
+    @Override
+    public void setCachedAcceleration(Vec2d a) {
+        cachedAcceleration = a;
+    }
+
+    @Override
+    public void setCachedVelocity(Vec2d a) {
+        cachedVelocity = a;
+    }
+
+    @Override
+    public void addAccelerationX(double a) {
+        acceleration.x += a;
+    }
+
+    @Override
+    public void addAccelerationY(double a) {
+        acceleration.y += a;
+    }
+
+    @Override
+    public void addVelocityX(double a) {
+        velocity.x += a;
+    }
+
+    @Override
+    public void addVelocityY(double a) {
+        velocity.y += a;
+    }
+
+    @Override
+    public void setVelocityX(double a) {
+        velocity.x = a;
+    }
+
+    @Override
+    public void setVelocityY(double a) {
+        velocity.y = a;
+    }
+
+    @Override
+    public void setAccelerationX(double a) {
+        acceleration.x = a;
+    }
+
+    @Override
+    public void setAccelerationY(double a) {
+        acceleration.y = a;
+    }
+
+    @Override
+    public void addWorldPosition(Vec2d a) {
+        worldPosition.x += a.x;
+        worldPosition.y += a.y;
     }
 }

@@ -121,6 +121,8 @@ public class Renderer {
             // actors
             g.setColor(Color.BLUE);
             for(Actor a : Game.instance.getUnitManager().getUnitInstances()) {
+                if(a.isDeleted()) return;
+
                 Rectangle hitbox = ((ICollidable)a).getHitbox();
                 if(hitbox != null) {
                     g.drawRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);

@@ -20,6 +20,10 @@ public class Player extends Actor {
 
         this.keyInput = Game.instance.getKeyInput();
         this.inventory = new Inventory();
+
+        // create hitbox, only the size matters here, position is updated on every frame
+        int size = Game.CALCULATED_SPRITE_SIZE / 2;
+        this.hitbox = new Rectangle(this.worldPosition.x, this.worldPosition.y, size, size);
     }
 
     @Override
@@ -34,33 +38,33 @@ public class Player extends Actor {
         Map<Integer, KeyInput.Command> buttons = this.keyInput.getButtons();
 
         double maxAcceleration = getMaxAcceleration();
-        double ay = getAcceleration_y();
-        double ax = getAcceleration_x();
+        double ay = getAcceleration().y;
+        double ax = getAcceleration().x;
         double totalAcc = getAccelerationValue() + getDeaccelerationValue();
 
         if (buttons.containsValue(KeyInput.Command.MOVE_DOWN)) {
             if(ay < maxAcceleration) {
-                addAcceleration_y(totalAcc);
+                addAccelerationY(totalAcc);
             }
         }
 
         if (buttons.containsValue(KeyInput.Command.MOVE_UP)) {
             if(Math.abs(ay) < maxAcceleration) {
-                addAcceleration_y(-totalAcc);
+                addAccelerationY(-totalAcc);
             }
         }
 
         if (buttons.containsValue(KeyInput.Command.MOVE_RIGHT)) {
             facingDirection = Direction.EAST;
             if(ax < maxAcceleration) {
-                addAcceleration_x(totalAcc);
+                addAccelerationX(totalAcc);
             }
         }
 
         if (buttons.containsValue(KeyInput.Command.MOVE_LEFT)) {
             facingDirection = Direction.WEST;
             if(Math.abs(ax) < maxAcceleration) {
-                addAcceleration_x(-totalAcc);
+                addAccelerationX(-totalAcc);
             }
         }
 

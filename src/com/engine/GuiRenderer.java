@@ -183,10 +183,10 @@ public class GuiRenderer {
                 Point wpos = player.getWorldPosition();
                 builder.append("player world pos: [" + wpos.x + ", " + wpos.y + "]\n");
                 builder.append(String.format("Acceleration: %.2f, %.2f\n",
-                        player.getAcceleration_x(), player.getAcceleration_y()));
+                        player.getAcceleration().x, player.getAcceleration().y));
 
                 builder.append(String.format("Velocity: %.2f, %.2f\n",
-                        player.getVelocity_x(), player.getVelocity_y()));
+                        player.getVelocity().x, player.getVelocity().y));
 
             }
             this.renderString(builder.toString(), x, y, Game.debugInfoColor, 24f, HorizontalAlign.RIGHT, g);
